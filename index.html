@@ -38,6 +38,29 @@
         .ass-box input { border-bottom:1px solid #000; padding:4px 0; margin-bottom:4px; width:100%; font-size:clamp(12px,1.6vw,13px); }
         .linha { border-bottom:1px solid #000; margin-top:14px; }
         
+        /* Rodapé */
+        .rodape {
+            border-top: 2px solid #003c7d;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: clamp(11px, 1.4vw, 13px);
+            color: #444;
+            background: #f9fafc;
+            line-height: 1.6;
+        }
+        .rodape strong {
+            color: #003c7d;
+        }
+        .rodape .dev {
+            font-weight: bold;
+            color: #003c7d;
+            margin-bottom: 4px;
+        }
+        .rodape .dados-semusa {
+            font-size: clamp(10px, 1.2vw, 12px);
+            color: #555;
+        }
+
         /* Estilos do combobox customizado */
         .custom-select {
             position: relative;
@@ -137,6 +160,7 @@
             .container > table td .custom-select { width:60%; min-width:140px; flex:1; margin-left:8px; }
             .assinaturas { grid-template-columns:1fr; }
             .acoes button { min-width:100px; }
+            .rodape { padding: 12px 15px; }
         }
     </style>
 </head>
@@ -242,6 +266,20 @@
             </div>
         </div>
     </div>
+
+    <!-- ==================== RODAPÉ ==================== -->
+    <div class="rodape">
+        <div class="dev">Desenvolvido por <strong>Cristian Marques</strong></div>
+        <div class="dados-semusa">
+            <strong>SEMUSA - Secretaria Municipal de Saúde de Porto Velho</strong><br />
+            Rua da Saúde, 123 - Bairro Centro - Porto Velho/RO - CEP: 76801-000<br />
+            Telefone: (69) 3219-XXXX | E-mail: semusa@portovelho.ro.gov.br
+        </div>
+        <div style="margin-top:6px; font-size:clamp(9px,1vw,11px); color:#888;">
+            © 2026 - Todos os direitos reservados
+        </div>
+    </div>
+    <!-- ================================================ -->
 </div>
 
 <script>
@@ -419,7 +457,6 @@
                 dropdown.classList.remove('open');
                 // Dispara o evento change manualmente para preencher CNES
                 if (typeof preencherCNES === 'function') preencherCNES();
-                // Opcional: atualizar outros campos
             });
         });
     }
