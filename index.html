@@ -37,13 +37,104 @@
         .ass-box label { font-size:clamp(11px,1.4vw,12px); font-weight:bold; display:block; margin-top:6px; }
         .ass-box input { border-bottom:1px solid #000; padding:4px 0; margin-bottom:4px; width:100%; font-size:clamp(12px,1.6vw,13px); }
         .linha { border-bottom:1px solid #000; margin-top:14px; }
+        
+        /* Estilos do combobox customizado */
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+        .custom-select .select-display {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            background: white;
+            padding: 4px 26px 4px 8px;
+            font-size: clamp(11px, 1.5vw, 13px);
+            min-height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+        .custom-select .select-display::after {
+            content: "▼";
+            position: absolute;
+            right: 6px;
+            font-size: 12px;
+            color: #555;
+        }
+        .custom-select .select-display:focus {
+            background: #fff8d8;
+        }
+        .custom-select .dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 0;
+            right: 0;
+            max-height: 220px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .custom-select .dropdown.open {
+            display: block;
+        }
+        .custom-select .dropdown .search-box {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 4px 6px;
+            border-bottom: 1px solid #eee;
+            z-index: 1;
+        }
+        .custom-select .dropdown .search-box input {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            padding: 4px 6px;
+            font-size: clamp(11px, 1.5vw, 13px);
+            background: white;
+            min-height: 28px;
+        }
+        .custom-select .dropdown .search-box input:focus {
+            background: #fff8d8;
+        }
+        .custom-select .dropdown .option {
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: clamp(11px, 1.5vw, 13px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .custom-select .dropdown .option:hover,
+        .custom-select .dropdown .option.highlighted {
+            background: #dbe5f1;
+        }
+        .custom-select .dropdown .option.disabled {
+            background: #f0f0f0;
+            color: #999;
+            cursor: default;
+        }
+        .custom-select .dropdown .option.disabled:hover {
+            background: #f0f0f0;
+        }
+
         @media (max-width:768px) {
             .header-top { flex-direction:column; align-items:center; }
             .container > table, .container > table tbody, .container > table tr, .container > table td { display:block; width:100%; }
             .container > table tr { margin-bottom:8px; border:1px solid #b9c3d0; border-radius:4px; padding:6px; }
             .container > table td { border:none; padding:4px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; border-bottom:1px dashed #ccc; }
             .container > table td::before { content:attr(data-label); font-weight:bold; width:35%; min-width:100px; color:#003c7d; }
-            .container > table td input, .container > table td select { width:60%; min-width:140px; flex:1; margin-left:8px; }
+            .container > table td input, .container > table td select,
+            .container > table td .custom-select { width:60%; min-width:140px; flex:1; margin-left:8px; }
             .assinaturas { grid-template-columns:1fr; }
             .acoes button { min-width:100px; }
         }
@@ -81,127 +172,22 @@
         </tr>
         <tr>
             <td data-label="Tipo de Unidade">
-                <select id="tipoUnidade" name="tipo_unidade" required onchange="preencherCNES()">
+                <!-- SELECT OCULTO (mantido para compatibilidade) -->
+                <select id="tipoUnidade" name="tipo_unidade" required style="display:none;">
                     <option value="">Selecione a Unidade</option>
-                    <optgroup label="UNIDADES URBANAS MAC">
-                        <option value="6060048">6060048 - CENTRAL MUNICIPAL DE REGULAÇÃO DO ACESSO</option>
-    <option value="9044310">9044310 - PS LAGO DO CUNIÃ</option>
-    <option value="3521532">3521532 - USF UNIÃO BANDEIRANTES</option>
-    <option value="9743081">9743081 - UPA JACY PARANÁ</option>
-    <option value="6365469">6365469 - CAPS AD</option>
-    <option value="2806568">2806568 - USF AGENOR DE CARVALHO</option>
-    <option value="2806789">2806789 - USF ERNANDE C. COUTINHO</option>
-    <option value="2806886">2806886 - USF JACY PARANÁ</option>
-    <option value="2806967">2806967 - USF SÃO CARLOS</option>
-    <option value="7089937">7089937 - CAPS INFANTO JUVENIL</option>
-    <option value="2802708">2802708 - CER</option>
-    <option value="2806517">2806517 - USF MORRINHOS</option>
-    <option value="7270860">7270860 - USF JOANA D'ARC</option>
-    <option value="7280408">7280408 - USF RIO PARDO</option>
-    <option value="9044345">9044345 - PS NOVA ESPERANÇA</option>
-    <option value="2802961">2802961 - USF NOVA CALIFÓRNIA</option>
-    <option value="2806541">2806541 - USF ABUNÃ</option>
-    <option value="2806649">2806649 - USF EXTREMA</option>
-    <option value="2806797">2806797 - USF FORTALEZA DO ABUNÃ</option>
-    <option value="2806908">2806908 - USF MARIA NOBRE DA SILVA</option>
-    <option value="2806991">2806991 - USF VISTA ALEGRE DO ABUNÃ</option>
-    <option value="2807424">2807424 - USF MARIA CAMELO DE OLIVEIRA</option>
-    <option value="2806576">2806576 - USF BENJAMIM SILVA</option>
-    <option value="2806916">2806916 - UBS MAURÍCIO BUSTANI</option>
-    <option value="2494558">2494558 - USF RONALDO ARAGÃO</option>
-    <option value="6462995">6462995 - LABORATÓRIO CENTRAL MUNICIPAL</option>
-    <option value="6863868">6863868 - SAE</option>
-    <option value="5599245">5599245 - CEO ZONA SUL</option>
-    <option value="5599334">5599334 - CEO ZONA LESTE I</option>
-    <option value="6670547">6670547 - USF HAMILTON RAULINO GONDIM</option>
-    <option value="6670709">6670709 - UBS MANOEL AMORIM DE MATOS</option>
-    <option value="7287305">7287305 - USF SANTA RITA</option>
-    <option value="2494078">2494078 - PA JOSÉ ADELINO</option>
-    <option value="2496461">2496461 - UPA ZONA LESTE</option>
-    <option value="2975866">2975866 - UNIDADE DE ACOLHIMENTO LAR DO BEBÊ</option>
-    <option value="2807041">2807041 - DVISA</option>
-    <option value="9577866">9577866 - USF CASTANHEIRAS</option>
-    <option value="9547282">9547282 - SERVIÇO DE INSPEÇÃO MUNICIPAL</option>
-    <option value="2552914">2552914 - CEM DR. ALFREDO SILVA</option>
-    <option value="5695880">5695880 - USF APONIÃ</option>
-    <option value="5822793">5822793 - USF SÃO SEBASTIÃO</option>
-    <option value="0213241">0213241 - CENTRAL DE REDE DE FRIO</option>
-    <option value="6021999">6021999 - USF VILA PRINCESA</option>
-    <option value="6670814">6670814 - USF JOSÉ ADELINO</option>
-    <option value="6950450">6950450 - SAMU USB 1</option>
-    <option value="6950469">6950469 - SAMU USB 2</option>
-    <option value="6950477">6950477 - SAMU USB 3</option>
-    <option value="6950485">6950485 - SAMU USB 4</option>
-    <option value="4001028">4001028 - PA ANA ADELAIDE</option>
-    <option value="2807483">2807483 - PS AGROVILA NOVA ALIANÇA</option>
-    <option value="2808153">2808153 - USF RIO DAS GARÇAS</option>
-    <option value="2802716">2802716 - USF RENATO MEDEIROS</option>
-    <option value="7928769">7928769 - USF NOVO ENGENHO VELHO</option>
-    <option value="9975616">9975616 - PRÁTICAS INTEGRATIVAS</option>
-    <option value="0038105">0038105 - LABORATÓRIO MUNICIPAL DE CITOLOGIA</option>
-    <option value="4068351">4068351 - SAMU USB 7 JACY PARANÁ</option>
-    <option value="0112003">0112003 - CIEVS</option>
-    <option value="2806592">2806592 - USF CALADINHO</option>
-    <option value="3326292">3326292 - UBS DR. FLORIANO RIVA FILHO</option>
-    <option value="2495155">2495155 - PS ENG. LUIZ GONZAGA</option>
-    <option value="2808099">2808099 - PS PAPAGAIOS</option>
-    <option value="2369931">2369931 - PS SÃO JOSÉ</option>
-    <option value="2808323">2808323 - PS VALE DO JAMARI</option>
-    <option value="2808439">2808439 - SAMU USA</option>
-    <option value="6386512">6386512 - USF MARIANA</option>
-    <option value="2807343">2807343 - PS CACHOEIRA DO TEOTÔNIO</option>
-    <option value="2807408">2807408 - PS DEMARCAÇÃO</option>
-    <option value="2808226">2808226 - PS SÃO MIGUEL</option>
-    <option value="2806673">2806673 - USF NOVA MUTUM</option>
-    <option value="2806495">2806495 - CAPS III TRÊS MARIAS</option>
-    <option value="6582915">6582915 - USF ALIANÇA</option>
-    <option value="5695899">5695899 - USF SOCIALISTA</option>
-    <option value="7016557">7016557 - POLICLÍNICA RAFAEL VAZ E SILVA</option>
-    <option value="0037494">0037494 - CIMI</option>
-    <option value="7122128">7122128 - SAMU USB 5</option>
-    <option value="7124244">7124244 - SAMU USB 6</option>
-    <option value="5599253">5599253 - CEO ZONA LESTE II</option>
-    <option value="9044329">9044329 - PS TERRA SANTA</option>
-    <option value="2806622">2806622 - USF JOSÉ GOMES FERREIRA</option>
-    <option value="6246524">6246524 - USF SANTO ANTÔNIO</option>
-    <option value="7890761">7890761 - CAF SEMUSA</option>
-    <option value="7935609">7935609 - CRSC</option>
-    <option value="3970442">3970442 - HOSPITAL MATERNIDADE MÃE ESPERANÇA</option>
-    <option value="2494051">2494051 - UBS AREAL DA FLORESTA</option>
-    <option value="2496577">2496577 - USF PEDACINHO DE CHÃO</option>
-    <option value="2493942">2493942 - USF OSVALDO PIANA</option>
-    <option value="2494531">2494531 - USF NOVA FLORESTA</option>
-    <option value="2680017">2680017 - UPA ZONA SUL</option>
-    <option value="3568075">3568075 - PS PALMARES KM 12</option>
-    <option value="6482732">6482732 - SECRETARIA MUNICIPAL DE SAÚDE</option>
-    <option value="5792495">5792495 - DIVISÃO DE CONTROLE DE VETORES</option>
-    <option value="3521567">3521567 - CRSM</option>
-    <option value="6944655">6944655 - CENTRAL DE REGULAÇÃO SAMU</option>
-    <option value="4455134">4455134 - DIVISÃO DE CONTROLE DE ZOONOSES</option>
-    <option value="4169859">4169859 - CEREST PORTO VELHO</option>
-    <option value="4477650">4477650 - VIGILÂNCIA EPIDEMIOLÓGICA</option>
-    <option value="4450434">4450434 - PESQUISA E DIAGNÓSTICO EM ZOONOSES</option>
-    <option value="4930363">4930363 - USF TRÊS MARIAS</option>
-    <option value="4905229">4905229 - UATTI CASA BEM VIVER</option>
-    <option value="4954017">4954017 - SALA DE ESTABILIZAÇÃO UNIÃO BANDEIRANTES</option>
-    <option value="8148406">8148406 - DAB</option>
-    <option value="8156956">8156956 - CGAF</option>
-    <option value="8137323">8137323 - CASA DA JUVENTUDE</option>
-    <option value="8146225">8146225 - DRAC</option>
-    <option value="8161593">8161593 - DCF</option>
-    <option value="8291462">8291462 - SALA DE ESTABILIZAÇÃO VISTA ALEGRE DO ABUNÃ</option>
-    <option value="8173834">8173834 - DPG</option>
-    <option value="8148376">8148376 - DEPARTAMENTO ADMINISTRATIVO</option>
-    <option value="8154961">8154961 - DEPTRAN</option>
-    <option value="8157367">8157367 - COORDENADORIA JURÍDICA DE SAÚDE</option>
-    <option value="8138044">8138044 - DGP</option>
-    <option value="8146055">8146055 - DMAC</option>
-    <option value="8159726">8159726 - DICON</option>
-    <option value="8148651">8148651 - ASTEC</option>
-    <option value="8241678">8241678 - DIVISÃO DE LABORATÓRIO</option>
-    <option value="8317941">8317941 - CENTRO DE CONVIVÊNCIA E CULTURA EM SAÚDE MENTAL</option>
-                    </optgroup>
+                    <!-- as opções serão preenchidas via JavaScript -->
                 </select>
+
+                <!-- COmboBox CUSTOMIZADO com busca interna -->
+                <div class="custom-select" id="customSelectContainer">
+                    <div class="select-display" id="selectDisplay">Selecione a Unidade</div>
+                    <div class="dropdown" id="dropdown">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Buscar unidade (nome ou código)" />
+                        </div>
+                        <div id="optionsList"></div>
+                    </div>
+                </div>
             </td>
             <td data-label="Município"><input type="text" id="municipio" placeholder="Município" /></td>
             <td></td>
@@ -267,16 +253,226 @@
     const TABLE_NAME = 'profissionais';
 
     // ============================================================
+    // DADOS DAS UNIDADES (para popular o combobox)
+    // ============================================================
+    const unidades = [
+        { value: "6060048", label: "6060048 - CENTRAL MUNICIPAL DE REGULAÇÃO DO ACESSO" },
+        { value: "9044310", label: "9044310 - PS LAGO DO CUNIÃ" },
+        { value: "3521532", label: "3521532 - USF UNIÃO BANDEIRANTES" },
+        { value: "9743081", label: "9743081 - UPA JACY PARANÁ" },
+        { value: "6365469", label: "6365469 - CAPS AD" },
+        { value: "2806568", label: "2806568 - USF AGENOR DE CARVALHO" },
+        { value: "2806789", label: "2806789 - USF ERNANDE C. COUTINHO" },
+        { value: "2806886", label: "2806886 - USF JACY PARANÁ" },
+        { value: "2806967", label: "2806967 - USF SÃO CARLOS" },
+        { value: "7089937", label: "7089937 - CAPS INFANTO JUVENIL" },
+        { value: "2802708", label: "2802708 - CER" },
+        { value: "2806517", label: "2806517 - USF MORRINHOS" },
+        { value: "7270860", label: "7270860 - USF JOANA D'ARC" },
+        { value: "7280408", label: "7280408 - USF RIO PARDO" },
+        { value: "9044345", label: "9044345 - PS NOVA ESPERANÇA" },
+        { value: "2802961", label: "2802961 - USF NOVA CALIFÓRNIA" },
+        { value: "2806541", label: "2806541 - USF ABUNÃ" },
+        { value: "2806649", label: "2806649 - USF EXTREMA" },
+        { value: "2806797", label: "2806797 - USF FORTALEZA DO ABUNÃ" },
+        { value: "2806908", label: "2806908 - USF MARIA NOBRE DA SILVA" },
+        { value: "2806991", label: "2806991 - USF VISTA ALEGRE DO ABUNÃ" },
+        { value: "2807424", label: "2807424 - USF MARIA CAMELO DE OLIVEIRA" },
+        { value: "2806576", label: "2806576 - USF BENJAMIM SILVA" },
+        { value: "2806916", label: "2806916 - UBS MAURÍCIO BUSTANI" },
+        { value: "2494558", label: "2494558 - USF RONALDO ARAGÃO" },
+        { value: "6462995", label: "6462995 - LABORATÓRIO CENTRAL MUNICIPAL" },
+        { value: "6863868", label: "6863868 - SAE" },
+        { value: "5599245", label: "5599245 - CEO ZONA SUL" },
+        { value: "5599334", label: "5599334 - CEO ZONA LESTE I" },
+        { value: "6670547", label: "6670547 - USF HAMILTON RAULINO GONDIM" },
+        { value: "6670709", label: "6670709 - UBS MANOEL AMORIM DE MATOS" },
+        { value: "7287305", label: "7287305 - USF SANTA RITA" },
+        { value: "2494078", label: "2494078 - PA JOSÉ ADELINO" },
+        { value: "2496461", label: "2496461 - UPA ZONA LESTE" },
+        { value: "2975866", label: "2975866 - UNIDADE DE ACOLHIMENTO LAR DO BEBÊ" },
+        { value: "2807041", label: "2807041 - DVISA" },
+        { value: "9577866", label: "9577866 - USF CASTANHEIRAS" },
+        { value: "9547282", label: "9547282 - SERVIÇO DE INSPEÇÃO MUNICIPAL" },
+        { value: "2552914", label: "2552914 - CEM DR. ALFREDO SILVA" },
+        { value: "5695880", label: "5695880 - USF APONIÃ" },
+        { value: "5822793", label: "5822793 - USF SÃO SEBASTIÃO" },
+        { value: "0213241", label: "0213241 - CENTRAL DE REDE DE FRIO" },
+        { value: "6021999", label: "6021999 - USF VILA PRINCESA" },
+        { value: "6670814", label: "6670814 - USF JOSÉ ADELINO" },
+        { value: "6950450", label: "6950450 - SAMU USB 1" },
+        { value: "6950469", label: "6950469 - SAMU USB 2" },
+        { value: "6950477", label: "6950477 - SAMU USB 3" },
+        { value: "6950485", label: "6950485 - SAMU USB 4" },
+        { value: "4001028", label: "4001028 - PA ANA ADELAIDE" },
+        { value: "2807483", label: "2807483 - PS AGROVILA NOVA ALIANÇA" },
+        { value: "2808153", label: "2808153 - USF RIO DAS GARÇAS" },
+        { value: "2802716", label: "2802716 - USF RENATO MEDEIROS" },
+        { value: "7928769", label: "7928769 - USF NOVO ENGENHO VELHO" },
+        { value: "9975616", label: "9975616 - PRÁTICAS INTEGRATIVAS" },
+        { value: "0038105", label: "0038105 - LABORATÓRIO MUNICIPAL DE CITOLOGIA" },
+        { value: "4068351", label: "4068351 - SAMU USB 7 JACY PARANÁ" },
+        { value: "0112003", label: "0112003 - CIEVS" },
+        { value: "2806592", label: "2806592 - USF CALADINHO" },
+        { value: "3326292", label: "3326292 - UBS DR. FLORIANO RIVA FILHO" },
+        { value: "2495155", label: "2495155 - PS ENG. LUIZ GONZAGA" },
+        { value: "2808099", label: "2808099 - PS PAPAGAIOS" },
+        { value: "2369931", label: "2369931 - PS SÃO JOSÉ" },
+        { value: "2808323", label: "2808323 - PS VALE DO JAMARI" },
+        { value: "2808439", label: "2808439 - SAMU USA" },
+        { value: "6386512", label: "6386512 - USF MARIANA" },
+        { value: "2807343", label: "2807343 - PS CACHOEIRA DO TEOTÔNIO" },
+        { value: "2807408", label: "2807408 - PS DEMARCAÇÃO" },
+        { value: "2808226", label: "2808226 - PS SÃO MIGUEL" },
+        { value: "2806673", label: "2806673 - USF NOVA MUTUM" },
+        { value: "2806495", label: "2806495 - CAPS III TRÊS MARIAS" },
+        { value: "6582915", label: "6582915 - USF ALIANÇA" },
+        { value: "5695899", label: "5695899 - USF SOCIALISTA" },
+        { value: "7016557", label: "7016557 - POLICLÍNICA RAFAEL VAZ E SILVA" },
+        { value: "0037494", label: "0037494 - CIMI" },
+        { value: "7122128", label: "7122128 - SAMU USB 5" },
+        { value: "7124244", label: "7124244 - SAMU USB 6" },
+        { value: "5599253", label: "5599253 - CEO ZONA LESTE II" },
+        { value: "9044329", label: "9044329 - PS TERRA SANTA" },
+        { value: "2806622", label: "2806622 - USF JOSÉ GOMES FERREIRA" },
+        { value: "6246524", label: "6246524 - USF SANTO ANTÔNIO" },
+        { value: "7890761", label: "7890761 - CAF SEMUSA" },
+        { value: "7935609", label: "7935609 - CRSC" },
+        { value: "3970442", label: "3970442 - HOSPITAL MATERNIDADE MÃE ESPERANÇA" },
+        { value: "2494051", label: "2494051 - UBS AREAL DA FLORESTA" },
+        { value: "2496577", label: "2496577 - USF PEDACINHO DE CHÃO" },
+        { value: "2493942", label: "2493942 - USF OSVALDO PIANA" },
+        { value: "2494531", label: "2494531 - USF NOVA FLORESTA" },
+        { value: "2680017", label: "2680017 - UPA ZONA SUL" },
+        { value: "3568075", label: "3568075 - PS PALMARES KM 12" },
+        { value: "6482732", label: "6482732 - SECRETARIA MUNICIPAL DE SAÚDE" },
+        { value: "5792495", label: "5792495 - DIVISÃO DE CONTROLE DE VETORES" },
+        { value: "3521567", label: "3521567 - CRSM" },
+        { value: "6944655", label: "6944655 - CENTRAL DE REGULAÇÃO SAMU" },
+        { value: "4455134", label: "4455134 - DIVISÃO DE CONTROLE DE ZOONOSES" },
+        { value: "4169859", label: "4169859 - CEREST PORTO VELHO" },
+        { value: "4477650", label: "4477650 - VIGILÂNCIA EPIDEMIOLÓGICA" },
+        { value: "4450434", label: "4450434 - PESQUISA E DIAGNÓSTICO EM ZOONOSES" },
+        { value: "4930363", label: "4930363 - USF TRÊS MARIAS" },
+        { value: "4905229", label: "4905229 - UATTI CASA BEM VIVER" },
+        { value: "4954017", label: "4954017 - SALA DE ESTABILIZAÇÃO UNIÃO BANDEIRANTES" },
+        { value: "8148406", label: "8148406 - DAB" },
+        { value: "8156956", label: "8156956 - CGAF" },
+        { value: "8137323", label: "8137323 - CASA DA JUVENTUDE" },
+        { value: "8146225", label: "8146225 - DRAC" },
+        { value: "8161593", label: "8161593 - DCF" },
+        { value: "8291462", label: "8291462 - SALA DE ESTABILIZAÇÃO VISTA ALEGRE DO ABUNÃ" },
+        { value: "8173834", label: "8173834 - DPG" },
+        { value: "8148376", label: "8148376 - DEPARTAMENTO ADMINISTRATIVO" },
+        { value: "8154961", label: "8154961 - DEPTRAN" },
+        { value: "8157367", label: "8157367 - COORDENADORIA JURÍDICA DE SAÚDE" },
+        { value: "8138044", label: "8138044 - DGP" },
+        { value: "8146055", label: "8146055 - DMAC" },
+        { value: "8159726", label: "8159726 - DICON" },
+        { value: "8148651", label: "8148651 - ASTEC" },
+        { value: "8241678", label: "8241678 - DIVISÃO DE LABORATÓRIO" },
+        { value: "8317941", label: "8317941 - CENTRO DE CONVIVÊNCIA E CULTURA EM SAÚDE MENTAL" }
+    ];
+
+    // ============================================================
+    // INICIALIZAÇÃO DO COMBOBOX CUSTOMIZADO
+    // ============================================================
+    const selectDisplay = document.getElementById('selectDisplay');
+    const dropdown = document.getElementById('dropdown');
+    const searchInput = document.getElementById('searchInput');
+    const optionsList = document.getElementById('optionsList');
+    const hiddenSelect = document.getElementById('tipoUnidade');
+
+    // Popular o select oculto com as mesmas opções
+    unidades.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.value;
+        opt.textContent = u.label;
+        hiddenSelect.appendChild(opt);
+    });
+
+    function renderOptions(filter = '') {
+        const lowerFilter = filter.toLowerCase().trim();
+        let html = '';
+        unidades.forEach(u => {
+            const match = lowerFilter === '' || 
+                          u.label.toLowerCase().includes(lowerFilter) || 
+                          u.value.includes(lowerFilter);
+            if (match) {
+                html += `<div class="option" data-value="${u.value}">${u.label}</div>`;
+            }
+        });
+        if (html === '') {
+            html = '<div class="option disabled" style="color:#999;">Nenhuma unidade encontrada</div>';
+        }
+        optionsList.innerHTML = html;
+
+        // Adicionar eventos de clique nas opções
+        optionsList.querySelectorAll('.option:not(.disabled)').forEach(opt => {
+            opt.addEventListener('click', function(e) {
+                const value = this.dataset.value;
+                const label = this.textContent;
+                selectDisplay.textContent = label;
+                selectDisplay.dataset.value = value;
+                hiddenSelect.value = value;
+                // Fecha dropdown
+                dropdown.classList.remove('open');
+                // Dispara o evento change manualmente para preencher CNES
+                if (typeof preencherCNES === 'function') preencherCNES();
+                // Opcional: atualizar outros campos
+            });
+        });
+    }
+
+    // Abrir/fechar dropdown
+    selectDisplay.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        dropdown.classList.toggle('open');
+        if (!isOpen) {
+            searchInput.value = '';
+            renderOptions('');
+            searchInput.focus();
+        }
+    });
+
+    // Fechar ao clicar fora
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('customSelectContainer');
+        if (!container.contains(e.target)) {
+            dropdown.classList.remove('open');
+        }
+    });
+
+    // Busca em tempo real
+    searchInput.addEventListener('input', function() {
+        renderOptions(this.value);
+    });
+
+    // Tecla Enter no campo de busca seleciona o primeiro item visível
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const firstOption = optionsList.querySelector('.option:not(.disabled)');
+            if (firstOption) {
+                firstOption.click();
+            }
+        }
+    });
+
+    // Inicializar com a opção padrão
+    renderOptions('');
+
+    // ============================================================
     // PREENCHER CNES AUTOMATICAMENTE
     // ============================================================
     function preencherCNES() {
-        const select = document.getElementById('tipoUnidade');
         const cnesInput = document.getElementById('cnes');
-        cnesInput.value = select.value;
+        const selectedValue = hiddenSelect.value;
+        cnesInput.value = selectedValue;
     }
 
     // ============================================================
-    // GERENCIAMENTO DE LINHAS
+    // GERENCIAMENTO DE LINHAS (profissionais)
     // ============================================================
     let contador = 1;
 
@@ -589,6 +785,7 @@
         }
     };
 
+    // Expor funções globalmente
     window.preencherCNES = preencherCNES;
     window.adicionarLinha = adicionarLinha;
     window.removerLinha = removerLinha;
