@@ -37,130 +37,33 @@
         .ass-box label { font-size:clamp(11px,1.4vw,12px); font-weight:bold; display:block; margin-top:6px; }
         .ass-box input { border-bottom:1px solid #000; padding:4px 0; margin-bottom:4px; width:100%; font-size:clamp(12px,1.6vw,13px); }
         .linha { border-bottom:1px solid #000; margin-top:14px; }
-        
-        /* Rodapé */
-        .rodape {
-            border-top: 2px solid #003c7d;
-            padding: 15px 20px;
-            text-align: center;
-            font-size: clamp(11px, 1.4vw, 13px);
-            color: #444;
-            background: #f9fafc;
-            line-height: 1.6;
-        }
-        .rodape strong {
-            color: #003c7d;
-        }
-        .rodape .dev {
-            font-weight: bold;
-            color: #003c7d;
-            margin-bottom: 4px;
-        }
-        .rodape .dados-semusa {
-            font-size: clamp(10px, 1.2vw, 12px);
-            color: #555;
-        }
-
-        /* Estilos do combobox customizado */
-        .custom-select {
-            position: relative;
-            width: 100%;
-        }
-        .custom-select .select-display {
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            background: white;
-            padding: 4px 26px 4px 8px;
-            font-size: clamp(11px, 1.5vw, 13px);
-            min-height: 28px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            position: relative;
-        }
-        .custom-select .select-display::after {
-            content: "▼";
-            position: absolute;
-            right: 6px;
-            font-size: 12px;
-            color: #555;
-        }
-        .custom-select .select-display:focus {
-            background: #fff8d8;
-        }
-        .custom-select .dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 2px);
-            left: 0;
-            right: 0;
-            max-height: 220px;
-            overflow-y: auto;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            z-index: 1000;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-        .custom-select .dropdown.open {
-            display: block;
-        }
-        .custom-select .dropdown .search-box {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 4px 6px;
-            border-bottom: 1px solid #eee;
-            z-index: 1;
-        }
-        .custom-select .dropdown .search-box input {
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            padding: 4px 6px;
-            font-size: clamp(11px, 1.5vw, 13px);
-            background: white;
-            min-height: 28px;
-        }
-        .custom-select .dropdown .search-box input:focus {
-            background: #fff8d8;
-        }
-        .custom-select .dropdown .option {
-            padding: 4px 8px;
-            cursor: pointer;
-            font-size: clamp(11px, 1.5vw, 13px);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .custom-select .dropdown .option:hover,
-        .custom-select .dropdown .option.highlighted {
-            background: #dbe5f1;
-        }
-        .custom-select .dropdown .option.disabled {
-            background: #f0f0f0;
-            color: #999;
-            cursor: default;
-        }
-        .custom-select .dropdown .option.disabled:hover {
-            background: #f0f0f0;
-        }
-
+        .rodape { border-top:2px solid #003c7d; padding:15px 20px; text-align:center; font-size:clamp(11px,1.4vw,13px); color:#444; background:#f9fafc; line-height:1.6; }
+        .rodape strong { color:#003c7d; }
+        .rodape .dev { font-weight:bold; color:#003c7d; margin-bottom:4px; }
+        .rodape .dados-semusa { font-size:clamp(10px,1.2vw,12px); color:#555; }
+        .custom-select { position:relative; width:100%; }
+        .custom-select .select-display { width:100%; border:1px solid #ccc; border-radius:2px; background:white; padding:4px 26px 4px 8px; font-size:clamp(11px,1.5vw,13px); min-height:28px; cursor:pointer; display:flex; align-items:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; position:relative; }
+        .custom-select .select-display::after { content:"▼"; position:absolute; right:6px; font-size:12px; color:#555; }
+        .custom-select .select-display:focus { background:#fff8d8; }
+        .custom-select .dropdown { display:none; position:absolute; top:calc(100% + 2px); left:0; right:0; max-height:220px; overflow-y:auto; background:white; border:1px solid #ccc; border-radius:2px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
+        .custom-select .dropdown.open { display:block; }
+        .custom-select .dropdown .search-box { position:sticky; top:0; background:white; padding:4px 6px; border-bottom:1px solid #eee; z-index:1; }
+        .custom-select .dropdown .search-box input { width:100%; border:1px solid #ccc; border-radius:2px; padding:4px 6px; font-size:clamp(11px,1.5vw,13px); background:white; min-height:28px; }
+        .custom-select .dropdown .search-box input:focus { background:#fff8d8; }
+        .custom-select .dropdown .option { padding:4px 8px; cursor:pointer; font-size:clamp(11px,1.5vw,13px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .custom-select .dropdown .option:hover, .custom-select .dropdown .option.highlighted { background:#dbe5f1; }
+        .custom-select .dropdown .option.disabled { background:#f0f0f0; color:#999; cursor:default; }
+        .custom-select .dropdown .option.disabled:hover { background:#f0f0f0; }
         @media (max-width:768px) {
             .header-top { flex-direction:column; align-items:center; }
             .container > table, .container > table tbody, .container > table tr, .container > table td { display:block; width:100%; }
             .container > table tr { margin-bottom:8px; border:1px solid #b9c3d0; border-radius:4px; padding:6px; }
             .container > table td { border:none; padding:4px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; border-bottom:1px dashed #ccc; }
             .container > table td::before { content:attr(data-label); font-weight:bold; width:35%; min-width:100px; color:#003c7d; }
-            .container > table td input, .container > table td select,
-            .container > table td .custom-select { width:60%; min-width:140px; flex:1; margin-left:8px; }
+            .container > table td input, .container > table td select, .container > table td .custom-select { width:60%; min-width:140px; flex:1; margin-left:8px; }
             .assinaturas { grid-template-columns:1fr; }
             .acoes button { min-width:100px; }
-            .rodape { padding: 12px 15px; }
+            .rodape { padding:12px 15px; }
         }
     </style>
 </head>
@@ -196,13 +99,9 @@
         </tr>
         <tr>
             <td data-label="Tipo de Unidade">
-                <!-- SELECT OCULTO (mantido para compatibilidade) -->
                 <select id="tipoUnidade" name="tipo_unidade" required style="display:none;">
                     <option value="">Selecione a Unidade</option>
-                    <!-- as opções serão preenchidas via JavaScript -->
                 </select>
-
-                <!-- COmboBox CUSTOMIZADO com busca interna -->
                 <div class="custom-select" id="customSelectContainer">
                     <div class="select-display" id="selectDisplay">Selecione a Unidade</div>
                     <div class="dropdown" id="dropdown">
@@ -267,7 +166,6 @@
         </div>
     </div>
 
-    <!-- ==================== RODAPÉ ==================== -->
     <div class="rodape">
         <div class="dev">Desenvolvido por <strong>Cristian Marques</strong></div>
         <div class="dados-semusa">
@@ -279,7 +177,6 @@
             © 2026 - Todos os direitos reservados
         </div>
     </div>
-    <!-- ================================================ -->
 </div>
 
 <script>
@@ -413,6 +310,78 @@
     ];
 
     // ============================================================
+    // DETALHES DAS UNIDADES EXTRAÍDOS DO PDF (endereço e telefone)
+    // ============================================================
+    const detalhesUnidades = {
+        "0037494": { endereco: "RUA DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "39012955" },
+        "8241678": { endereco: "RUA: VENEZUELA 2600 EMBRATEL", telefone: "39012955" },
+        "0038105": { endereco: "RUA ANTONIO LOURENCO LIMA 2360 EMBRATEL", telefone: "69 992394694" },
+        "9975616": { endereco: "ANTONIO LOURENCO PEREIRA LIMA 2360", telefone: "69984734810" },
+        "0776084": { endereco: "JACY PARANA 1943 NOSA SENHORA DAS GRACAS", telefone: "069" },
+        "4068351": { endereco: "JOSE SALE SN ZONA RURAL", telefone: "69 32119700" },
+        "4930363": { endereco: "RUA DANIELA 1515 IGARAPE", telefone: "69 39013377" },
+        "0112003": { endereco: "RUA PADRE CHIQUIHO 1060 PEDRINHAS", telefone: "69 39013634" },
+        "2975866": { endereco: "RUA ELIAS GORAYEB 2501 SAO CRISTOVAO", telefone: "6939016127" },
+        "0213241": { endereco: "MONTEIRO LOBATO 5350 ELDORADO", telefone: "69 39013176" },
+        "4954017": { endereco: "AV MARILDO CORDEIRO COM AIRTON SENNA 101", telefone: "69 98473-2898" },
+        "4477650": { endereco: "AV CAMPOS SALES 2283 CENTRO", telefone: "69 32277042" },
+        "4455134": { endereco: "AVENIDA MAMORE 1120 CASCALHEIRAS", telefone: "69 39013266" },
+        "8395365": { endereco: "AV: CAMPO SALES 2228 CENTRO", telefone: "6932178400" },
+        "8385025": { endereco: "RUA JOAO GOULART 2164 SAO CRISTOVAO", telefone: "69 39013268" },
+        "8317941": { endereco: "AVENIDA GUAPORE 3929 FLODOALDO PONTES", telefone: "69" },
+        "9577866": { endereco: "RUA PAU FERRO 878 CASTANHEIRA", telefone: "69" },
+        "2806789": { endereco: "AV MAMORE AO LADO DAS ESC MAE ESPERANCA E", telefone: "69 39013219" },
+        "7122128": { endereco: "RUA VENEZUELA 2276 EMBRATEL", telefone: "" },
+        "4001028": { endereco: "RUA PADRE CHIQUINHO 1060 PEDRINHAS", telefone: "" },
+        "3326292": { endereco: "ESTRADA DE FERRO, CAI NAGUA 00001 CENTRO", telefone: "" },
+        "7776527": { endereco: "AV JOSE AMADOR DOS REIS 3514 TANCREDO NEVES", telefone: "" },
+        "6877230": { endereco: "DA BEIRA 5840 AREAL DA FLORESTA", telefone: "" },
+        "6365469": { endereco: "AV GUAPORE COM VIEIRA CAULA 3929 AGENER DE", telefone: "69 39012877" },
+        "2808323": { endereco: "AV CALAMA VALE DO JAMARY 4008 EMBRATEL", telefone: "69 99292 4416" },
+        "2806576": { endereco: "CALAMA S/N DISTRITO CALAMA", telefone: "6932351092" },
+        "2807424": { endereco: "ESTRADA DA PENAL, LINHA 28 AO LADO DA", telefone: "6992210436" },
+        "2802961": { endereco: "RUA ITAPORA, ENTRE RUAS GUARANI E ALTANEIRA", telefone: "69 32531008" },
+        "6670547": { endereco: "JOSE AMADOR DOS REIS 3514 TANCREDO NEVES", telefone: "69 39013219" },
+        "6386512": { endereco: "ROSALINA GOMES 9900 MARIANA", telefone: "6932142354" },
+        "2494531": { endereco: "RUA JOAO PAULO I COM CAMPOS SALES SN NOVA", telefone: "69 3901 2957" },
+        "2493942": { endereco: "AV CAMPOS SALES, AO LADO DA ESCOLA PAD", telefone: "69 39013636" },
+        "2806568": { endereco: "RUA VICTO FERREIRA MANAHIBA 1209 AGENER DE", telefone: "69 39012829" },
+        "5822793": { endereco: "CASTRO ALVES, AO LADO DA ESCOLA SEMENTE DO", telefone: "69 3901 2816" },
+        "2494558": { endereco: "ESTRADA DO BELMONT 2044 NACIONAL", telefone: "69 39012832" },
+        "4905229": { endereco: "AV GUAPORE COM VIEIRA CAULA 3929 AGENER DE", telefone: "69 3901-2877" },
+        "2807041": { endereco: "AVENIDA CAMPOS SALES 2283 CENTRO", telefone: "69 39012906" },
+        "6670709": { endereco: "RUA ANGICO 5030 COHAB FLORESTA", telefone: "69 39012805" },
+        "6670814": { endereco: "ORION AO LADO DO COMANDO DE POLICIA 56", telefone: "69 3901 2801" },
+        "2494051": { endereco: "RUA SEPETIBA 100 AREAL DA FLORESTA", telefone: "69 39013324" },
+        "2806916": { endereco: "RUA HERBET DEAZEVEDO 2887 LIBERDADE", telefone: "69984736062" },
+        "4169859": { endereco: "AV DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "69 984738282" },
+        "2552914": { endereco: "AVENIDA 7 DE SETEMBRO COM RIO MADEIRA 2010", telefone: "69 39011376" },
+        "3521532": { endereco: "AV MARILDO CORDEIRO COM AIRTON SENNA 101", telefone: "6999854079" },
+        "3970442": { endereco: "RUA ANTONIO LOURENCO PEREIRA LIMA 2350", telefone: "69 39012838" },
+        "2494078": { endereco: "RUA: COLATINA 2031 MARCOS FREIRE", telefone: "6939012801" },
+        "3559688": { endereco: "AV CALAMA 4008 EMBRATEL", telefone: "(69)32166616" },
+        "2807300": { endereco: "AV CALAMA ESTRADA DO BELMONT 4008 BELMONT", telefone: "" },
+        "2808196": { endereco: "CALAMA S/N DISTRITO CALAMA", telefone: "" },
+        "2807394": { endereco: "CURICACAS S/N BAIXO MADEIRA", telefone: "" },
+        "7124252": { endereco: "PADRE CHIQUINHO 134 DISTRITO DE SAO CARLOS", telefone: "" },
+        "7124260": { endereco: "BR 364 S/N DISTRITO DE VISTA AL", telefone: "" },
+        "8137323": { endereco: "AVENIDA JOSE VIEIRA CAULA 5192 CUNIA", telefone: "" },
+        "8138044": { endereco: "AVENIDA CAMPOS SALES 2283 CENTRO", telefone: "" },
+        "8291462": { endereco: "RUA JOAO LEANDRO BARBOSA S/N VISTA ALEGRE", telefone: "069 32511510" },
+        "9044329": { endereco: "DISTRITO DE TERRA SANTA 0000 ZONA RURAL", telefone: "69 92441965" },
+        "7928769": { endereco: "BR 319 SENTIDO HUMAITA COM SAO SEBASTIAO SN", telefone: "6992930727" },
+        "9044345": { endereco: "DISTRITO NOVA ESPERANCA SN ZONA RURAL", telefone: "" },
+        "9044310": { endereco: "DISTRITO LAGO DO CUNIA 00001 BAIXO MADEIRA", telefone: "" },
+        "7935609": { endereco: "RUA JACY PARANA S/N NOSSA SENHORA DAS GRACAS", telefone: "69 39013267" },
+        "2680017": { endereco: "RUA URTIGA VERMELHA COM JATUARANA 5407", telefone: "6939016428" },
+        "3521567": { endereco: "RUA DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "6939012955" },
+        "5599245": { endereco: "ANGICO C AROEIRA", telefone: "" },
+        "8146055": { endereco: "AV. CAMPOS SALES 2283 CENTRO", telefone: "69 3901-3176" },
+        "8148406": { endereco: "AV. CAMPOS SALES 2283 CENTRO", telefone: "69 3901-3176" },
+        "4450434": { endereco: "AV MAMORE 1120 CASCALHEIRA", telefone: "(69) 3901-2878" }
+    };
+
+    // ============================================================
     // INICIALIZAÇÃO DO COMBOBOX CUSTOMIZADO
     // ============================================================
     const selectDisplay = document.getElementById('selectDisplay');
@@ -453,10 +422,9 @@
                 selectDisplay.textContent = label;
                 selectDisplay.dataset.value = value;
                 hiddenSelect.value = value;
-                // Fecha dropdown
                 dropdown.classList.remove('open');
-                // Dispara o evento change manualmente para preencher CNES
-                if (typeof preencherCNES === 'function') preencherCNES();
+                // Preenche todos os campos da unidade
+                preencherDadosUnidade(value, label);
             });
         });
     }
@@ -473,7 +441,6 @@
         }
     });
 
-    // Fechar ao clicar fora
     document.addEventListener('click', function(e) {
         const container = document.getElementById('customSelectContainer');
         if (!container.contains(e.target)) {
@@ -481,12 +448,10 @@
         }
     });
 
-    // Busca em tempo real
     searchInput.addEventListener('input', function() {
         renderOptions(this.value);
     });
 
-    // Tecla Enter no campo de busca seleciona o primeiro item visível
     searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             const firstOption = optionsList.querySelector('.option:not(.disabled)');
@@ -496,16 +461,22 @@
         }
     });
 
-    // Inicializar com a opção padrão
-    renderOptions('');
-
     // ============================================================
-    // PREENCHER CNES AUTOMATICAMENTE
+    // FUNÇÃO PARA PREENCHER OS DADOS DA UNIDADE
     // ============================================================
-    function preencherCNES() {
-        const cnesInput = document.getElementById('cnes');
-        const selectedValue = hiddenSelect.value;
-        cnesInput.value = selectedValue;
+    function preencherDadosUnidade(cnes, label) {
+        // CNES
+        document.getElementById('cnes').value = cnes;
+        // Nome da unidade (extrair o nome do label)
+        const nome = label.replace(/^[0-9]+ - /, '');
+        document.getElementById('nomeUnidade').value = nome;
+        // UF e Município fixos
+        document.getElementById('uf').value = 'RO';
+        document.getElementById('municipio').value = 'Porto Velho';
+        // Endereço e telefone do dicionário
+        const detalhes = detalhesUnidades[cnes] || {};
+        document.getElementById('endereco').value = detalhes.endereco || '';
+        document.getElementById('telefone').value = detalhes.telefone || '';
     }
 
     // ============================================================
@@ -819,13 +790,16 @@
     window.onload = function() {
         document.getElementById('dataEmissao').value = new Date().toISOString().split('T')[0];
         adicionarLinha();
+        // Se houver uma unidade pré-selecionada, preenche os dados
         if (document.getElementById('tipoUnidade').value) {
-            preencherCNES();
+            const cnes = document.getElementById('tipoUnidade').value;
+            const label = document.querySelector(`#tipoUnidade option[value="${cnes}"]`)?.textContent || '';
+            preencherDadosUnidade(cnes, label);
         }
     };
 
     // Expor funções globalmente
-    window.preencherCNES = preencherCNES;
+    window.preencherDadosUnidade = preencherDadosUnidade;
     window.adicionarLinha = adicionarLinha;
     window.removerLinha = removerLinha;
     window.enviarDados = enviarDados;
