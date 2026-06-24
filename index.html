@@ -4,377 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
     <title>Planilha de Atualização Cadastral dos Profissionais - CNES</title>
-
     <style>
-        /* ===== RESET E ESTILOS GERAIS ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #f1f1f1;
-            padding: 10px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: #fff;
-            border: 1px solid #000;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            border-bottom: 2px solid #003c7d;
-        }
-
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            background: #fff;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .logo-esquerda img,
-        .logo-direita img {
-            height: 60px;
-            width: auto;
-            display: block;
-            max-width: 100%;
-        }
-
-        .titulos {
-            flex: 1;
-            text-align: center;
-            min-width: 200px;
-        }
-
-        .titulos h2 {
-            color: #003c7d;
-            font-size: clamp(14px, 2.5vw, 18px);
-            margin-bottom: 2px;
-        }
-
-        .titulos h3 {
-            color: #003c7d;
-            font-size: clamp(11px, 1.8vw, 14px);
-            font-weight: normal;
-            margin-bottom: 1px;
-        }
-
-        .titulo {
-            background: #003c7d;
-            color: #fff;
-            padding: 8px 10px;
-            font-size: clamp(14px, 2.5vw, 17px);
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .info-versao {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            padding: 8px 15px;
-            border-top: 1px solid #ccc;
-            font-size: clamp(11px, 1.6vw, 13px);
-            gap: 8px;
-        }
-
-        /* ===== DADOS DA UNIDADE ===== */
-        .section-title {
-            background: #003c7d;
-            color: #fff;
-            padding: 5px 15px;
-            font-weight: bold;
-            font-size: clamp(13px, 2vw, 14px);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td, th {
-            border: 1px solid #b9c3d0;
-            padding: 6px 8px;
-            font-size: clamp(11px, 1.6vw, 13px);
-            vertical-align: middle;
-            word-break: break-word;
-        }
-
-        input, select {
-            width: 100%;
-            border: none;
-            outline: none;
-            padding: 4px 2px;
-            font-size: clamp(11px, 1.5vw, 13px);
-            background: transparent;
-            min-height: 28px;
-            box-sizing: border-box;
-        }
-
-        select {
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            height: 28px;
-        }
-
-        input:focus, select:focus {
-            background: #fff8d8;
-        }
-
-        /* ===== TABELA DE PROFISSIONAIS ===== */
-        .profissionais {
-            width: 100%;
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .profissionais table {
-            width: 100%;
-            min-width: 900px;
-        }
-
-        .profissionais th {
-            background: #dbe5f1;
-            font-size: clamp(10px, 1.4vw, 12px);
-            padding: 4px 6px;
-            text-align: center;
-        }
-
-        .profissionais td {
-            padding: 4px 4px;
-            height: 38px;
-            font-size: clamp(10px, 1.4vw, 12px);
-        }
-
-        .profissionais input,
-        .profissionais select {
-            font-size: clamp(10px, 1.4vw, 12px);
-            padding: 3px 2px;
-            min-height: 26px;
-        }
-
-        /* ===== BOTÕES ===== */
-        .acoes {
-            padding: 15px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 8px 16px;
-            border: none;
-            background: #003c7d;
-            color: white;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: clamp(12px, 1.6vw, 14px);
-            transition: opacity 0.2s;
-            flex: 1 1 auto;
-            min-width: 120px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        .btn-enviar {
-            background: #28a745;
-        }
-
-        .btn-enviar:hover {
-            background: #218838;
-        }
-
-        /* ===== ASSINATURAS ===== */
-        .footer {
-            padding: 15px 20px;
-        }
-
-        .assinaturas {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .ass-box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            min-height: 100px;
-        }
-
-        .ass-box h4 {
-            margin-bottom: 6px;
-            color: #003c7d;
-            font-size: clamp(13px, 1.8vw, 14px);
-        }
-
-        .ass-box label {
-            font-size: clamp(11px, 1.4vw, 12px);
-            font-weight: bold;
-            display: block;
-            margin-top: 6px;
-        }
-
-        .ass-box input {
-            border-bottom: 1px solid #000;
-            padding: 4px 0;
-            margin-bottom: 4px;
-            width: 100%;
-            font-size: clamp(12px, 1.6vw, 13px);
-        }
-
-        .linha {
-            border-bottom: 1px solid #000;
-            margin-top: 14px;
-        }
-
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 768px) {
-            body { padding: 5px; }
-            .header-top { flex-direction: column; align-items: center; padding: 10px 8px; }
-            .logo-esquerda img, .logo-direita img { height: 50px; }
-            .titulos h2 { font-size: 16px; }
-            .titulos h3 { font-size: 12px; }
-            .titulo { font-size: 15px; padding: 6px 8px; }
-
-            .container > table,
-            .container > table tbody,
-            .container > table tr,
-            .container > table td {
-                display: block;
-                width: 100%;
-            }
-            .container > table tr {
-                margin-bottom: 8px;
-                border: 1px solid #b9c3d0;
-                border-radius: 4px;
-                padding: 6px;
-            }
-            .container > table td {
-                border: none;
-                padding: 4px 0;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: space-between;
-                border-bottom: 1px dashed #ccc;
-            }
-            .container > table td:last-child { border-bottom: none; }
-            .container > table td input,
-            .container > table td select {
-                width: 60%;
-                min-width: 140px;
-                flex: 1;
-                margin-left: 8px;
-            }
-            .container > table td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                width: 35%;
-                min-width: 100px;
-                color: #003c7d;
-            }
-
-            .assinaturas { grid-template-columns: 1fr; gap: 12px; }
-            .acoes button { min-width: 100px; padding: 10px 12px; font-size: 13px; }
-            .info-versao { flex-direction: column; align-items: center; gap: 4px; }
-            .profissionais td button { font-size: 10px; padding: 2px 6px; min-width: auto; }
-        }
-
-        @media (max-width: 480px) {
-            .logo-esquerda img, .logo-direita img { height: 40px; }
-            .titulos h2 { font-size: 14px; }
-            .titulos h3 { font-size: 11px; }
-            .titulo { font-size: 13px; }
-            .container > table td::before { width: 40%; min-width: 80px; font-size: 11px; }
-            .container > table td input,
-            .container > table td select { width: 55%; min-width: 100px; font-size: 12px; }
-            .profissionais { white-space: normal; }
-            .profissionais table { min-width: 700px; }
-            .acoes { flex-direction: column; align-items: stretch; }
-            .acoes button { width: 100%; min-width: unset; }
-            .ass-box { padding: 8px; }
-        }
-
-        @media print {
-            body { background: white; padding: 0; }
-            .container { max-width: 100%; border: none; border-radius: 0; box-shadow: none; }
-            .acoes { display: none; }
-            .profissionais { overflow: visible; white-space: normal; }
-            .profissionais table { min-width: auto; width: 100%; }
-            .container > table td::before { content: none !important; }
-            .container > table td { display: table-cell; border: 1px solid #b9c3d0; padding: 6px 8px; width: auto; }
-            .container > table tr { display: table-row; border: none; padding: 0; }
-            .container > table { display: table; }
-            .header-top { flex-direction: row !important; }
-            .assinaturas { grid-template-columns: 1fr 1fr !important; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+        body { background:#f1f1f1; padding:10px; }
+        .container { max-width:1200px; margin:0 auto; background:#fff; border:1px solid #000; border-radius:8px; overflow:hidden; }
+        .header { border-bottom:2px solid #003c7d; }
+        .header-top { display:flex; align-items:center; justify-content:space-between; padding:10px 15px; flex-wrap:wrap; gap:10px; }
+        .logo-esquerda img, .logo-direita img { height:60px; }
+        .titulos { flex:1; text-align:center; min-width:200px; }
+        .titulos h2 { color:#003c7d; font-size:clamp(14px,2.5vw,18px); }
+        .titulos h3 { color:#003c7d; font-size:clamp(11px,1.8vw,14px); font-weight:normal; }
+        .titulo { background:#003c7d; color:#fff; padding:8px 10px; font-size:clamp(14px,2.5vw,17px); font-weight:bold; text-align:center; }
+        .info-versao { display:flex; flex-wrap:wrap; justify-content:space-between; padding:8px 15px; border-top:1px solid #ccc; font-size:clamp(11px,1.6vw,13px); gap:8px; }
+        .section-title { background:#003c7d; color:#fff; padding:5px 15px; font-weight:bold; }
+        table { width:100%; border-collapse:collapse; }
+        td, th { border:1px solid #b9c3d0; padding:6px 8px; font-size:clamp(11px,1.6vw,13px); vertical-align:middle; word-break:break-word; }
+        input, select { width:100%; border:none; outline:none; padding:4px 2px; font-size:clamp(11px,1.5vw,13px); background:transparent; min-height:28px; box-sizing:border-box; }
+        select { background:white; border:1px solid #ccc; border-radius:2px; height:28px; }
+        input:focus, select:focus { background:#fff8d8; }
+        .profissionais { width:100%; display:block; overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; }
+        .profissionais table { min-width:900px; }
+        .profissionais th { background:#dbe5f1; text-align:center; }
+        .acoes { padding:15px; text-align:center; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+        button { padding:8px 16px; border:none; background:#003c7d; color:#fff; cursor:pointer; border-radius:4px; font-weight:bold; font-size:clamp(12px,1.6vw,14px); transition:opacity 0.2s; flex:1 1 auto; min-width:120px; }
+        button:hover { opacity:0.9; }
+        .btn-enviar { background:#28a745; }
+        .btn-enviar:hover { background:#218838; }
+        .footer { padding:15px 20px; }
+        .assinaturas { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .ass-box { border:1px solid #ccc; padding:10px; min-height:100px; }
+        .ass-box h4 { margin-bottom:6px; color:#003c7d; font-size:clamp(13px,1.8vw,14px); }
+        .ass-box label { font-size:clamp(11px,1.4vw,12px); font-weight:bold; display:block; margin-top:6px; }
+        .ass-box input { border-bottom:1px solid #000; padding:4px 0; margin-bottom:4px; width:100%; font-size:clamp(12px,1.6vw,13px); }
+        .linha { border-bottom:1px solid #000; margin-top:14px; }
+        @media (max-width:768px) {
+            .header-top { flex-direction:column; align-items:center; }
+            .container > table, .container > table tbody, .container > table tr, .container > table td { display:block; width:100%; }
+            .container > table tr { margin-bottom:8px; border:1px solid #b9c3d0; border-radius:4px; padding:6px; }
+            .container > table td { border:none; padding:4px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; border-bottom:1px dashed #ccc; }
+            .container > table td::before { content:attr(data-label); font-weight:bold; width:35%; min-width:100px; color:#003c7d; }
+            .container > table td input, .container > table td select { width:60%; min-width:140px; flex:1; margin-left:8px; }
+            .assinaturas { grid-template-columns:1fr; }
+            .acoes button { min-width:100px; }
         }
     </style>
 </head>
 <body>
-
 <div class="container">
-
-    <!-- ========== HEADER ========== -->
+    <!-- HEADER -->
     <div class="header">
         <div class="header-top">
-            <div class="logo-esquerda">
-                <img src="logo_prefeitura.png" alt="Prefeitura de Porto Velho" />
-            </div>
+            <div class="logo-esquerda"><img src="logo_prefeitura.png" alt="Prefeitura" /></div>
             <div class="titulos">
                 <h2>PREFEITURA DO MUNICÍPIO DE PORTO VELHO</h2>
                 <h3>SECRETARIA MUNICIPAL DE SAÚDE – SEMUSA</h3>
                 <h3>DIVISÃO DE CONTROLE E AVALIAÇÃO DO SUS</h3>
             </div>
-            <div class="logo-direita">
-                <img src="logo_cnes.png" alt="CNES - Cadastro Nacional de Estabelecimentos de Saúde" />
-            </div>
+            <div class="logo-direita"><img src="logo_cnes.png" alt="CNES" /></div>
         </div>
-
-        <div class="titulo">
-            PLANILHA DE ATUALIZAÇÃO CADASTRAL DOS PROFISSIONAIS – CNES
-        </div>
-
+        <div class="titulo">PLANILHA DE ATUALIZAÇÃO CADASTRAL DOS PROFISSIONAIS – CNES</div>
         <div class="info-versao">
             <div>Versão: 01</div>
-            <div>
-                Data de Emissão:
-                <input type="date" id="dataEmissao" style="width:auto;display:inline-block;max-width:160px;" />
-            </div>
+            <div>Data de Emissão: <input type="date" id="dataEmissao" style="width:auto;display:inline-block;max-width:160px;" /></div>
         </div>
     </div>
 
-    <!-- ========== DADOS DA UNIDADE ========== -->
+    <!-- DADOS DA UNIDADE -->
     <div class="section-title">1. DADOS DA UNIDADE</div>
     <table>
         <tr>
-            <td data-label="CNES da Unidade"><input type="text" id="cnes" placeholder="CNES" /></td>
+            <td data-label="CNES da Unidade">
+                <input type="text" id="cnes" placeholder="CNES" readonly />
+            </td>
             <td data-label="Nome da Unidade"><input type="text" id="nomeUnidade" placeholder="Nome da Unidade" /></td>
             <td data-label="UF"><input type="text" id="uf" placeholder="UF" /></td>
         </tr>
         <tr>
             <td data-label="Tipo de Unidade">
-                <select id="tipoUnidade" name="tipo_unidade" required>
+                <select id="tipoUnidade" name="tipo_unidade" required onchange="preencherCNES()">
                     <option value="">Selecione a Unidade</option>
                     <optgroup label="UNIDADES URBANAS MAC">
                         <option value="2494078">2494078 - PA JOSÉ ADELINO</option>
@@ -477,29 +184,16 @@
         </tr>
     </table>
 
-    <!-- ========== PROFISSIONAIS ========== -->
+    <!-- PROFISSIONAIS -->
     <div class="section-title">2. RELAÇÃO DOS PROFISSIONAIS</div>
     <div class="profissionais">
         <table>
             <thead>
                 <tr>
-                    <th>Nº</th>
-                    <th>Nome Completo</th>
-                    <th>CPF</th>
-                    <th>CBO</th>
-                    <th>Formação</th>
-                    <th>Conselho</th>
-                    <th>Nº Registro</th>
-                    <th>UF Conselho</th>
-                    <th>Cargo/Função</th>
-                    <th>Tipo de Vínculo</th>
-                    <th>Carga Hor.</th>
-                    <th>Setor/Equipe</th>
-                    <th>Ação</th>
+                    <th>Nº</th><th>Nome Completo</th><th>CPF</th><th>CBO</th><th>Formação</th><th>Conselho</th><th>Nº Registro</th><th>UF Conselho</th><th>Cargo/Função</th><th>Tipo de Vínculo</th><th>Carga Hor.</th><th>Setor/Equipe</th><th>Ação</th>
                 </tr>
             </thead>
-            <tbody id="tbodyProfissionais">
-            </tbody>
+            <tbody id="tbodyProfissionais"></tbody>
         </table>
     </div>
 
@@ -509,34 +203,26 @@
         <button class="btn-enviar" onclick="enviarDados()">Enviar Dados</button>
     </div>
 
-    <!-- ========== ASSINATURAS ========== -->
+    <!-- ASSINATURAS -->
     <div class="section-title">4. ASSINATURAS</div>
     <div class="footer">
         <div class="assinaturas">
             <div class="ass-box">
                 <h4>RESPONSÁVEL PELA UNIDADE</h4>
-                <label>Nome</label>
-                <input type="text" id="respUnidadeNome" placeholder="Nome" />
-                <label>Cargo</label>
-                <input type="text" id="respUnidadeCargo" placeholder="Cargo" />
-                <label>Assinatura</label>
-                <div class="linha"></div>
+                <label>Nome</label><input type="text" id="respUnidadeNome" placeholder="Nome" />
+                <label>Cargo</label><input type="text" id="respUnidadeCargo" placeholder="Cargo" />
+                <label>Assinatura</label><div class="linha"></div>
             </div>
             <div class="ass-box">
                 <h4>CONTROLE E AVALIAÇÃO</h4>
-                <label>Nome</label>
-                <input type="text" id="controleAvaliacaoNome" placeholder="Nome" />
-                <label>Cargo</label>
-                <input type="text" id="controleAvaliacaoCargo" placeholder="Cargo" />
-                <label>Assinatura</label>
-                <div class="linha"></div>
+                <label>Nome</label><input type="text" id="controleAvaliacaoNome" placeholder="Nome" />
+                <label>Cargo</label><input type="text" id="controleAvaliacaoCargo" placeholder="Cargo" />
+                <label>Assinatura</label><div class="linha"></div>
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- ========== SCRIPTS ========== -->
 <script>
     // ============================================================
     // CONFIGURAÇÃO DO SUPABASE
@@ -544,6 +230,15 @@
     const SUPABASE_URL = 'https://cptkatdswfyycsgedcte.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwdGthdGRzd2Z5eWNzZ2VkY3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNDQ2MTcsImV4cCI6MjA5NzcyMDYxN30.MPxI1t1gyr1dpnqG-w_oM8FagnewLyxnojs9gZyIpfw';
     const TABLE_NAME = 'profissionais';
+
+    // ============================================================
+    // PREENCHER CNES AUTOMATICAMENTE
+    // ============================================================
+    function preencherCNES() {
+        const select = document.getElementById('tipoUnidade');
+        const cnesInput = document.getElementById('cnes');
+        cnesInput.value = select.value;
+    }
 
     // ============================================================
     // GERENCIAMENTO DE LINHAS
@@ -752,12 +447,7 @@
     }
 
     // ============================================================
-    // INICIALIZA COM UMA LINHA
-    // ============================================================
-    adicionarLinha();
-
-    // ============================================================
-    // FUNÇÃO PARA ENVIAR OS DADOS PARA O SUPABASE
+    // ENVIO DOS DADOS
     // ============================================================
     async function enviarDados() {
         function getDateValue(id) {
@@ -784,19 +474,13 @@
         linhas.forEach(tr => {
             const nome = tr.querySelector('.prof-nome')?.value || '';
             if (nome.trim() === '') return;
-
+            const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
             const cargaInput = tr.querySelector('.prof-carga');
             let cargaHoraria = null;
             if (cargaInput && cargaInput.value.trim() !== '') {
                 const parsed = parseFloat(cargaInput.value);
                 if (!isNaN(parsed)) cargaHoraria = parsed;
             }
-
-            const getValue = (sel) => {
-                const el = tr.querySelector(sel);
-                return el ? el.value : '';
-            };
-
             profissionais.push({
                 nome_profissional: nome,
                 cpf: getValue('.prof-cpf'),
@@ -835,40 +519,45 @@
             'apikey': SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         };
-
         const url = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}`;
 
         try {
-            let sucessos = 0;
-            let erros = [];
-
+            let sucessos = 0, erros = [];
             for (const registro of payload) {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: headers,
                     body: JSON.stringify(registro),
                 });
-
-                if (response.ok) {
-                    sucessos++;
-                } else {
+                if (response.ok) sucessos++;
+                else {
                     const texto = await response.text();
                     erros.push(`Erro ${response.status}: ${texto}`);
                 }
             }
-
-            if (erros.length === 0) {
-                alert(`✅ Todos os ${sucessos} profissional(is) foram enviados com sucesso!`);
-            } else {
-                alert(`⚠️ ${sucessos} enviados com sucesso, mas ${erros.length} falharam.\n\n${erros.join('\n')}`);
-            }
-
+            if (erros.length === 0) alert(`✅ Todos os ${sucessos} profissional(is) foram enviados com sucesso!`);
+            else alert(`⚠️ ${sucessos} enviados com sucesso, mas ${erros.length} falharam.\n\n${erros.join('\n')}`);
         } catch (error) {
-            console.error('Erro de rede:', error);
+            console.error(error);
             alert('❌ Falha na conexão. Verifique sua internet e as credenciais do Supabase.');
         }
     }
-</script>
 
+    // ============================================================
+    // INICIALIZAÇÃO
+    // ============================================================
+    window.onload = function() {
+        document.getElementById('dataEmissao').value = new Date().toISOString().split('T')[0];
+        adicionarLinha();
+        if (document.getElementById('tipoUnidade').value) {
+            preencherCNES();
+        }
+    };
+
+    window.preencherCNES = preencherCNES;
+    window.adicionarLinha = adicionarLinha;
+    window.removerLinha = removerLinha;
+    window.enviarDados = enviarDados;
+</script>
 </body>
 </html>
