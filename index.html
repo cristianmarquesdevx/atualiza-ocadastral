@@ -188,131 +188,129 @@
     const TABLE_NAME = 'profissionais';
 
     // ============================================================
-    // DADOS DAS UNIDADES (para popular o combobox)
+    // DADOS DAS UNIDADES (lista CORRIGIDA – sem colchete extra)
     // ============================================================
     const unidades = [
-        [
-  {"value":"6060048","label":"CENTRAL MUNICIPAL DE REGULAÇÃO DO ACESSO"},
-  {"value":"9044310","label":"PS LAGO DO CUNIÃ"},
-  {"value":"3521532","label":"USF UNIÃO BANDEIRANTES"},
-  {"value":"9743081","label":"UPA JACY PARANÁ"},
-  {"value":"6365469","label":"CAPS AD"},
-  {"value":"2806568","label":"USF AGENOR DE CARVALHO"},
-  {"value":"2806789","label":"USF ERNANDE C. COUTINHO"},
-  {"value":"2806886","label":"USF JACY PARANÁ"},
-  {"value":"2806967","label":"USF SÃO CARLOS"},
-  {"value":"7089937","label":"CAPS INFANTO JUVENIL"},
-  {"value":"2802708","label":"CER"},
-  {"value":"2806517","label":"USF MORRINHOS"},
-  {"value":"7270860","label":"USF JOANA D'ARC"},
-  {"value":"7280408","label":"USF RIO PARDO"},
-  {"value":"9044345","label":"PS NOVA ESPERANÇA"},
-  {"value":"2802961","label":"USF NOVA CALIFÓRNIA"},
-  {"value":"2806541","label":"USF ABUNÃ"},
-  {"value":"2806649","label":"USF EXTREMA"},
-  {"value":"2806797","label":"USF FORTALEZA DO ABUNÃ"},
-  {"value":"2806908","label":"USF MARIA NOBRE DA SILVA"},
-  {"value":"2806991","label":"USF VISTA ALEGRE DO ABUNÃ"},
-  {"value":"2807424","label":"USF MARIA CAMELO DE OLIVEIRA"},
-  {"value":"2806576","label":"USF BENJAMIM SILVA"},
-  {"value":"2806916","label":"UBS MAURÍCIO BUSTANI"},
-  {"value":"2494558","label":"USF RONALDO ARAGÃO"},
-  {"value":"6462995","label":"LABORATÓRIO CENTRAL MUNICIPAL"},
-  {"value":"6863868","label":"SAE"},
-  {"value":"5599245","label":"CEO ZONA SUL"},
-  {"value":"5599334","label":"CEO ZONA LESTE I"},
-  {"value":"6670547","label":"USF HAMILTON RAULINO GONDIM"},
-  {"value":"6670709","label":"UBS MANOEL AMORIM DE MATOS"},
-  {"value":"7287305","label":"USF SANTA RITA"},
-  {"value":"2494078","label":"PA JOSÉ ADELINO"},
-  {"value":"2496461","label":"UPA ZONA LESTE"},
-  {"value":"2975866","label":"UNIDADE DE ACOLHIMENTO LAR DO BEBÊ"},
-  {"value":"2807041","label":"DVISA"},
-  {"value":"9577866","label":"USF CASTANHEIRAS"},
-  {"value":"9547282","label":"SERVIÇO DE INSPEÇÃO MUNICIPAL"},
-  {"value":"2552914","label":"CEM DR. ALFREDO SILVA"},
-  {"value":"5695880","label":"USF APONIÃ"},
-  {"value":"5822793","label":"USF SÃO SEBASTIÃO"},
-  {"value":"0213241","label":"CENTRAL DE REDE DE FRIO"},
-  {"value":"6021999","label":"USF VILA PRINCESA"},
-  {"value":"6670814","label":"USF JOSÉ ADELINO"},
-  {"value":"6950450","label":"SAMU USB 1"},
-  {"value":"6950469","label":"SAMU USB 2"},
-  {"value":"6950477","label":"SAMU USB 3"},
-  {"value":"6950485","label":"SAMU USB 4"},
-  {"value":"4001028","label":"PA ANA ADELAIDE"},
-  {"value":"2807483","label":"PS AGROVILA NOVA ALIANÇA"},
-  {"value":"2808153","label":"USF RIO DAS GARÇAS"},
-  {"value":"2802716","label":"USF RENATO MEDEIROS"},
-  {"value":"7928769","label":"USF NOVO ENGENHO VELHO"},
-  {"value":"9975616","label":"PRÁTICAS INTEGRATIVAS"},
-  {"value":"0038105","label":"LABORATÓRIO MUNICIPAL DE CITOLOGIA"},
-  {"value":"4068351","label":"SAMU USB 7 JACY PARANÁ"},
-  {"value":"0112003","label":"CIEVS"},
-  {"value":"2806592","label":"USF CALADINHO"},
-  {"value":"3326292","label":"UBS DR. FLORIANO RIVA FILHO"},
-  {"value":"2495155","label":"PS ENG. LUIZ GONZAGA"},
-  {"value":"2808099","label":"PS PAPAGAIOS"},
-  {"value":"2369931","label":"PS SÃO JOSÉ"},
-  {"value":"2808323","label":"PS VALE DO JAMARI"},
-  {"value":"2808439","label":"SAMU USA"},
-  {"value":"6386512","label":"USF MARIANA"},
-  {"value":"2807343","label":"PS CACHOEIRA DO TEOTÔNIO"},
-  {"value":"2807408","label":"PS DEMARCAÇÃO"},
-  {"value":"2808226","label":"PS SÃO MIGUEL"},
-  {"value":"2806673","label":"USF NOVA MUTUM"},
-  {"value":"2806495","label":"CAPS III TRÊS MARIAS"},
-  {"value":"6582915","label":"USF ALIANÇA"},
-  {"value":"5695899","label":"USF SOCIALISTA"},
-  {"value":"7016557","label":"POLICLÍNICA RAFAEL VAZ E SILVA"},
-  {"value":"0037494","label":"CIMI"},
-  {"value":"7122128","label":"SAMU USB 5"},
-  {"value":"7124244","label":"SAMU USB 6"},
-  {"value":"5599253","label":"CEO ZONA LESTE II"},
-  {"value":"9044329","label":"PS TERRA SANTA"},
-  {"value":"2806622","label":"USF JOSÉ GOMES FERREIRA"},
-  {"value":"6246524","label":"USF SANTO ANTÔNIO"},
-  {"value":"7890761","label":"CAF SEMUSA"},
-  {"value":"7935609","label":"CRSC"},
-  {"value":"3970442","label":"HOSPITAL MATERNIDADE MÃE ESPERANÇA"},
-  {"value":"2494051","label":"UBS AREAL DA FLORESTA"},
-  {"value":"2496577","label":"USF PEDACINHO DE CHÃO"},
-  {"value":"2493942","label":"USF OSVALDO PIANA"},
-  {"value":"2494531","label":"USF NOVA FLORESTA"},
-  {"value":"2680017","label":"UPA ZONA SUL"},
-  {"value":"3568075","label":"PS PALMARES KM 12"},
-  {"value":"6482732","label":"SECRETARIA MUNICIPAL DE SAÚDE"},
-  {"value":"5792495","label":"DIVISÃO DE CONTROLE DE VETORES"},
-  {"value":"3521567","label":"CRSM"},
-  {"value":"6944655","label":"CENTRAL DE REGULAÇÃO SAMU"},
-  {"value":"4455134","label":"DIVISÃO DE CONTROLE DE ZOONOSES"},
-  {"value":"4169859","label":"CEREST PORTO VELHO"},
-  {"value":"4477650","label":"VIGILÂNCIA EPIDEMIOLÓGICA"},
-  {"value":"4450434","label":"PESQUISA E DIAGNÓSTICO EM ZOONOSES"},
-  {"value":"4930363","label":"USF TRÊS MARIAS"},
-  {"value":"4905229","label":"UATTI CASA BEM VIVER"},
-  {"value":"4954017","label":"SALA DE ESTABILIZAÇÃO UNIÃO BANDEIRANTES"},
-  {"value":"8137323","label":"CASA DA JUVENTUDE"},
-  {"value":"8148376","label":"DEPARTAMENTO ADMINISTRATIVO - DA"},
-  {"value":"8148406","label":"DEPARTAMENTO DE ATENÇÃO BÁSICA - DAB"},
-  {"value":"8148651","label":"DEPARTAMENTO DE ASSESSORIA TÉCNICA - ASTEC"},
-  {"value":"8161593","label":"DEPARTAMENTO DE CONTABILIDADE E FINANÇAS - DCF"},
-  {"value":"8138044","label":"DEPARTAMENTO DE GESTÃO DE PESSOAS - DGP"},
-  {"value":"8146055","label":"DEPARTAMENTO DE MÉDIA E ALTA COMPLEXIDADE - DMAC"},
-  {"value":"8173834","label":"DEPARTAMENTO DE PLANEJAMENTO E GESTÃO - DPG"},
-  {"value":"8146225","label":"DEPARTAMENTO DE REGULAÇÃO AVALIAÇÃO E CONTROLE - DRAC"},
-  {"value":"8154961","label":"DEPARTAMENTO DE TRANSPORTE - DEPTRAN"},
-  {"value":"8156956","label":"DEPARTAMENTO FINANCEIRO"},
-  {"value":"8157367","label":"COORDENADORIA JURÍDICA DE SAÚDE"},
-  {"value":"8159726","label":"DIVISÃO DE CONVÊNIOS E CONTRATOS - DICON"},
-  {"value":"8241678","label":"DIVISÃO DE LABORATÓRIO"},
-  {"value":"8291462","label":"SALA DE ESTABILIZAÇÃO VISTA ALEGRE DO ABUNÃ"},
-  {"value":"8317941","label":"CENTRO DE CONVIVÊNCIA E CULTURA EM SAÚDE MENTAL"}
-]
+        { value: "6060048", label: "CENTRAL MUNICIPAL DE REGULAÇÃO DO ACESSO" },
+        { value: "9044310", label: "PS LAGO DO CUNIÃ" },
+        { value: "3521532", label: "USF UNIÃO BANDEIRANTES" },
+        { value: "9743081", label: "UPA JACY PARANÁ" },
+        { value: "6365469", label: "CAPS AD" },
+        { value: "2806568", label: "USF AGENOR DE CARVALHO" },
+        { value: "2806789", label: "USF ERNANDE C. COUTINHO" },
+        { value: "2806886", label: "USF JACY PARANÁ" },
+        { value: "2806967", label: "USF SÃO CARLOS" },
+        { value: "7089937", label: "CAPS INFANTO JUVENIL" },
+        { value: "2802708", label: "CER" },
+        { value: "2806517", label: "USF MORRINHOS" },
+        { value: "7270860", label: "USF JOANA D'ARC" },
+        { value: "7280408", label: "USF RIO PARDO" },
+        { value: "9044345", label: "PS NOVA ESPERANÇA" },
+        { value: "2802961", label: "USF NOVA CALIFÓRNIA" },
+        { value: "2806541", label: "USF ABUNÃ" },
+        { value: "2806649", label: "USF EXTREMA" },
+        { value: "2806797", label: "USF FORTALEZA DO ABUNÃ" },
+        { value: "2806908", label: "USF MARIA NOBRE DA SILVA" },
+        { value: "2806991", label: "USF VISTA ALEGRE DO ABUNÃ" },
+        { value: "2807424", label: "USF MARIA CAMELO DE OLIVEIRA" },
+        { value: "2806576", label: "USF BENJAMIM SILVA" },
+        { value: "2806916", label: "UBS MAURÍCIO BUSTANI" },
+        { value: "2494558", label: "USF RONALDO ARAGÃO" },
+        { value: "6462995", label: "LABORATÓRIO CENTRAL MUNICIPAL" },
+        { value: "6863868", label: "SAE" },
+        { value: "5599245", label: "CEO ZONA SUL" },
+        { value: "5599334", label: "CEO ZONA LESTE I" },
+        { value: "6670547", label: "USF HAMILTON RAULINO GONDIM" },
+        { value: "6670709", label: "UBS MANOEL AMORIM DE MATOS" },
+        { value: "7287305", label: "USF SANTA RITA" },
+        { value: "2494078", label: "PA JOSÉ ADELINO" },
+        { value: "2496461", label: "UPA ZONA LESTE" },
+        { value: "2975866", label: "UNIDADE DE ACOLHIMENTO LAR DO BEBÊ" },
+        { value: "2807041", label: "DVISA" },
+        { value: "9577866", label: "USF CASTANHEIRAS" },
+        { value: "9547282", label: "SERVIÇO DE INSPEÇÃO MUNICIPAL" },
+        { value: "2552914", label: "CEM DR. ALFREDO SILVA" },
+        { value: "5695880", label: "USF APONIÃ" },
+        { value: "5822793", label: "USF SÃO SEBASTIÃO" },
+        { value: "0213241", label: "CENTRAL DE REDE DE FRIO" },
+        { value: "6021999", label: "USF VILA PRINCESA" },
+        { value: "6670814", label: "USF JOSÉ ADELINO" },
+        { value: "6950450", label: "SAMU USB 1" },
+        { value: "6950469", label: "SAMU USB 2" },
+        { value: "6950477", label: "SAMU USB 3" },
+        { value: "6950485", label: "SAMU USB 4" },
+        { value: "4001028", label: "PA ANA ADELAIDE" },
+        { value: "2807483", label: "PS AGROVILA NOVA ALIANÇA" },
+        { value: "2808153", label: "USF RIO DAS GARÇAS" },
+        { value: "2802716", label: "USF RENATO MEDEIROS" },
+        { value: "7928769", label: "USF NOVO ENGENHO VELHO" },
+        { value: "9975616", label: "PRÁTICAS INTEGRATIVAS" },
+        { value: "0038105", label: "LABORATÓRIO MUNICIPAL DE CITOLOGIA" },
+        { value: "4068351", label: "SAMU USB 7 JACY PARANÁ" },
+        { value: "0112003", label: "CIEVS" },
+        { value: "2806592", label: "USF CALADINHO" },
+        { value: "3326292", label: "UBS DR. FLORIANO RIVA FILHO" },
+        { value: "2495155", label: "PS ENG. LUIZ GONZAGA" },
+        { value: "2808099", label: "PS PAPAGAIOS" },
+        { value: "2369931", label: "PS SÃO JOSÉ" },
+        { value: "2808323", label: "PS VALE DO JAMARI" },
+        { value: "2808439", label: "SAMU USA" },
+        { value: "6386512", label: "USF MARIANA" },
+        { value: "2807343", label: "PS CACHOEIRA DO TEOTÔNIO" },
+        { value: "2807408", label: "PS DEMARCAÇÃO" },
+        { value: "2808226", label: "PS SÃO MIGUEL" },
+        { value: "2806673", label: "USF NOVA MUTUM" },
+        { value: "2806495", label: "CAPS III TRÊS MARIAS" },
+        { value: "6582915", label: "USF ALIANÇA" },
+        { value: "5695899", label: "USF SOCIALISTA" },
+        { value: "7016557", label: "POLICLÍNICA RAFAEL VAZ E SILVA" },
+        { value: "0037494", label: "CIMI" },
+        { value: "7122128", label: "SAMU USB 5" },
+        { value: "7124244", label: "SAMU USB 6" },
+        { value: "5599253", label: "CEO ZONA LESTE II" },
+        { value: "9044329", label: "PS TERRA SANTA" },
+        { value: "2806622", label: "USF JOSÉ GOMES FERREIRA" },
+        { value: "6246524", label: "USF SANTO ANTÔNIO" },
+        { value: "7890761", label: "CAF SEMUSA" },
+        { value: "7935609", label: "CRSC" },
+        { value: "3970442", label: "HOSPITAL MATERNIDADE MÃE ESPERANÇA" },
+        { value: "2494051", label: "UBS AREAL DA FLORESTA" },
+        { value: "2496577", label: "USF PEDACINHO DE CHÃO" },
+        { value: "2493942", label: "USF OSVALDO PIANA" },
+        { value: "2494531", label: "USF NOVA FLORESTA" },
+        { value: "2680017", label: "UPA ZONA SUL" },
+        { value: "3568075", label: "PS PALMARES KM 12" },
+        { value: "6482732", label: "SECRETARIA MUNICIPAL DE SAÚDE" },
+        { value: "5792495", label: "DIVISÃO DE CONTROLE DE VETORES" },
+        { value: "3521567", label: "CRSM" },
+        { value: "6944655", label: "CENTRAL DE REGULAÇÃO SAMU" },
+        { value: "4455134", label: "DIVISÃO DE CONTROLE DE ZOONOSES" },
+        { value: "4169859", label: "CEREST PORTO VELHO" },
+        { value: "4477650", label: "VIGILÂNCIA EPIDEMIOLÓGICA" },
+        { value: "4450434", label: "PESQUISA E DIAGNÓSTICO EM ZOONOSES" },
+        { value: "4930363", label: "USF TRÊS MARIAS" },
+        { value: "4905229", label: "UATTI CASA BEM VIVER" },
+        { value: "4954017", label: "SALA DE ESTABILIZAÇÃO UNIÃO BANDEIRANTES" },
+        { value: "8137323", label: "CASA DA JUVENTUDE" },
+        { value: "8148376", label: "DEPARTAMENTO ADMINISTRATIVO - DA" },
+        { value: "8148406", label: "DEPARTAMENTO DE ATENÇÃO BÁSICA - DAB" },
+        { value: "8148651", label: "DEPARTAMENTO DE ASSESSORIA TÉCNICA - ASTEC" },
+        { value: "8161593", label: "DEPARTAMENTO DE CONTABILIDADE E FINANÇAS - DCF" },
+        { value: "8138044", label: "DEPARTAMENTO DE GESTÃO DE PESSOAS - DGP" },
+        { value: "8146055", label: "DEPARTAMENTO DE MÉDIA E ALTA COMPLEXIDADE - DMAC" },
+        { value: "8173834", label: "DEPARTAMENTO DE PLANEJAMENTO E GESTÃO - DPG" },
+        { value: "8146225", label: "DEPARTAMENTO DE REGULAÇÃO AVALIAÇÃO E CONTROLE - DRAC" },
+        { value: "8154961", label: "DEPARTAMENTO DE TRANSPORTE - DEPTRAN" },
+        { value: "8156956", label: "DEPARTAMENTO FINANCEIRO" },
+        { value: "8157367", label: "COORDENADORIA JURÍDICA DE SAÚDE" },
+        { value: "8159726", label: "DIVISÃO DE CONVÊNIOS E CONTRATOS - DICON" },
+        { value: "8241678", label: "DIVISÃO DE LABORATÓRIO" },
+        { value: "8291462", label: "SALA DE ESTABILIZAÇÃO VISTA ALEGRE DO ABUNÃ" },
+        { value: "8317941", label: "CENTRO DE CONVIVÊNCIA E CULTURA EM SAÚDE MENTAL" }
     ];
 
     // ============================================================
-    // DETALHES DAS UNIDADES EXTRAÍDOS DO PDF (endereço e telefone)
+    // DETALHES DAS UNIDADES (endereço e telefone)
     // ============================================================
     const detalhesUnidades = {
         "0037494": { endereco: "RUA DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "39012955" },
@@ -404,8 +402,8 @@
         const lowerFilter = filter.toLowerCase().trim();
         let html = '';
         unidades.forEach(u => {
-            const match = lowerFilter === '' || 
-                          u.label.toLowerCase().includes(lowerFilter) || 
+            const match = lowerFilter === '' ||
+                          u.label.toLowerCase().includes(lowerFilter) ||
                           u.value.includes(lowerFilter);
             if (match) {
                 html += `<div class="option" data-value="${u.value}">${u.label}</div>`;
@@ -425,7 +423,6 @@
                 selectDisplay.dataset.value = value;
                 hiddenSelect.value = value;
                 dropdown.classList.remove('open');
-                // Preenche todos os campos da unidade
                 preencherDadosUnidade(value, label);
             });
         });
@@ -467,18 +464,31 @@
     // FUNÇÃO PARA PREENCHER OS DADOS DA UNIDADE
     // ============================================================
     function preencherDadosUnidade(cnes, label) {
-        // CNES
         document.getElementById('cnes').value = cnes;
-        // Nome da unidade (extrair o nome do label)
         const nome = label.replace(/^[0-9]+ - /, '');
         document.getElementById('nomeUnidade').value = nome;
-        // UF e Município fixos
         document.getElementById('uf').value = 'RO';
         document.getElementById('municipio').value = 'Porto Velho';
-        // Endereço e telefone do dicionário
         const detalhes = detalhesUnidades[cnes] || {};
         document.getElementById('endereco').value = detalhes.endereco || '';
         document.getElementById('telefone').value = detalhes.telefone || '';
+    }
+
+    // ============================================================
+    // MÁSCARA DE CPF (simples)
+    // ============================================================
+    function aplicarMascaraCPF(input) {
+        let valor = input.value.replace(/\D/g, '');
+        if (valor.length > 11) valor = valor.slice(0, 11);
+        if (valor.length <= 3) {
+            input.value = valor;
+        } else if (valor.length <= 6) {
+            input.value = valor.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+        } else if (valor.length <= 9) {
+            input.value = valor.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+        } else {
+            input.value = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+        }
     }
 
     // ============================================================
@@ -492,7 +502,7 @@
         tr.innerHTML = `
             <td>${contador}</td>
             <td><input type="text" class="prof-nome" placeholder="Nome completo" /></td>
-            <td><input type="text" class="prof-cpf" placeholder="000.000.000-00" /></td>
+            <td><input type="text" class="prof-cpf" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(this)" /></td>
             <td>
                 <select class="prof-cbo">
                     <option value="">Selecione um CBO</option>
@@ -677,7 +687,7 @@
                     <option>Estagiário</option>
                 </select>
             </td>
-            <td><input type="number" class="prof-carga" placeholder="Carga horária" /></td>
+            <td><input type="number" class="prof-carga" placeholder="Carga horária" step="0.5" /></td>
             <td><input type="text" class="prof-setor" placeholder="Setor/Equipe" /></td>
             <td><button onclick="removerLinha(this)" style="font-size:11px;padding:4px 8px;">Excluir</button></td>
         `;
@@ -686,11 +696,12 @@
     }
 
     function removerLinha(botao) {
-        botao.closest('tr').remove();
+        const tr = botao.closest('tr');
+        tr.remove();
     }
 
     // ============================================================
-    // ENVIO DOS DADOS
+    // ENVIO DOS DADOS (com validação e feedback)
     // ============================================================
     async function enviarDados() {
         function getDateValue(id) {
@@ -698,8 +709,14 @@
             return val && val.trim() !== '' ? val.trim() : null;
         }
 
+        const cnes = document.getElementById('cnes').value;
+        if (!cnes) {
+            alert('Por favor, selecione uma unidade antes de enviar.');
+            return;
+        }
+
         const unidade = {
-            cnes: document.getElementById('cnes').value,
+            cnes: cnes,
             nome_unidade: document.getElementById('nomeUnidade').value,
             uf: document.getElementById('uf').value,
             tipo_unidade: document.getElementById('tipoUnidade').value,
@@ -714,9 +731,11 @@
 
         const linhas = document.querySelectorAll('#tbodyProfissionais tr');
         const profissionais = [];
+        let temNome = false;
         linhas.forEach(tr => {
-            const nome = tr.querySelector('.prof-nome')?.value || '';
-            if (nome.trim() === '') return;
+            const nome = tr.querySelector('.prof-nome')?.value?.trim() || '';
+            if (nome === '') return;
+            temNome = true;
             const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
             const cargaInput = tr.querySelector('.prof-carga');
             let cargaHoraria = null;
@@ -739,7 +758,7 @@
             });
         });
 
-        if (profissionais.length === 0) {
+        if (!temNome || profissionais.length === 0) {
             alert('Adicione pelo menos um profissional com nome preenchido.');
             return;
         }
@@ -775,11 +794,14 @@
                 if (response.ok) sucessos++;
                 else {
                     const texto = await response.text();
-                    erros.push(`Erro ${response.status}: ${texto}`);
+                    erros.push(`Erro ${response.status}: ${texto.substring(0, 100)}`);
                 }
             }
-            if (erros.length === 0) alert(`✅ Todos os ${sucessos} profissional(is) foram enviados com sucesso!`);
-            else alert(`⚠️ ${sucessos} enviados com sucesso, mas ${erros.length} falharam.\n\n${erros.join('\n')}`);
+            if (erros.length === 0) {
+                alert(`✅ Todos os ${sucessos} profissional(is) foram enviados com sucesso!`);
+            } else {
+                alert(`⚠️ ${sucessos} enviados com sucesso, mas ${erros.length} falharam.\n\n${erros.join('\n')}`);
+            }
         } catch (error) {
             console.error(error);
             alert('❌ Falha na conexão. Verifique sua internet e as credenciais do Supabase.');
@@ -791,12 +813,18 @@
     // ============================================================
     window.onload = function() {
         document.getElementById('dataEmissao').value = new Date().toISOString().split('T')[0];
-        adicionarLinha();
-        // Se houver uma unidade pré-selecionada, preenche os dados
-        if (document.getElementById('tipoUnidade').value) {
-            const cnes = document.getElementById('tipoUnidade').value;
-            const label = document.querySelector(`#tipoUnidade option[value="${cnes}"]`)?.textContent || '';
-            preencherDadosUnidade(cnes, label);
+        adicionarLinha(); // inicia com uma linha vazia
+
+        // Se houver uma unidade pré-selecionada (ex: via URL), preenche
+        const valorInicial = document.getElementById('tipoUnidade').value;
+        if (valorInicial) {
+            const option = document.querySelector(`#tipoUnidade option[value="${valorInicial}"]`);
+            if (option) {
+                const label = option.textContent;
+                preencherDadosUnidade(valorInicial, label);
+                selectDisplay.textContent = label;
+                selectDisplay.dataset.value = valorInicial;
+            }
         }
     };
 
@@ -805,6 +833,7 @@
     window.adicionarLinha = adicionarLinha;
     window.removerLinha = removerLinha;
     window.enviarDados = enviarDados;
+    window.aplicarMascaraCPF = aplicarMascaraCPF;
 </script>
 </body>
 </html>
