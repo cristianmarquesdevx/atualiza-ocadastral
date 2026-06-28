@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
-    <title>Planilha de Atualização Cadastral - CNES</title>
+    <title>Ficha de Cadastro - CNES</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         /* ===== RESET E BASE ===== */
@@ -169,223 +169,59 @@
             height:100% !important;
             cursor:pointer !important;
         }
-        .prof-carga:focus {
-            background-color:#fff8d8 !important;
-        }
-        .prof-carga::placeholder {
-            color:#aaa;
-            font-size:clamp(11px,1.5vw,13px);
-        }
+        .prof-carga:focus { background-color:#fff8d8 !important; }
+        .prof-carga::placeholder { color:#aaa; font-size:clamp(11px,1.5vw,13px); }
 
         /* ============================================================ */
-        /* ===== IMPRESSÃO – CORRIGIDA ===== */
+        /* ===== IMPRESSÃO ===== */
         /* ============================================================ */
         @media print {
-            /* Oculta elementos não necessários */
-            .unidade-selector,
-            .regras-container,
-            .acoes,
-            .rodape,
-            .info-versao,
-            #customSelectContainer,
-            .seletor-unidade,
-            .busca-container,
-            .diagnostico,
-            .status-conexao,
-            #btnAdicionar,
-            #btnEnviar,
-            .btn-excluir-linha,
-            .btn-icon,
-            button:not(#btnImprimir) {
-                display: none !important;
-            }
-
-            /* Oculta o seletor (select) da unidade */
-            #tipoUnidade { display: none !important; }
-
-            @page {
-                size: landscape;
-                margin: 0.8cm;
-            }
-
-            body {
-                background: white !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            .container {
-                max-width: 100% !important;
-                border: none !important;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-            }
-
-            /* ===== CABEÇALHO ===== */
-            .header {
-                border-bottom: 2px solid #003c7d !important;
-                margin-bottom: 8px !important;
-            }
-            .header-top {
-                padding: 4px 10px !important;
-            }
-            .logo-esquerda img, .logo-direita img {
-                height: 40px !important;
-            }
-            .titulos h2 {
-                font-size: 15px !important;
-                margin-bottom: 0 !important;
-            }
-            .titulos h3 {
-                font-size: 11px !important;
-            }
-            .titulo {
-                font-size: 13px !important;
-                padding: 4px 10px !important;
-                background: #003c7d !important;
-                color: white !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            /* ===== UNIDADE DE LOTAÇÃO – MOSTRA CNES E NOME ===== */
-            .section-title {
-                background: #003c7d !important;
-                color: white !important;
-                padding: 4px 12px !important;
-                font-size: 13px !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                display: block !important;
-            }
-            /* A tabela da unidade – mostra apenas os dados, sem inputs */
-            .container > table:first-of-type {
-                display: table !important;
-                width: 100% !important;
-                border-collapse: collapse !important;
-                margin-bottom: 8px !important;
-            }
-            .container > table:first-of-type td {
-                border: 1px solid #000 !important;
-                padding: 4px 10px !important;
-                font-size: 12px !important;
-                background: white !important;
-                vertical-align: middle !important;
-            }
-            .container > table:first-of-type input {
-                border: none !important;
-                background: transparent !important;
-                font-size: inherit !important;
-                color: #000 !important;
-                padding: 0 !important;
-                font-weight: bold !important;
-                width: 100% !important;
-            }
-            .container > table:first-of-type td:last-child {
-                display: none !important; /* esconde o seletor */
-            }
-            /* Ajusta a primeira célula para ocupar 30% da largura e a segunda 70% (mas a segunda será ocultada) */
-            .container > table:first-of-type td:first-child {
-                width: 100% !important;
-            }
-
-            /* ===== TABELA DE PROFISSIONAIS ===== */
-            .profissionais {
-                overflow-x: visible !important;
-                margin-top: 5px !important;
-            }
-            .profissionais table {
-                min-width: 100% !important;
-                width: 100% !important;
-                font-size: 11px !important;
-                border-collapse: collapse !important;
-                table-layout: fixed !important; /* forçar larguras fixas */
-            }
-            .profissionais th,
-            .profissionais td {
-                padding: 4px 8px !important;
-                border: 1px solid #000 !important;
-                vertical-align: middle !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-            .profissionais th {
-                background: #dbe5f1 !important;
-                color: #000 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                font-weight: bold !important;
-                text-align: center !important;
-            }
-            .profissionais td {
-                background: white !important;
-            }
-            .profissionais th:nth-child(2) {
-                background: #cce0ff !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            .profissionais td:nth-child(2) {
-                background: #f0f8ff !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            /* Larguras das colunas em porcentagem */
-            .profissionais th:nth-child(1) { width: 4%; }  /* Nº */
-            .profissionais th:nth-child(2) { width: 7%; }  /* Ação */
-            .profissionais th:nth-child(3) { width: 14%; } /* Nome */
-            .profissionais th:nth-child(4) { width: 9%; }  /* CPF */
-            .profissionais th:nth-child(5) { width: 7%; }  /* CBO */
-            .profissionais th:nth-child(6) { width: 8%; }  /* Formação */
-            .profissionais th:nth-child(7) { width: 6%; }  /* Conselho */
-            .profissionais th:nth-child(8) { width: 7%; }  /* Registro */
-            .profissionais th:nth-child(9) { width: 4%; }  /* UF */
-            .profissionais th:nth-child(10) { width: 10%; } /* Cargo */
-            .profissionais th:nth-child(11) { width: 8%; }  /* Vínculo */
-            .profissionais th:nth-child(12) { width: 5%; }  /* Carga */
-            .profissionais th:nth-child(13) { width: 9%; }  /* Setor */
-
-            /* Converte inputs e selects em texto simples */
-            .profissionais input,
-            .profissionais select {
-                border: none !important;
-                background: transparent !important;
-                padding: 0 !important;
-                min-height: auto !important;
-                height: auto !important;
-                font-size: inherit !important;
-                color: #000 !important;
-                -webkit-appearance: none !important;
-                appearance: none !important;
-                background-image: none !important;
-                box-shadow: none !important;
-                outline: none !important;
-                width: 100% !important;
-                text-align: left !important;
-                font-weight: normal !important;
-                line-height: 1.3 !important;
-            }
-            .profissionais select {
-                background: transparent !important;
-                border: none !important;
-                padding-right: 0 !important;
-            }
-            .profissionais select option {
-                display: none !important;
-            }
-            .prof-carga::-webkit-calendar-picker-indicator {
-                opacity: 0 !important;
-                display: none !important;
-            }
-            .profissionais input:focus,
-            .profissionais select:focus {
-                background: transparent !important;
-            }
-
-            .profissionais tr {
-                page-break-inside: avoid !important;
-            }
+            .unidade-selector, .regras-container, .acoes, .rodape, .info-versao,
+            #customSelectContainer, .seletor-unidade, .busca-container,
+            .diagnostico, .status-conexao, #btnAdicionar, #btnEnviar,
+            .btn-excluir-linha, .btn-icon, button:not(#btnImprimir) { display:none !important; }
+            #tipoUnidade { display:none !important; }
+            @page { size:landscape; margin:0.8cm; }
+            body { background:white !important; padding:0 !important; margin:0 !important; }
+            .container { max-width:100% !important; border:none !important; border-radius:0 !important; box-shadow:none !important; }
+            .header { border-bottom:2px solid #003c7d !important; margin-bottom:8px !important; }
+            .header-top { padding:4px 10px !important; }
+            .logo-esquerda img, .logo-direita img { height:40px !important; }
+            .titulos h2 { font-size:15px !important; margin-bottom:0 !important; }
+            .titulos h3 { font-size:11px !important; }
+            .titulo { font-size:13px !important; padding:4px 10px !important; background:#003c7d !important; color:white !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+            .section-title { background:#003c7d !important; color:white !important; padding:4px 12px !important; font-size:13px !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; display:block !important; }
+            .container>table:first-of-type { display:table !important; width:100% !important; border-collapse:collapse !important; margin-bottom:8px !important; }
+            .container>table:first-of-type td { border:1px solid #000 !important; padding:4px 10px !important; font-size:12px !important; background:white !important; vertical-align:middle !important; }
+            .container>table:first-of-type input { border:none !important; background:transparent !important; font-size:inherit !important; color:#000 !important; padding:0 !important; font-weight:bold !important; width:100% !important; }
+            .container>table:first-of-type td:last-child { display:none !important; }
+            .container>table:first-of-type td:first-child { width:100% !important; }
+            .profissionais { overflow-x:visible !important; margin-top:5px !important; }
+            .profissionais table { min-width:100% !important; width:100% !important; font-size:11px !important; border-collapse:collapse !important; table-layout:fixed !important; }
+            .profissionais th, .profissionais td { padding:4px 8px !important; border:1px solid #000 !important; vertical-align:middle !important; word-wrap:break-word !important; overflow-wrap:break-word !important; }
+            .profissionais th { background:#dbe5f1 !important; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; font-weight:bold !important; text-align:center !important; }
+            .profissionais td { background:white !important; }
+            .profissionais th:nth-child(2) { background:#cce0ff !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+            .profissionais td:nth-child(2) { background:#f0f8ff !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+            .profissionais th:nth-child(1) { width:4%; }
+            .profissionais th:nth-child(2) { width:7%; }
+            .profissionais th:nth-child(3) { width:14%; }
+            .profissionais th:nth-child(4) { width:9%; }
+            .profissionais th:nth-child(5) { width:7%; }
+            .profissionais th:nth-child(6) { width:8%; }
+            .profissionais th:nth-child(7) { width:6%; }
+            .profissionais th:nth-child(8) { width:7%; }
+            .profissionais th:nth-child(9) { width:4%; }
+            .profissionais th:nth-child(10) { width:10%; }
+            .profissionais th:nth-child(11) { width:8%; }
+            .profissionais th:nth-child(12) { width:5%; }
+            .profissionais th:nth-child(13) { width:9%; }
+            .profissionais input, .profissionais select { border:none !important; background:transparent !important; padding:0 !important; min-height:auto !important; height:auto !important; font-size:inherit !important; color:#000 !important; -webkit-appearance:none !important; appearance:none !important; background-image:none !important; box-shadow:none !important; outline:none !important; width:100% !important; text-align:left !important; font-weight:normal !important; line-height:1.3 !important; }
+            .profissionais select { background:transparent !important; border:none !important; padding-right:0 !important; }
+            .profissionais select option { display:none !important; }
+            .prof-carga::-webkit-calendar-picker-indicator { opacity:0 !important; display:none !important; }
+            .profissionais input:focus, .profissionais select:focus { background:transparent !important; }
+            .profissionais tr { page-break-inside:avoid !important; }
         }
     </style>
 </head>
@@ -405,7 +241,7 @@
         </div>
         <div class="titulo">PLANILHA DE ATUALIZAÇÃO CADASTRAL DOS PROFISSIONAIS – CNES</div>
         <div class="info-versao">
-            <div>Versão: 01</div>
+            <div>Versão: 02</div>
             <div>Data de Emissão: <input type="date" id="dataEmissao" style="width:auto;display:inline-block;max-width:160px;" /></div>
         </div>
     </div>
@@ -472,7 +308,7 @@
     <div class="acoes">
         <button id="btnAdicionar"><i class="fas fa-user-plus"></i> Adicionar Profissional</button>
         <button id="btnImprimir" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
-        <button class="btn-enviar" id="btnEnviar"><i class="fas fa-paper-plane"></i> Enviar Dados</button>
+        <button class="btn-enviar" id="btnEnviar"><i class="fas fa-paper-plane"></i> Enviar</button>
     </div>
 
     <!-- ===== RODAPÉ ===== -->
@@ -493,7 +329,8 @@
     // ================================================================
     const SUPABASE_URL = 'https://cptkatdswfyycsgedcte.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwdGthdGRzd2Z5eWNzZ2VkY3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNDQ2MTcsImV4cCI6MjA5NzcyMDYxN30.MPxI1t1gyr1dpnqG-w_oM8FagnewLyxnojs9gZyIpfw';
-    const TABLE_NAME = 'profissionais';
+    const TABLE_PROFISSIONAIS = 'profissionais';
+    const TABLE_SOLICITACOES = 'solicitacoes';
 
     // ================================================================
     // DADOS DAS UNIDADES
@@ -643,8 +480,17 @@
         const cnesInput = document.getElementById('cnes');
         cnesInput.value = cnes;
         cnesInput.classList.add('unidade-selecionada');
-        // Atualiza o nome da unidade no campo de texto (ele não existe mais, mas podemos armazenar)
-        // Apenas para exibição futura, não precisa.
+    }
+
+    // Função para preencher campos obrigatórios com "N/I"
+    function preencherCamposObrigatorios(dados) {
+        const obrigatorios = ['nome_profissional', 'cpf', 'cbo', 'conselho', 'registro', 'cnes'];
+        obrigatorios.forEach(campo => {
+            if (!dados[campo] || dados[campo].trim() === '') {
+                dados[campo] = 'N/I';
+            }
+        });
+        return dados;
     }
 
     // ================================================================
@@ -657,7 +503,6 @@
             <td>${contadorLinhas}</td>
             <td>
                 <select class="prof-acao" style="background:#fff8d8;border:1.5px solid #003c7d;font-weight:bold;color:#003c7d;">
-                    <option value="">Selecione</option>
                     <option value="Inclusão">Inclusão</option>
                     <option value="Exclusão">Exclusão</option>
                     <option value="Alteração">Alteração</option>
@@ -744,7 +589,7 @@
     }
 
     // ================================================================
-    // ENVIO DOS DADOS PARA SUPABASE
+    // ENVIO: INCLUSÃO DIRETA, EXCLUSÃO/ALTERAÇÃO VIA SOLICITAÇÃO
     // ================================================================
     async function enviarDados() {
         const cnes = document.getElementById('cnes').value;
@@ -754,18 +599,33 @@
         }
 
         const linhas = document.querySelectorAll('#tbodyProfissionais tr');
-        const profissionais = [];
+        const inclusoes = [];
+        const solicitacoes = [];
         let temNome = false;
-        linhas.forEach(tr => {
+        let erro = false;
+
+        for (const tr of linhas) {
+            const acao = tr.querySelector('.prof-acao')?.value || 'Inclusão';
             const nome = tr.querySelector('.prof-nome')?.value?.trim() || '';
-            if (nome === '') return;
+            if (nome === '') continue;
             temNome = true;
+
             const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
             const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
-            profissionais.push({
+            const cpf = tr.querySelector('.prof-cpf')?.value?.trim() || '';
+
+            // Para exclusão e alteração, CPF é obrigatório
+            if ((acao === 'Exclusão' || acao === 'Alteração') && !cpf) {
+                alert(`Para a ação "${acao}", o CPF é obrigatório.`);
+                erro = true;
+                break;
+            }
+
+            // Monta objeto com dados, preenchendo campos obrigatórios com "N/I"
+            let dados = {
                 cnes: cnes,
                 nome_profissional: nome,
-                cpf: getValue('.prof-cpf'),
+                cpf: cpf,
                 cbo: getValue('.prof-cbo'),
                 formacao: getValue('.prof-formacao'),
                 conselho: getValue('.prof-conselho'),
@@ -775,11 +635,71 @@
                 tipo_vinculo: getValue('.prof-vinculo'),
                 carga_horaria: carga || null,
                 setor_equipe: getValue('.prof-setor'),
-                tipo_acao: getValue('.prof-acao') || null,
-            });
-        });
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
 
-        if (!temNome || profissionais.length === 0) {
+            // Preencher campos obrigatórios com "N/I" se vazios
+            dados = preencherCamposObrigatorios(dados);
+
+            if (acao === 'Inclusão') {
+                // INCLUSÃO: vai direto para a tabela profissionais
+                inclusoes.push(dados);
+            } else {
+                // EXCLUSÃO ou ALTERAÇÃO: precisa buscar o profissional existente
+                const cpfLimpo = cpf.replace(/\D/g, '');
+                if (cpfLimpo.length !== 11) {
+                    alert(`CPF "${cpf}" inválido. Deve ter 11 dígitos.`);
+                    erro = true;
+                    break;
+                }
+
+                try {
+                    // Buscar profissional pelo CPF (com ou sem máscara)
+                    let profissionalExistente = null;
+                    const cpfBusca = encodeURIComponent(cpf);
+                    const response = await fetch(
+                        `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${cpfBusca}&select=*`,
+                        { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+                    );
+                    if (!response.ok) throw new Error('Erro ao buscar profissional.');
+                    const data = await response.json();
+                    if (!data || data.length === 0) {
+                        // Tenta sem máscara
+                        const response2 = await fetch(
+                            `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${cpfLimpo}&select=*`,
+                            { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+                        );
+                        if (!response2.ok) throw new Error('Erro ao buscar profissional (sem máscara).');
+                        const data2 = await response2.json();
+                        if (!data2 || data2.length === 0) {
+                            alert(`Profissional com CPF "${cpf}" não encontrado.`);
+                            erro = true;
+                            break;
+                        }
+                        profissionalExistente = data2[0];
+                    } else {
+                        profissionalExistente = data[0];
+                    }
+
+                    // Montar solicitação
+                    solicitacoes.push({
+                        profissional_id: profissionalExistente.id,
+                        tipo: acao === 'Exclusão' ? 'delete' : 'update',
+                        dados_antigos: profissionalExistente,
+                        dados_novos: acao === 'Alteração' ? dados : null,
+                        status: 'pendente'
+                    });
+                } catch (error) {
+                    alert(`Erro ao buscar profissional: ${error.message}`);
+                    erro = true;
+                    break;
+                }
+            }
+        }
+
+        if (erro) return;
+        if (!temNome || (inclusoes.length === 0 && solicitacoes.length === 0)) {
             alert('Adicione pelo menos um profissional com nome preenchido.');
             return;
         }
@@ -789,30 +709,65 @@
             'apikey': SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         };
-        const url = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}`;
 
-        try {
-            let sucessos = 0, erros = [];
-            for (const registro of profissionais) {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify(registro),
-                });
-                if (response.ok) sucessos++;
-                else {
-                    const texto = await response.text();
-                    erros.push(`Erro ${response.status}: ${texto.substring(0, 100)}`);
+        let sucessos = 0,
+            erros = [];
+
+        // --- 1. Enviar inclusões diretamente ---
+        if (inclusoes.length > 0) {
+            const urlInsert = `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}`;
+            for (const registro of inclusoes) {
+                try {
+                    const response = await fetch(urlInsert, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(registro),
+                    });
+                    if (response.ok) sucessos++;
+                    else {
+                        const texto = await response.text();
+                        erros.push(`Inclusão: ${texto.substring(0, 100)}`);
+                    }
+                } catch (e) {
+                    erros.push(e.message);
                 }
             }
-            if (erros.length === 0) {
-                alert(`✅ Todos os ${sucessos} profissional(is) foram enviados com sucesso!`);
-            } else {
-                alert(`⚠️ ${sucessos} enviados com sucesso, mas ${erros.length} falharam.\n\n${erros.join('\n')}`);
+        }
+
+        // --- 2. Enviar solicitações (exclusão/altteração) ---
+        if (solicitacoes.length > 0) {
+            const urlSolic = `${SUPABASE_URL}/rest/v1/${TABLE_SOLICITACOES}`;
+            for (const sol of solicitacoes) {
+                try {
+                    const response = await fetch(urlSolic, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(sol),
+                    });
+                    if (response.ok) sucessos++;
+                    else {
+                        const texto = await response.text();
+                        erros.push(`Solicitação: ${texto.substring(0, 100)}`);
+                    }
+                } catch (e) {
+                    erros.push(e.message);
+                }
             }
-        } catch (error) {
-            console.error(error);
-            alert('❌ Falha na conexão. Verifique sua internet e as credenciais do Supabase.');
+        }
+
+        // --- 3. Mensagem final ---
+        let msg = `✅ ${sucessos} operação(ões) concluída(s) com sucesso.`;
+        if (inclusoes.length > 0) {
+            msg += `\n${inclusoes.length} inclusão(ões) realizada(s) diretamente.`;
+        }
+        if (solicitacoes.length > 0) {
+            msg += `\n${solicitacoes.length} solicitação(ões) de exclusão/alteração enviada(s) para aprovação do administrador.`;
+        }
+        if (erros.length > 0) {
+            msg += `\n\n⚠️ ${erros.length} erro(s):\n${erros.join('\n')}`;
+            alert(msg);
+        } else {
+            alert(msg);
         }
     }
 
@@ -838,8 +793,8 @@
             let html = '';
             unidades.forEach(u => {
                 const match = lowerFilter === '' ||
-                              u.label.toLowerCase().includes(lowerFilter) ||
-                              u.value.includes(lowerFilter);
+                    u.label.toLowerCase().includes(lowerFilter) ||
+                    u.value.includes(lowerFilter);
                 if (match) {
                     html += `<div class="option" data-value="${u.value}">${u.label}</div>`;
                 }
