@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
-    <title>Planilha de Atualização Cadastral dos Profissionais - CNES</title>
+    <title>Planilha de Atualização Cadastral - CNES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+        /* ===== RESET E BASE ===== */
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body { background:#f1f1f1; padding:10px; }
         .container { max-width:1200px; margin:0 auto; background:#fff; border:1px solid #000; border-radius:8px; overflow:hidden; }
+
+        /* ===== HEADER ===== */
         .header { border-bottom:2px solid #003c7d; }
         .header-top { display:flex; align-items:center; justify-content:space-between; padding:10px 15px; flex-wrap:wrap; gap:10px; }
         .logo-esquerda img, .logo-direita img { height:60px; }
@@ -16,60 +20,379 @@
         .titulos h3 { color:#003c7d; font-size:clamp(11px,1.8vw,14px); font-weight:normal; }
         .titulo { background:#003c7d; color:#fff; padding:8px 10px; font-size:clamp(14px,2.5vw,17px); font-weight:bold; text-align:center; }
         .info-versao { display:flex; flex-wrap:wrap; justify-content:space-between; padding:8px 15px; border-top:1px solid #ccc; font-size:clamp(11px,1.6vw,13px); gap:8px; }
+
+        /* ===== SEÇÃO ===== */
         .section-title { background:#003c7d; color:#fff; padding:5px 15px; font-weight:bold; }
+
+        /* ===== TABELAS ===== */
         table { width:100%; border-collapse:collapse; }
         td, th { border:1px solid #b9c3d0; padding:6px 8px; font-size:clamp(11px,1.6vw,13px); vertical-align:middle; word-break:break-word; }
         input, select { width:100%; border:none; outline:none; padding:4px 2px; font-size:clamp(11px,1.5vw,13px); background:transparent; min-height:28px; box-sizing:border-box; }
         select { background:white; border:1px solid #ccc; border-radius:2px; height:28px; }
         input:focus, select:focus { background:#fff8d8; }
-        .profissionais { width:100%; display:block; overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; }
-        .profissionais table { min-width:900px; }
+
+        .profissionais { width:100%; display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+        .profissionais table { min-width:1000px; width:100%; }
         .profissionais th { background:#dbe5f1; text-align:center; }
+        .profissionais td:nth-child(3) { min-width:180px; }
+        .profissionais td:nth-child(3) input { min-width:170px; }
+        .profissionais td:nth-child(4) { min-width:140px; }
+        .profissionais td:nth-child(4) input { min-width:130px; }
+
+        /* ===== COLUNA AÇÃO DESTAQUE ===== */
+        .profissionais th:nth-child(2) { background:#cce0ff; color:#003c7d; font-weight:bold; }
+        .profissionais td:nth-child(2) { background:#f0f8ff; }
+        .profissionais td:nth-child(2) select {
+            background:#fff8d8 !important;
+            border:1.5px solid #003c7d !important;
+            font-weight:bold;
+            color:#003c7d;
+        }
+        .profissionais td:nth-child(2) select:focus { background:#ffeaa7 !important; }
+
+        /* ===== DESTAQUE PARA O CAMPO CNES APÓS SELEÇÃO ===== */
+        #cnes.unidade-selecionada {
+            background:#e6f7ff !important;
+            border:2px solid #1890ff !important;
+            border-radius:4px !important;
+            font-weight:bold;
+            color:#003c7d;
+        }
+
+        /* ===== REGRAS DE ATUALIZAÇÃO ===== */
+        .regras-container { padding:15px 20px; background:#f0f7ff; border-bottom:2px solid #003c7d; }
+        .regras-container h4 { color:#003c7d; margin-bottom:10px; display:flex; align-items:center; gap:8px; font-size:clamp(14px,1.8vw,16px); }
+        .regras-container ul { list-style:none; padding:0; display:flex; flex-direction:column; gap:4px; }
+        .regras-container ul li { font-size:clamp(12px,1.4vw,14px); padding:4px 0; border-bottom:1px dashed #d0e0f0; display:flex; align-items:flex-start; gap:8px; }
+        .regras-container ul li i { color:#28a745; margin-top:3px; min-width:16px; }
+
+        /* ===== BOTÕES ===== */
         .acoes { padding:15px; text-align:center; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
-        button { padding:8px 16px; border:none; background:#003c7d; color:#fff; cursor:pointer; border-radius:4px; font-weight:bold; font-size:clamp(12px,1.6vw,14px); transition:opacity 0.2s; flex:1 1 auto; min-width:120px; }
+        button { padding:8px 16px; border:none; background:#003c7d; color:#fff; cursor:pointer; border-radius:4px; font-weight:bold; font-size:clamp(12px,1.6vw,14px); transition:0.2s; min-width:120px; }
         button:hover { opacity:0.9; }
         .btn-enviar { background:#28a745; }
         .btn-enviar:hover { background:#218838; }
-        .footer { padding:15px 20px; }
-        .assinaturas { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-        .ass-box { border:1px solid #ccc; padding:10px; min-height:100px; }
-        .ass-box h4 { margin-bottom:6px; color:#003c7d; font-size:clamp(13px,1.8vw,14px); }
-        .ass-box label { font-size:clamp(11px,1.4vw,12px); font-weight:bold; display:block; margin-top:6px; }
-        .ass-box input { border-bottom:1px solid #000; padding:4px 0; margin-bottom:4px; width:100%; font-size:clamp(12px,1.6vw,13px); }
-        .linha { border-bottom:1px solid #000; margin-top:14px; }
+
+        /* ===== RODAPÉ ===== */
         .rodape { border-top:2px solid #003c7d; padding:15px 20px; text-align:center; font-size:clamp(11px,1.4vw,13px); color:#444; background:#f9fafc; line-height:1.6; }
         .rodape strong { color:#003c7d; }
         .rodape .dev { font-weight:bold; color:#003c7d; margin-bottom:4px; }
         .rodape .dados-semusa { font-size:clamp(10px,1.2vw,12px); color:#555; }
+
+        /* ===== COMBOBOX CUSTOM ===== */
         .custom-select { position:relative; width:100%; }
-        .custom-select .select-display { width:100%; border:1px solid #ccc; border-radius:2px; background:white; padding:4px 26px 4px 8px; font-size:clamp(11px,1.5vw,13px); min-height:28px; cursor:pointer; display:flex; align-items:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; position:relative; }
+        .custom-select .select-display {
+            width:100%;
+            border:1px solid #ccc;
+            border-radius:2px;
+            background-color:#fff8d8 !important;
+            padding:4px 26px 4px 8px;
+            font-size:clamp(11px,1.5vw,13px);
+            min-height:28px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            position:relative;
+        }
         .custom-select .select-display::after { content:"▼"; position:absolute; right:6px; font-size:12px; color:#555; }
-        .custom-select .select-display:focus { background:#fff8d8; }
-        .custom-select .dropdown { display:none; position:absolute; top:calc(100% + 2px); left:0; right:0; max-height:220px; overflow-y:auto; background:white; border:1px solid #ccc; border-radius:2px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
+        .custom-select .dropdown {
+            display:none;
+            position:absolute;
+            top:calc(100% + 2px);
+            left:0;
+            right:0;
+            max-height:220px;
+            overflow-y:auto;
+            background:#fff;
+            border:1px solid #ccc;
+            border-radius:2px;
+            z-index:1000;
+            box-shadow:0 2px 6px rgba(0,0,0,0.15);
+        }
         .custom-select .dropdown.open { display:block; }
-        .custom-select .dropdown .search-box { position:sticky; top:0; background:white; padding:4px 6px; border-bottom:1px solid #eee; z-index:1; }
-        .custom-select .dropdown .search-box input { width:100%; border:1px solid #ccc; border-radius:2px; padding:4px 6px; font-size:clamp(11px,1.5vw,13px); background:white; min-height:28px; }
-        .custom-select .dropdown .search-box input:focus { background:#fff8d8; }
-        .custom-select .dropdown .option { padding:4px 8px; cursor:pointer; font-size:clamp(11px,1.5vw,13px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .custom-select .dropdown .option:hover, .custom-select .dropdown .option.highlighted { background:#dbe5f1; }
+        .custom-select .dropdown .search-box {
+            position:sticky;
+            top:0;
+            background:#fff8d8;
+            padding:4px 6px;
+            border-bottom:1px solid #eee;
+        }
+        .custom-select .dropdown .search-box input {
+            width:100%;
+            border:1px solid #ccc;
+            border-radius:2px;
+            padding:4px 6px;
+            font-size:clamp(11px,1.5vw,13px);
+            background:#fff;
+            min-height:28px;
+        }
+        .custom-select .dropdown .option {
+            padding:4px 8px;
+            cursor:pointer;
+            font-size:clamp(11px,1.5vw,13px);
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            background:#fff;
+        }
+        .custom-select .dropdown .option:hover { background:#dbe5f1; }
         .custom-select .dropdown .option.disabled { background:#f0f0f0; color:#999; cursor:default; }
-        .custom-select .dropdown .option.disabled:hover { background:#f0f0f0; }
-        @media (max-width:768px) {
-            .header-top { flex-direction:column; align-items:center; }
-            .container > table, .container > table tbody, .container > table tr, .container > table td { display:block; width:100%; }
-            .container > table tr { margin-bottom:8px; border:1px solid #b9c3d0; border-radius:4px; padding:6px; }
-            .container > table td { border:none; padding:4px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; border-bottom:1px dashed #ccc; }
-            .container > table td::before { content:attr(data-label); font-weight:bold; width:35%; min-width:100px; color:#003c7d; }
-            .container > table td input, .container > table td select, .container > table td .custom-select { width:60%; min-width:140px; flex:1; margin-left:8px; }
-            .assinaturas { grid-template-columns:1fr; }
-            .acoes button { min-width:100px; }
-            .rodape { padding:12px 15px; }
+
+        /* ===== CAMPO CARGA HORÁRIA ===== */
+        .prof-carga {
+            background:white !important;
+            border:1px solid #ccc !important;
+            border-radius:2px !important;
+            height:28px !important;
+            padding:2px 26px 2px 6px !important;
+            font-size:clamp(11px,1.5vw,13px) !important;
+            width:100% !important;
+            box-sizing:border-box !important;
+            outline:none !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+            background-repeat:no-repeat !important;
+            background-position: right 6px center !important;
+            background-size:12px 12px !important;
+            appearance:none !important;
+            -webkit-appearance:none !important;
+            -moz-appearance:none !important;
+            color-scheme: light !important;
+        }
+        .prof-carga::-webkit-calendar-picker-indicator {
+            opacity:0 !important;
+            position:absolute !important;
+            right:0 !important;
+            width:100% !important;
+            height:100% !important;
+            cursor:pointer !important;
+        }
+        .prof-carga:focus {
+            background-color:#fff8d8 !important;
+        }
+        .prof-carga::placeholder {
+            color:#aaa;
+            font-size:clamp(11px,1.5vw,13px);
+        }
+
+        /* ============================================================ */
+        /* ===== IMPRESSÃO – CORRIGIDA ===== */
+        /* ============================================================ */
+        @media print {
+            /* Oculta elementos não necessários */
+            .unidade-selector,
+            .regras-container,
+            .acoes,
+            .rodape,
+            .info-versao,
+            #customSelectContainer,
+            .seletor-unidade,
+            .busca-container,
+            .diagnostico,
+            .status-conexao,
+            #btnAdicionar,
+            #btnEnviar,
+            .btn-excluir-linha,
+            .btn-icon,
+            button:not(#btnImprimir) {
+                display: none !important;
+            }
+
+            /* Oculta o seletor (select) da unidade */
+            #tipoUnidade { display: none !important; }
+
+            @page {
+                size: landscape;
+                margin: 0.8cm;
+            }
+
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+
+            /* ===== CABEÇALHO ===== */
+            .header {
+                border-bottom: 2px solid #003c7d !important;
+                margin-bottom: 8px !important;
+            }
+            .header-top {
+                padding: 4px 10px !important;
+            }
+            .logo-esquerda img, .logo-direita img {
+                height: 40px !important;
+            }
+            .titulos h2 {
+                font-size: 15px !important;
+                margin-bottom: 0 !important;
+            }
+            .titulos h3 {
+                font-size: 11px !important;
+            }
+            .titulo {
+                font-size: 13px !important;
+                padding: 4px 10px !important;
+                background: #003c7d !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* ===== UNIDADE DE LOTAÇÃO – MOSTRA CNES E NOME ===== */
+            .section-title {
+                background: #003c7d !important;
+                color: white !important;
+                padding: 4px 12px !important;
+                font-size: 13px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                display: block !important;
+            }
+            /* A tabela da unidade – mostra apenas os dados, sem inputs */
+            .container > table:first-of-type {
+                display: table !important;
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin-bottom: 8px !important;
+            }
+            .container > table:first-of-type td {
+                border: 1px solid #000 !important;
+                padding: 4px 10px !important;
+                font-size: 12px !important;
+                background: white !important;
+                vertical-align: middle !important;
+            }
+            .container > table:first-of-type input {
+                border: none !important;
+                background: transparent !important;
+                font-size: inherit !important;
+                color: #000 !important;
+                padding: 0 !important;
+                font-weight: bold !important;
+                width: 100% !important;
+            }
+            .container > table:first-of-type td:last-child {
+                display: none !important; /* esconde o seletor */
+            }
+            /* Ajusta a primeira célula para ocupar 30% da largura e a segunda 70% (mas a segunda será ocultada) */
+            .container > table:first-of-type td:first-child {
+                width: 100% !important;
+            }
+
+            /* ===== TABELA DE PROFISSIONAIS ===== */
+            .profissionais {
+                overflow-x: visible !important;
+                margin-top: 5px !important;
+            }
+            .profissionais table {
+                min-width: 100% !important;
+                width: 100% !important;
+                font-size: 11px !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important; /* forçar larguras fixas */
+            }
+            .profissionais th,
+            .profissionais td {
+                padding: 4px 8px !important;
+                border: 1px solid #000 !important;
+                vertical-align: middle !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+            .profissionais th {
+                background: #dbe5f1 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                font-weight: bold !important;
+                text-align: center !important;
+            }
+            .profissionais td {
+                background: white !important;
+            }
+            .profissionais th:nth-child(2) {
+                background: #cce0ff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .profissionais td:nth-child(2) {
+                background: #f0f8ff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Larguras das colunas em porcentagem */
+            .profissionais th:nth-child(1) { width: 4%; }  /* Nº */
+            .profissionais th:nth-child(2) { width: 7%; }  /* Ação */
+            .profissionais th:nth-child(3) { width: 14%; } /* Nome */
+            .profissionais th:nth-child(4) { width: 9%; }  /* CPF */
+            .profissionais th:nth-child(5) { width: 7%; }  /* CBO */
+            .profissionais th:nth-child(6) { width: 8%; }  /* Formação */
+            .profissionais th:nth-child(7) { width: 6%; }  /* Conselho */
+            .profissionais th:nth-child(8) { width: 7%; }  /* Registro */
+            .profissionais th:nth-child(9) { width: 4%; }  /* UF */
+            .profissionais th:nth-child(10) { width: 10%; } /* Cargo */
+            .profissionais th:nth-child(11) { width: 8%; }  /* Vínculo */
+            .profissionais th:nth-child(12) { width: 5%; }  /* Carga */
+            .profissionais th:nth-child(13) { width: 9%; }  /* Setor */
+
+            /* Converte inputs e selects em texto simples */
+            .profissionais input,
+            .profissionais select {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                min-height: auto !important;
+                height: auto !important;
+                font-size: inherit !important;
+                color: #000 !important;
+                -webkit-appearance: none !important;
+                appearance: none !important;
+                background-image: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+                width: 100% !important;
+                text-align: left !important;
+                font-weight: normal !important;
+                line-height: 1.3 !important;
+            }
+            .profissionais select {
+                background: transparent !important;
+                border: none !important;
+                padding-right: 0 !important;
+            }
+            .profissionais select option {
+                display: none !important;
+            }
+            .prof-carga::-webkit-calendar-picker-indicator {
+                opacity: 0 !important;
+                display: none !important;
+            }
+            .profissionais input:focus,
+            .profissionais select:focus {
+                background: transparent !important;
+            }
+
+            .profissionais tr {
+                page-break-inside: avoid !important;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- HEADER -->
+
+    <!-- ===== HEADER ===== -->
     <div class="header">
         <div class="header-top">
             <div class="logo-esquerda"><img src="logo_prefeitura.png" alt="Prefeitura" /></div>
@@ -87,54 +410,59 @@
         </div>
     </div>
 
-    <!-- DADOS DA UNIDADE -->
-    <div class="section-title">1. DADOS DA UNIDADE</div>
+    <!-- ===== UNIDADE DE LOTAÇÃO ===== -->
+    <div class="section-title">1. UNIDADE DE LOTAÇÃO</div>
     <table>
         <tr>
-            <td data-label="CNES da Unidade">
+            <td data-label="CNES da Unidade" style="width:30%;">
                 <input type="text" id="cnes" placeholder="CNES" readonly />
             </td>
-            <td data-label="Nome da Unidade"><input type="text" id="nomeUnidade" placeholder="Nome da Unidade" /></td>
-            <td data-label="UF"><input type="text" id="uf" placeholder="UF" /></td>
-        </tr>
-        <tr>
-            <td data-label="Tipo de Unidade">
-                <select id="tipoUnidade" name="tipo_unidade" required style="display:none;">
-                    <option value="">Selecione a Unidade</option>
-                </select>
+            <td data-label="Selecione a Unidade" style="width:70%;">
                 <div class="custom-select" id="customSelectContainer">
                     <div class="select-display" id="selectDisplay">Selecione a Unidade</div>
                     <div class="dropdown" id="dropdown">
-                        <div class="search-box">
-                            <input type="text" id="searchInput" placeholder="Buscar unidade (nome ou código)" />
-                        </div>
+                        <div class="search-box"><input type="text" id="searchInput" placeholder="Buscar unidade..." /></div>
                         <div id="optionsList"></div>
                     </div>
                 </div>
+                <select id="tipoUnidade" name="tipo_unidade" style="display:none;"></select>
             </td>
-            <td data-label="Município"><input type="text" id="municipio" placeholder="Município" /></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="3" data-label="Endereço Completo"><input type="text" id="endereco" placeholder="Endereço Completo" /></td>
-        </tr>
-        <tr>
-            <td data-label="Telefone"><input type="text" id="telefone" placeholder="Telefone" /></td>
-            <td colspan="2" data-label="Responsável pelas Informações - GERENTE"><input type="text" id="responsavel" placeholder="Responsável" /></td>
-        </tr>
-        <tr>
-            <td data-label="Cargo"><input type="text" id="cargoResponsavel" placeholder="Cargo" /></td>
-            <td colspan="2" data-label="Data de Preenchimento"><input type="date" id="dataPreenchimento" /></td>
         </tr>
     </table>
 
-    <!-- PROFISSIONAIS -->
+    <!-- ===== REGRAS DE ATUALIZAÇÃO MENSAL ===== -->
+    <div class="regras-container">
+        <h4><i class="fas fa-calendar-alt"></i> Regras de Atualização Cadastral Mensal – Ministério da Saúde</h4>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> <strong>1. Periodicidade:</strong> A atualização cadastral deve ser realizada mensalmente, até o 5º dia útil de cada mês, conforme orientação do Ministério da Saúde (Portaria GM/MS nº 1.646/2015).</li>
+            <li><i class="fas fa-check-circle"></i> <strong>2. Dados obrigatórios:</strong> Devem ser preenchidos todos os campos marcados com * na planilha, especialmente Nome Completo, CPF, CBO, Conselho e Nº de Registro.</li>
+            <li><i class="fas fa-check-circle"></i> <strong>3. Validação de CPF:</strong> O CPF deve ser válido e não pode estar duplicado entre os profissionais da mesma unidade.</li>
+            <li><i class="fas fa-check-circle"></i> <strong>4. Vínculo e Carga Horária:</strong> Informar corretamente o tipo de vínculo e a carga horária semanal, conforme contrato de trabalho.</li>
+            <li><i class="fas fa-check-circle"></i> <strong>5. Atualização de dados:</strong> Qualquer alteração de endereço, telefone ou responsável pela unidade deve ser registrada imediatamente, antes do envio mensal.</li>
+            <li><i class="fas fa-check-circle"></i> <strong>6. Envio ao CNES:</strong> Os dados devem ser enviados ao sistema CNES (Cadastro Nacional de Estabelecimentos de Saúde) até o prazo final, sob pena de bloqueio do cadastro da unidade.</li>
+            <li><i class="fas fa-check-circle"></i> <strong>7. Responsabilidade:</strong> O gestor da unidade é o responsável legal pela veracidade e atualização das informações prestadas.</li>
+        </ul>
+    </div>
+
+    <!-- ===== RELAÇÃO DOS PROFISSIONAIS ===== -->
     <div class="section-title">2. RELAÇÃO DOS PROFISSIONAIS</div>
     <div class="profissionais">
         <table>
             <thead>
                 <tr>
-                    <th>Nº</th><th>Nome Completo</th><th>CPF</th><th>CBO</th><th>Formação</th><th>Conselho</th><th>Nº Registro</th><th>UF Conselho</th><th>Cargo/Função</th><th>Tipo de Vínculo</th><th>Carga Hor.</th><th>Setor/Equipe</th><th>Ação</th>
+                    <th style="width:40px;">Nº</th>
+                    <th style="min-width:100px;">Ação</th>
+                    <th style="min-width:180px;">Nome Completo</th>
+                    <th style="min-width:140px;">CPF</th>
+                    <th>CBO</th>
+                    <th>Formação</th>
+                    <th>Conselho</th>
+                    <th>Nº Registro</th>
+                    <th>UF</th>
+                    <th>Cargo/Função</th>
+                    <th>Tipo de Vínculo</th>
+                    <th>Carga Hor.</th>
+                    <th>Setor/Equipe</th>
                 </tr>
             </thead>
             <tbody id="tbodyProfissionais"></tbody>
@@ -142,54 +470,34 @@
     </div>
 
     <div class="acoes">
-        <button onclick="adicionarLinha()">Adicionar Profissional</button>
-        <button onclick="window.print()">Imprimir</button>
-        <button class="btn-enviar" onclick="enviarDados()">Enviar Dados</button>
+        <button id="btnAdicionar"><i class="fas fa-user-plus"></i> Adicionar Profissional</button>
+        <button id="btnImprimir" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+        <button class="btn-enviar" id="btnEnviar"><i class="fas fa-paper-plane"></i> Enviar Dados</button>
     </div>
 
-    <!-- ASSINATURAS -->
-    <div class="section-title">4. ASSINATURAS</div>
-    <div class="footer">
-        <div class="assinaturas">
-            <div class="ass-box">
-                <h4>RESPONSÁVEL PELA UNIDADE</h4>
-                <label>Nome</label><input type="text" id="respUnidadeNome" placeholder="Nome" />
-                <label>Cargo</label><input type="text" id="respUnidadeCargo" placeholder="Cargo" />
-                <label>Assinatura</label><div class="linha"></div>
-            </div>
-            <div class="ass-box">
-                <h4>CONTROLE E AVALIAÇÃO</h4>
-                <label>Nome</label><input type="text" id="controleAvaliacaoNome" placeholder="Nome" />
-                <label>Cargo</label><input type="text" id="controleAvaliacaoCargo" placeholder="Cargo" />
-                <label>Assinatura</label><div class="linha"></div>
-            </div>
-        </div>
-    </div>
-
+    <!-- ===== RODAPÉ ===== -->
     <div class="rodape">
         <div class="dev">Desenvolvido por <strong>Cristian Marques</strong></div>
         <div class="dados-semusa">
             <strong>SEMUSA - Secretaria Municipal de Saúde de Porto Velho</strong><br />
-            Rua da Saúde, 123 - Bairro Centro - Porto Velho/RO - CEP: 76801-000<br />
-            Telefone: (69) 3219-XXXX | E-mail: semusa@portovelho.ro.gov.br
+            Avenida Campos Sales, 2283 - Centro - Porto Velho/RO - CEP: 76804-358<br />
+            Telefone: (69) 3901-6126 | E-mail: gecav.semusa@portovelho.ro.gov.br
         </div>
-        <div style="margin-top:6px; font-size:clamp(9px,1vw,11px); color:#888;">
-            © 2026 - Todos os direitos reservados
-        </div>
+        <div style="margin-top:6px; font-size:clamp(9px,1vw,11px); color:#888;">© 2026 - Todos os direitos reservados</div>
     </div>
 </div>
 
 <script>
-    // ============================================================
-    // CONFIGURAÇÃO DO SUPABASE
-    // ============================================================
+    // ================================================================
+    // CONFIGURAÇÃO SUPABASE
+    // ================================================================
     const SUPABASE_URL = 'https://cptkatdswfyycsgedcte.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwdGthdGRzd2Z5eWNzZ2VkY3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNDQ2MTcsImV4cCI6MjA5NzcyMDYxN30.MPxI1t1gyr1dpnqG-w_oM8FagnewLyxnojs9gZyIpfw';
     const TABLE_NAME = 'profissionais';
 
-    // ============================================================
-    // DADOS DAS UNIDADES (lista CORRIGIDA – sem colchete extra)
-    // ============================================================
+    // ================================================================
+    // DADOS DAS UNIDADES
+    // ================================================================
     const unidades = [
         { value: "6060048", label: "CENTRAL MUNICIPAL DE REGULAÇÃO DO ACESSO" },
         { value: "9044310", label: "PS LAGO DO CUNIÃ" },
@@ -309,174 +617,14 @@
         { value: "8317941", label: "CENTRO DE CONVIVÊNCIA E CULTURA EM SAÚDE MENTAL" }
     ];
 
-    // ============================================================
-    // DETALHES DAS UNIDADES (endereço e telefone)
-    // ============================================================
-    const detalhesUnidades = {
-        "0037494": { endereco: "RUA DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "39012955" },
-        "8241678": { endereco: "RUA: VENEZUELA 2600 EMBRATEL", telefone: "39012955" },
-        "0038105": { endereco: "RUA ANTONIO LOURENCO LIMA 2360 EMBRATEL", telefone: "69 992394694" },
-        "9975616": { endereco: "ANTONIO LOURENCO PEREIRA LIMA 2360", telefone: "69984734810" },
-        "0776084": { endereco: "JACY PARANA 1943 NOSA SENHORA DAS GRACAS", telefone: "069" },
-        "4068351": { endereco: "JOSE SALE SN ZONA RURAL", telefone: "69 32119700" },
-        "4930363": { endereco: "RUA DANIELA 1515 IGARAPE", telefone: "69 39013377" },
-        "0112003": { endereco: "RUA PADRE CHIQUIHO 1060 PEDRINHAS", telefone: "69 39013634" },
-        "2975866": { endereco: "RUA ELIAS GORAYEB 2501 SAO CRISTOVAO", telefone: "6939016127" },
-        "0213241": { endereco: "MONTEIRO LOBATO 5350 ELDORADO", telefone: "69 39013176" },
-        "4954017": { endereco: "AV MARILDO CORDEIRO COM AIRTON SENNA 101", telefone: "69 98473-2898" },
-        "4477650": { endereco: "AV CAMPOS SALES 2283 CENTRO", telefone: "69 32277042" },
-        "4455134": { endereco: "AVENIDA MAMORE 1120 CASCALHEIRAS", telefone: "69 39013266" },
-        "8395365": { endereco: "AV: CAMPO SALES 2228 CENTRO", telefone: "6932178400" },
-        "8385025": { endereco: "RUA JOAO GOULART 2164 SAO CRISTOVAO", telefone: "69 39013268" },
-        "8317941": { endereco: "AVENIDA GUAPORE 3929 FLODOALDO PONTES", telefone: "69" },
-        "9577866": { endereco: "RUA PAU FERRO 878 CASTANHEIRA", telefone: "69" },
-        "2806789": { endereco: "AV MAMORE AO LADO DAS ESC MAE ESPERANCA E", telefone: "69 39013219" },
-        "7122128": { endereco: "RUA VENEZUELA 2276 EMBRATEL", telefone: "" },
-        "4001028": { endereco: "RUA PADRE CHIQUINHO 1060 PEDRINHAS", telefone: "" },
-        "3326292": { endereco: "ESTRADA DE FERRO, CAI NAGUA 00001 CENTRO", telefone: "" },
-        "7776527": { endereco: "AV JOSE AMADOR DOS REIS 3514 TANCREDO NEVES", telefone: "" },
-        "6877230": { endereco: "DA BEIRA 5840 AREAL DA FLORESTA", telefone: "" },
-        "6365469": { endereco: "AV GUAPORE COM VIEIRA CAULA 3929 AGENER DE", telefone: "69 39012877" },
-        "2808323": { endereco: "AV CALAMA VALE DO JAMARY 4008 EMBRATEL", telefone: "69 99292 4416" },
-        "2806576": { endereco: "CALAMA S/N DISTRITO CALAMA", telefone: "6932351092" },
-        "2807424": { endereco: "ESTRADA DA PENAL, LINHA 28 AO LADO DA", telefone: "6992210436" },
-        "2802961": { endereco: "RUA ITAPORA, ENTRE RUAS GUARANI E ALTANEIRA", telefone: "69 32531008" },
-        "6670547": { endereco: "JOSE AMADOR DOS REIS 3514 TANCREDO NEVES", telefone: "69 39013219" },
-        "6386512": { endereco: "ROSALINA GOMES 9900 MARIANA", telefone: "6932142354" },
-        "2494531": { endereco: "RUA JOAO PAULO I COM CAMPOS SALES SN NOVA", telefone: "69 3901 2957" },
-        "2493942": { endereco: "AV CAMPOS SALES, AO LADO DA ESCOLA PAD", telefone: "69 39013636" },
-        "2806568": { endereco: "RUA VICTO FERREIRA MANAHIBA 1209 AGENER DE", telefone: "69 39012829" },
-        "5822793": { endereco: "CASTRO ALVES, AO LADO DA ESCOLA SEMENTE DO", telefone: "69 3901 2816" },
-        "2494558": { endereco: "ESTRADA DO BELMONT 2044 NACIONAL", telefone: "69 39012832" },
-        "4905229": { endereco: "AV GUAPORE COM VIEIRA CAULA 3929 AGENER DE", telefone: "69 3901-2877" },
-        "2807041": { endereco: "AVENIDA CAMPOS SALES 2283 CENTRO", telefone: "69 39012906" },
-        "6670709": { endereco: "RUA ANGICO 5030 COHAB FLORESTA", telefone: "69 39012805" },
-        "6670814": { endereco: "ORION AO LADO DO COMANDO DE POLICIA 56", telefone: "69 3901 2801" },
-        "2494051": { endereco: "RUA SEPETIBA 100 AREAL DA FLORESTA", telefone: "69 39013324" },
-        "2806916": { endereco: "RUA HERBET DEAZEVEDO 2887 LIBERDADE", telefone: "69984736062" },
-        "4169859": { endereco: "AV DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "69 984738282" },
-        "2552914": { endereco: "AVENIDA 7 DE SETEMBRO COM RIO MADEIRA 2010", telefone: "69 39011376" },
-        "3521532": { endereco: "AV MARILDO CORDEIRO COM AIRTON SENNA 101", telefone: "6999854079" },
-        "3970442": { endereco: "RUA ANTONIO LOURENCO PEREIRA LIMA 2350", telefone: "69 39012838" },
-        "2494078": { endereco: "RUA: COLATINA 2031 MARCOS FREIRE", telefone: "6939012801" },
-        "3559688": { endereco: "AV CALAMA 4008 EMBRATEL", telefone: "(69)32166616" },
-        "2807300": { endereco: "AV CALAMA ESTRADA DO BELMONT 4008 BELMONT", telefone: "" },
-        "2808196": { endereco: "CALAMA S/N DISTRITO CALAMA", telefone: "" },
-        "2807394": { endereco: "CURICACAS S/N BAIXO MADEIRA", telefone: "" },
-        "7124252": { endereco: "PADRE CHIQUINHO 134 DISTRITO DE SAO CARLOS", telefone: "" },
-        "7124260": { endereco: "BR 364 S/N DISTRITO DE VISTA AL", telefone: "" },
-        "8137323": { endereco: "AVENIDA JOSE VIEIRA CAULA 5192 CUNIA", telefone: "" },
-        "8138044": { endereco: "AVENIDA CAMPOS SALES 2283 CENTRO", telefone: "" },
-        "8291462": { endereco: "RUA JOAO LEANDRO BARBOSA S/N VISTA ALEGRE", telefone: "069 32511510" },
-        "9044329": { endereco: "DISTRITO DE TERRA SANTA 0000 ZONA RURAL", telefone: "69 92441965" },
-        "7928769": { endereco: "BR 319 SENTIDO HUMAITA COM SAO SEBASTIAO SN", telefone: "6992930727" },
-        "9044345": { endereco: "DISTRITO NOVA ESPERANCA SN ZONA RURAL", telefone: "" },
-        "9044310": { endereco: "DISTRITO LAGO DO CUNIA 00001 BAIXO MADEIRA", telefone: "" },
-        "7935609": { endereco: "RUA JACY PARANA S/N NOSSA SENHORA DAS GRACAS", telefone: "69 39013267" },
-        "2680017": { endereco: "RUA URTIGA VERMELHA COM JATUARANA 5407", telefone: "6939016428" },
-        "3521567": { endereco: "RUA DOM PEDRO II 2687 SAO CRISTOVAO", telefone: "6939012955" },
-        "5599245": { endereco: "ANGICO C AROEIRA", telefone: "" },
-        "8146055": { endereco: "AV. CAMPOS SALES 2283 CENTRO", telefone: "69 3901-3176" },
-        "8148406": { endereco: "AV. CAMPOS SALES 2283 CENTRO", telefone: "69 3901-3176" },
-        "4450434": { endereco: "AV MAMORE 1120 CASCALHEIRA", telefone: "(69) 3901-2878" }
-    };
+    // ================================================================
+    // ESTADO GLOBAL
+    // ================================================================
+    let contadorLinhas = 1;
 
-    // ============================================================
-    // INICIALIZAÇÃO DO COMBOBOX CUSTOMIZADO
-    // ============================================================
-    const selectDisplay = document.getElementById('selectDisplay');
-    const dropdown = document.getElementById('dropdown');
-    const searchInput = document.getElementById('searchInput');
-    const optionsList = document.getElementById('optionsList');
-    const hiddenSelect = document.getElementById('tipoUnidade');
-
-    // Popular o select oculto com as mesmas opções
-    unidades.forEach(u => {
-        const opt = document.createElement('option');
-        opt.value = u.value;
-        opt.textContent = u.label;
-        hiddenSelect.appendChild(opt);
-    });
-
-    function renderOptions(filter = '') {
-        const lowerFilter = filter.toLowerCase().trim();
-        let html = '';
-        unidades.forEach(u => {
-            const match = lowerFilter === '' ||
-                          u.label.toLowerCase().includes(lowerFilter) ||
-                          u.value.includes(lowerFilter);
-            if (match) {
-                html += `<div class="option" data-value="${u.value}">${u.label}</div>`;
-            }
-        });
-        if (html === '') {
-            html = '<div class="option disabled" style="color:#999;">Nenhuma unidade encontrada</div>';
-        }
-        optionsList.innerHTML = html;
-
-        // Adicionar eventos de clique nas opções
-        optionsList.querySelectorAll('.option:not(.disabled)').forEach(opt => {
-            opt.addEventListener('click', function(e) {
-                const value = this.dataset.value;
-                const label = this.textContent;
-                selectDisplay.textContent = label;
-                selectDisplay.dataset.value = value;
-                hiddenSelect.value = value;
-                dropdown.classList.remove('open');
-                preencherDadosUnidade(value, label);
-            });
-        });
-    }
-
-    // Abrir/fechar dropdown
-    selectDisplay.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('open');
-        dropdown.classList.toggle('open');
-        if (!isOpen) {
-            searchInput.value = '';
-            renderOptions('');
-            searchInput.focus();
-        }
-    });
-
-    document.addEventListener('click', function(e) {
-        const container = document.getElementById('customSelectContainer');
-        if (!container.contains(e.target)) {
-            dropdown.classList.remove('open');
-        }
-    });
-
-    searchInput.addEventListener('input', function() {
-        renderOptions(this.value);
-    });
-
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            const firstOption = optionsList.querySelector('.option:not(.disabled)');
-            if (firstOption) {
-                firstOption.click();
-            }
-        }
-    });
-
-    // ============================================================
-    // FUNÇÃO PARA PREENCHER OS DADOS DA UNIDADE
-    // ============================================================
-    function preencherDadosUnidade(cnes, label) {
-        document.getElementById('cnes').value = cnes;
-        const nome = label.replace(/^[0-9]+ - /, '');
-        document.getElementById('nomeUnidade').value = nome;
-        document.getElementById('uf').value = 'RO';
-        document.getElementById('municipio').value = 'Porto Velho';
-        const detalhes = detalhesUnidades[cnes] || {};
-        document.getElementById('endereco').value = detalhes.endereco || '';
-        document.getElementById('telefone').value = detalhes.telefone || '';
-    }
-
-    // ============================================================
-    // MÁSCARA DE CPF (simples)
-    // ============================================================
+    // ================================================================
+    // FUNÇÕES AUXILIARES
+    // ================================================================
     function aplicarMascaraCPF(input) {
         let valor = input.value.replace(/\D/g, '');
         if (valor.length > 11) valor = valor.slice(0, 11);
@@ -491,179 +639,73 @@
         }
     }
 
-    // ============================================================
-    // GERENCIAMENTO DE LINHAS (profissionais)
-    // ============================================================
-    let contador = 1;
+    function preencherDadosUnidade(cnes, label) {
+        const cnesInput = document.getElementById('cnes');
+        cnesInput.value = cnes;
+        cnesInput.classList.add('unidade-selecionada');
+        // Atualiza o nome da unidade no campo de texto (ele não existe mais, mas podemos armazenar)
+        // Apenas para exibição futura, não precisa.
+    }
 
+    // ================================================================
+    // GERENCIAMENTO DE LINHAS
+    // ================================================================
     function adicionarLinha() {
         const tbody = document.getElementById('tbodyProfissionais');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${contador}</td>
-            <td><input type="text" class="prof-nome" placeholder="Nome completo" /></td>
-            <td><input type="text" class="prof-cpf" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(this)" /></td>
+            <td>${contadorLinhas}</td>
+            <td>
+                <select class="prof-acao" style="background:#fff8d8;border:1.5px solid #003c7d;font-weight:bold;color:#003c7d;">
+                    <option value="">Selecione</option>
+                    <option value="Inclusão">Inclusão</option>
+                    <option value="Exclusão">Exclusão</option>
+                    <option value="Alteração">Alteração</option>
+                </select>
+            </td>
+            <td><input type="text" class="prof-nome" placeholder="Nome completo" style="min-width:170px;" /></td>
+            <td><input type="text" class="prof-cpf" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(this)" style="min-width:130px;" /></td>
             <td>
                 <select class="prof-cbo">
-                    <option value="">Selecione um CBO</option>
+                    <option value="">Selecione</option>
                     <optgroup label="Médicos">
-                        <option value="2251-03">2251-03 - Médico Infectologista</option>
-                        <option value="2251-05">2251-05 - Médico Acupunturista</option>
-                        <option value="2251-09">2251-09 - Médico Nefrologista</option>
-                        <option value="2251-10">2251-10 - Médico Alergista e Imunologista</option>
-                        <option value="2251-12">2251-12 - Médico Neurologista</option>
-                        <option value="2251-15">2251-15 - Médico Angiologista</option>
-                        <option value="2251-18">2251-18 - Médico Nutrologista</option>
+                        <option value="2251-10">2251-10 - Médico Alergista</option>
                         <option value="2251-20">2251-20 - Médico Cardiologista</option>
-                        <option value="2251-21">2251-21 - Médico Oncologista Clínico</option>
-                        <option value="2251-22">2251-22 - Médico Cancerologista Pediátrico</option>
-                        <option value="2251-24">2251-24 - Médico Pediatra</option>
                         <option value="2251-25">2251-25 - Médico Clínico Geral</option>
-                        <option value="2251-27">2251-27 - Médico Pneumologista</option>
-                        <option value="2251-30">2251-30 - Médico de Família e Comunidade</option>
+                        <option value="2251-30">2251-30 - Médico de Família</option>
                         <option value="2251-33">2251-33 - Médico Psiquiatra</option>
-                        <option value="2251-35">2251-35 - Médico Dermatologista</option>
-                        <option value="2251-36">2251-36 - Médico Reumatologista</option>
-                        <option value="2251-39">2251-39 - Médico Sanitarista</option>
                         <option value="2251-40">2251-40 - Médico do Trabalho</option>
-                        <option value="2251-42">2251-42 - Médico da Estratégia de Saúde da Família</option>
-                        <option value="2251-45">2251-45 - Médico em Medicina de Tráfego</option>
-                        <option value="2251-48">2251-48 - Médico Anatomopatologista</option>
-                        <option value="2251-50">2251-50 - Médico em Medicina Intensiva</option>
-                        <option value="2251-51">2251-51 - Médico Anestesiologista</option>
-                        <option value="2251-55">2251-55 - Médico Endocrinologista e Metabologista</option>
-                        <option value="2251-60">2251-60 - Médico Fisiatra</option>
-                        <option value="2251-65">2251-65 - Médico Gastroenterologista</option>
-                        <option value="2251-70">2251-70 - Médico Generalista</option>
-                        <option value="2251-75">2251-75 - Médico Geneticista</option>
-                        <option value="2251-80">2251-80 - Médico Geriatra</option>
-                        <option value="2251-85">2251-85 - Médico Hematologista</option>
-                        <option value="2251-95">2251-95 - Médico Homeopata</option>
-                        <option value="2252-03">2252-03 - Médico em Cirurgia Vascular</option>
-                        <option value="2252-10">2252-10 - Médico Cirurgião Cardiovascular</option>
-                        <option value="2252-15">2252-15 - Médico Cirurgião de Cabeça e Pescoço</option>
-                        <option value="2252-20">2252-20 - Médico Cirurgião do Aparelho Digestivo</option>
-                        <option value="2252-25">2252-25 - Médico Cirurgião Geral</option>
-                        <option value="2252-30">2252-30 - Médico Cirurgião Pediátrico</option>
-                        <option value="2252-35">2252-35 - Médico Cirurgião Plástico</option>
-                        <option value="2252-40">2252-40 - Médico Cirurgião Torácico</option>
-                        <option value="2252-50">2252-50 - Médico Ginecologista e Obstetra</option>
-                        <option value="2252-55">2252-55 - Médico Mastologista</option>
-                        <option value="2252-60">2252-60 - Médico Neurocirurgião</option>
-                        <option value="2252-65">2252-65 - Médico Oftalmologista</option>
-                        <option value="2252-70">2252-70 - Médico Ortopedista e Traumatologista</option>
-                        <option value="2252-75">2252-75 - Médico Otorrinolaringologista</option>
-                        <option value="2252-80">2252-80 - Médico Proctologista</option>
-                        <option value="2252-85">2252-85 - Médico Urologista</option>
-                        <option value="2252-90">2252-90 - Médico Cancerologista Cirúrgico</option>
-                        <option value="2252-95">2252-95 - Médico Cirurgião da Mão</option>
-                        <option value="2253-05">2253-05 - Médico Citopatologista</option>
-                        <option value="2253-10">2253-10 - Médico em Endoscopia</option>
-                        <option value="2253-15">2253-15 - Médico em Medicina Nuclear</option>
-                        <option value="2253-20">2253-20 - Médico em Radiologia e Diagnóstico por Imagem</option>
-                        <option value="2253-25">2253-25 - Médico Patologista</option>
-                        <option value="2253-30">2253-30 - Médico Radioterapeuta</option>
-                        <option value="2253-35">2253-35 - Médico Patologista Clínico / Medicina Laboratorial</option>
-                        <option value="2253-40">2253-40 - Médico Hemoterapeuta</option>
-                        <option value="2253-45">2253-45 - Médico Hiperbarista</option>
-                        <option value="2253-50">2253-50 - Médico Neurofisiologista</option>
+                        <option value="2251-42">2251-42 - Médico ESF</option>
+                        <option value="2252-25">2252-25 - Cirurgião Geral</option>
+                        <option value="2252-50">2252-50 - Ginecologista</option>
+                        <option value="2252-60">2252-60 - Neurocirurgião</option>
+                        <option value="2252-65">2252-65 - Oftalmologista</option>
+                        <option value="2252-70">2252-70 - Ortopedista</option>
+                        <option value="2252-85">2252-85 - Urologista</option>
                     </optgroup>
                     <optgroup label="Enfermagem">
                         <option value="2235-05">2235-05 - Enfermeiro</option>
-                        <option value="2235-35">2235-35 - Enfermeiro Nefrologista</option>
-                        <option value="2235-45">2235-45 - Enfermeiro Obstétrico</option>
-                        <option value="2235-60">2235-60 - Enfermeiro Sanitarista</option>
-                        <option value="2235-65">2235-65 - Enfermeiro da Estratégia de Saúde da Família</option>
-                        <option value="3222-05">3222-05 - Técnico de Enfermagem</option>
-                        <option value="3222-20">3222-20 - Técnico de Enfermagem Psiquiátrica</option>
-                        <option value="3222-25">3222-25 - Instrumentador Cirúrgico</option>
-                        <option value="3222-30">3222-30 - Auxiliar de Enfermagem</option>
-                        <option value="3222-45">3222-45 - Técnico de Enfermagem da Estratégia Saúde da Família</option>
-                        <option value="3222-50">3222-50 - Auxiliar de Enfermagem da Estratégia Saúde da Família</option>
+                        <option value="2235-65">2235-65 - Enfermeiro ESF</option>
+                        <option value="3222-05">3222-05 - Téc. Enfermagem</option>
+                        <option value="3222-30">3222-30 - Aux. Enfermagem</option>
+                        <option value="3222-45">3222-45 - Téc. Enf. ESF</option>
                     </optgroup>
                     <optgroup label="Odontologia">
-                        <option value="2232-04">2232-04 - Cirurgião-Dentista - Auditor</option>
-                        <option value="2232-08">2232-08 - Cirurgião-Dentista Clínico Geral</option>
-                        <option value="2232-12">2232-12 - Cirurgião-Dentista Endodontista</option>
-                        <option value="2232-16">2232-16 - Cirurgião-Dentista Epidemiologista</option>
-                        <option value="2232-20">2232-20 - Cirurgião-Dentista Estomatologista</option>
-                        <option value="2232-24">2232-24 - Cirurgião-Dentista Implantodontista</option>
-                        <option value="2232-28">2232-28 - Cirurgião-Dentista Odontogeriatra</option>
-                        <option value="2232-32">2232-32 - Cirurgião-Dentista Odontologista Legal</option>
-                        <option value="2232-36">2232-36 - Cirurgião-Dentista Odontopediatra</option>
-                        <option value="2232-40">2232-40 - Cirurgião-Dentista Ortopedista e Ortodontista</option>
-                        <option value="2232-44">2232-44 - Cirurgião-Dentista Patologista Bucal</option>
-                        <option value="2232-48">2232-48 - Cirurgião-Dentista Periodontista</option>
-                        <option value="2232-52">2232-52 - Cirurgião-Dentista Protesiólogo Bucomaxilofacial</option>
-                        <option value="2232-56">2232-56 - Cirurgião-Dentista Protesista</option>
-                        <option value="2232-60">2232-60 - Cirurgião-Dentista Radiologista</option>
-                        <option value="2232-64">2232-64 - Cirurgião-Dentista Reabilitador Oral</option>
-                        <option value="2232-68">2232-68 - Cirurgião-Dentista Traumatologista Bucomaxilofacial</option>
-                        <option value="2232-72">2232-72 - Cirurgião-Dentista de Saúde Coletiva</option>
-                        <option value="2232-76">2232-76 - Cirurgião-Dentista - Odontologia do Trabalho</option>
-                        <option value="2232-80">2232-80 - Cirurgião-Dentista - Dentística</option>
-                        <option value="2232-84">2232-84 - Cirurgião-Dentista - Disfunção Temporomandibular e Dor Orofacial</option>
-                        <option value="2232-88">2232-88 - Cirurgião-Dentista - Odontologia para Pacientes com Necessidades Especiais</option>
-                        <option value="2232-93">2232-93 - Cirurgião-Dentista da Estratégia de Saúde da Família</option>
-                        <option value="3224-05">3224-05 - Técnico em Saúde Bucal</option>
-                        <option value="3224-15">3224-15 - Auxiliar em Saúde Bucal</option>
-                        <option value="3224-25">3224-25 - Técnico em Saúde Bucal da Estratégia de Saúde da Família</option>
-                        <option value="3224-30">3224-30 - Auxiliar em Saúde Bucal da Estratégia de Saúde da Família</option>
+                        <option value="2232-08">2232-08 - Cirurgião-Dentista</option>
+                        <option value="2232-93">2232-93 - CD ESF</option>
+                        <option value="3224-05">3224-05 - Téc. Saúde Bucal</option>
+                        <option value="3224-15">3224-15 - Aux. Saúde Bucal</option>
                     </optgroup>
-                    <optgroup label="Reabilitação e Terapias">
+                    <optgroup label="Outros">
                         <option value="2236-05">2236-05 - Fisioterapeuta</option>
                         <option value="2237-10">2237-10 - Nutricionista</option>
                         <option value="2238-10">2238-10 - Fonoaudiólogo</option>
                         <option value="2239-05">2239-05 - Terapeuta Ocupacional</option>
-                        <option value="2239-10">2239-10 - Ortoptista</option>
-                        <option value="2263-05">2263-05 - Musicoterapeuta</option>
-                        <option value="2263-10">2263-10 - Arteterapeuta</option>
-                        <option value="2241-05">2241-05 - Profissional de Educação Física na Saúde</option>
-                    </optgroup>
-                    <optgroup label="Farmácia e Biomedicina">
                         <option value="2234-05">2234-05 - Farmacêutico</option>
-                        <option value="2234-30">2234-30 - Farmacêutico em Saúde Pública</option>
-                        <option value="3251-15">3251-15 - Técnico em Farmácia</option>
-                        <option value="2211-05">2211-05 - Biólogo</option>
-                        <option value="2212-05">2212-05 - Biomédico</option>
-                    </optgroup>
-                    <optgroup label="Saúde Mental e Social">
-                        <option value="2515-10">2515-10 - Psicólogo / Psicoterapeuta</option>
-                        <option value="2515-10">2515-10 - Psicólogo Clínico</option>
-                        <option value="2515-45">2515-45 - Neuropsicólogo</option>
-                        <option value="2515-50">2515-50 - Psicanalista</option>
+                        <option value="2515-10">2515-10 - Psicólogo</option>
                         <option value="2516-05">2516-05 - Assistente Social</option>
-                    </optgroup>
-                    <optgroup label="Agentes e Técnicos Comunitários">
-                        <option value="5151-05">5151-05 - Agente Comunitário de Saúde</option>
-                        <option value="3222-55">3222-55 - Técnico em Agente Comunitário de Saúde</option>
-                        <option value="5153-05">5153-05 - Educador Social</option>
-                        <option value="3522-10">3522-10 - Agente de Saúde Pública</option>
-                    </optgroup>
-                    <optgroup label="Administrativo e Apoio">
-                        <option value="4110-05">4110-05 - Auxiliar Administrativo</option>
-                        <option value="4110-10">4110-10 - Assistente Administrativo</option>
-                        <option value="3513-05">3513-05 - Técnico Administrativo</option>
-                        <option value="4110-15">4110-15 - Secretário Executivo</option>
-                        <option value="4110-20">4110-20 - Recepcionista</option>
-                        <option value="4110-25">4110-25 - Digitador</option>
-                        <option value="4110-30">4110-30 - Operador de Telemarketing</option>
-                    </optgroup>
-                    <optgroup label="Motoristas e Condutores">
-                        <option value="7823-05">7823-05 - Motorista de Carro de Passeio</option>
-                        <option value="7823-20">7823-20 - Condutor de Ambulância</option>
-                        <option value="7825-10">7825-10 - Motorista de Caminhão</option>
-                        <option value="7823-10">7823-10 - Motorista de Veículos de Pequeno Porte</option>
-                    </optgroup>
-                    <optgroup label="Outros Profissionais da Saúde">
-                        <option value="5151-15">5151-15 - Parteira</option>
-                        <option value="5162-10">5162-10 - Cuidador de Idosos</option>
-                        <option value="5162-20">5162-20 - Cuidador em Saúde</option>
-                        <option value="3221-05">3221-05 - Técnico em Acupuntura</option>
-                        <option value="3221-15">3221-15 - Técnico em Quiropraxia</option>
-                        <option value="3221-20">3221-20 - Massoterapeuta</option>
-                        <option value="3221-25">3221-25 - Terapeuta Holístico</option>
-                        <option value="2394-25">2394-25 - Psicopedagogo</option>
+                        <option value="5151-05">5151-05 - Agente Comunitário</option>
+                        <option value="4110-05">4110-05 - Aux. Administrativo</option>
                     </optgroup>
                 </select>
             </td>
@@ -675,59 +717,41 @@
             <td>
                 <select class="prof-vinculo">
                     <option value="">Selecione</option>
-                    <option>Estatutário</option>
-                    <option>CLT</option>
-                    <option>Contrato Temporário</option>
-                    <option>Cooperado</option>
-                    <option>Bolsista</option>
-                    <option>Autônomo</option>
-                    <option>Residente</option>
+                    <option>Efetivo</option><option>Comissionado</option>
+                    <option>Contrato</option><option>Credenciado</option>
+                    <option>Estatutário</option><option>CLT</option>
+                    <option>Contrato Temporário</option><option>Cooperado</option>
+                    <option>Bolsista</option><option>Autônomo</option>
+                    <option>Residente</option><option>Estagiário</option>
                     <option>Outros</option>
-                    <option>Intermediado</option>
-                    <option>Estagiário</option>
                 </select>
             </td>
-            <td><input type="number" class="prof-carga" placeholder="Carga horária" step="0.5" /></td>
+            <td>
+                <input type="text" class="prof-carga" list="cargaOptions" placeholder="Ex: 40h" />
+                <datalist id="cargaOptions">
+                    <option value="44">44h</option>
+                    <option value="40">40h</option>
+                    <option value="30">30h</option>
+                    <option value="20">20h</option>
+                    <option value="10">10h</option>
+                    <option value="5">5h</option>
+                </datalist>
+            </td>
             <td><input type="text" class="prof-setor" placeholder="Setor/Equipe" /></td>
-            <td><button onclick="removerLinha(this)" style="font-size:11px;padding:4px 8px;">Excluir</button></td>
         `;
         tbody.appendChild(tr);
-        contador++;
+        contadorLinhas++;
     }
 
-    function removerLinha(botao) {
-        const tr = botao.closest('tr');
-        tr.remove();
-    }
-
-    // ============================================================
-    // ENVIO DOS DADOS (com validação e feedback)
-    // ============================================================
+    // ================================================================
+    // ENVIO DOS DADOS PARA SUPABASE
+    // ================================================================
     async function enviarDados() {
-        function getDateValue(id) {
-            const val = document.getElementById(id).value;
-            return val && val.trim() !== '' ? val.trim() : null;
-        }
-
         const cnes = document.getElementById('cnes').value;
         if (!cnes) {
             alert('Por favor, selecione uma unidade antes de enviar.');
             return;
         }
-
-        const unidade = {
-            cnes: cnes,
-            nome_unidade: document.getElementById('nomeUnidade').value,
-            uf: document.getElementById('uf').value,
-            tipo_unidade: document.getElementById('tipoUnidade').value,
-            municipio: document.getElementById('municipio').value,
-            endereco: document.getElementById('endereco').value,
-            telefone: document.getElementById('telefone').value,
-            responsavel: document.getElementById('responsavel').value,
-            cargo_responsavel: document.getElementById('cargoResponsavel').value,
-            data_emissao: getDateValue('dataEmissao'),
-            data_preenchimento: getDateValue('dataPreenchimento'),
-        };
 
         const linhas = document.querySelectorAll('#tbodyProfissionais tr');
         const profissionais = [];
@@ -737,13 +761,9 @@
             if (nome === '') return;
             temNome = true;
             const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
-            const cargaInput = tr.querySelector('.prof-carga');
-            let cargaHoraria = null;
-            if (cargaInput && cargaInput.value.trim() !== '') {
-                const parsed = parseFloat(cargaInput.value);
-                if (!isNaN(parsed)) cargaHoraria = parsed;
-            }
+            const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
             profissionais.push({
+                cnes: cnes,
                 nome_profissional: nome,
                 cpf: getValue('.prof-cpf'),
                 cbo: getValue('.prof-cbo'),
@@ -753,8 +773,9 @@
                 uf_conselho: getValue('.prof-ufconselho'),
                 cargo_funcao: getValue('.prof-cargo'),
                 tipo_vinculo: getValue('.prof-vinculo'),
-                carga_horaria: cargaHoraria,
+                carga_horaria: carga || null,
                 setor_equipe: getValue('.prof-setor'),
+                tipo_acao: getValue('.prof-acao') || null,
             });
         });
 
@@ -762,19 +783,6 @@
             alert('Adicione pelo menos um profissional com nome preenchido.');
             return;
         }
-
-        const assinaturas = {
-            resp_unidade_nome: document.getElementById('respUnidadeNome').value,
-            resp_unidade_cargo: document.getElementById('respUnidadeCargo').value,
-            controle_avaliacao_nome: document.getElementById('controleAvaliacaoNome').value,
-            controle_avaliacao_cargo: document.getElementById('controleAvaliacaoCargo').value,
-        };
-
-        const payload = profissionais.map(prof => ({
-            ...unidade,
-            ...prof,
-            ...assinaturas,
-        }));
 
         const headers = {
             'Content-Type': 'application/json',
@@ -785,7 +793,7 @@
 
         try {
             let sucessos = 0, erros = [];
-            for (const registro of payload) {
+            for (const registro of profissionais) {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: headers,
@@ -808,30 +816,95 @@
         }
     }
 
-    // ============================================================
+    // ================================================================
+    // INICIALIZAÇÃO DO COMBOBOX
+    // ================================================================
+    function initCombobox() {
+        const selectDisplay = document.getElementById('selectDisplay');
+        const dropdown = document.getElementById('dropdown');
+        const searchInput = document.getElementById('searchInput');
+        const optionsList = document.getElementById('optionsList');
+        const hiddenSelect = document.getElementById('tipoUnidade');
+
+        unidades.forEach(u => {
+            const opt = document.createElement('option');
+            opt.value = u.value;
+            opt.textContent = u.label;
+            hiddenSelect.appendChild(opt);
+        });
+
+        function renderOptions(filter = '') {
+            const lowerFilter = filter.toLowerCase().trim();
+            let html = '';
+            unidades.forEach(u => {
+                const match = lowerFilter === '' ||
+                              u.label.toLowerCase().includes(lowerFilter) ||
+                              u.value.includes(lowerFilter);
+                if (match) {
+                    html += `<div class="option" data-value="${u.value}">${u.label}</div>`;
+                }
+            });
+            if (html === '') {
+                html = '<div class="option disabled" style="color:#999;">Nenhuma unidade encontrada</div>';
+            }
+            optionsList.innerHTML = html;
+            optionsList.querySelectorAll('.option:not(.disabled)').forEach(opt => {
+                opt.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    const label = this.textContent;
+                    selectDisplay.textContent = label;
+                    selectDisplay.dataset.value = value;
+                    hiddenSelect.value = value;
+                    dropdown.classList.remove('open');
+                    preencherDadosUnidade(value, label);
+                });
+            });
+        }
+
+        selectDisplay.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
+            if (dropdown.classList.contains('open')) {
+                searchInput.value = '';
+                renderOptions('');
+                searchInput.focus();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            const container = document.getElementById('customSelectContainer');
+            if (!container.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+
+        searchInput.addEventListener('input', function() {
+            renderOptions(this.value);
+        });
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const firstOption = optionsList.querySelector('.option:not(.disabled)');
+                if (firstOption) {
+                    firstOption.click();
+                }
+            }
+        });
+    }
+
+    // ================================================================
     // INICIALIZAÇÃO
-    // ============================================================
+    // ================================================================
     window.onload = function() {
         document.getElementById('dataEmissao').value = new Date().toISOString().split('T')[0];
-        adicionarLinha(); // inicia com uma linha vazia
+        initCombobox();
+        adicionarLinha();
 
-        // Se houver uma unidade pré-selecionada (ex: via URL), preenche
-        const valorInicial = document.getElementById('tipoUnidade').value;
-        if (valorInicial) {
-            const option = document.querySelector(`#tipoUnidade option[value="${valorInicial}"]`);
-            if (option) {
-                const label = option.textContent;
-                preencherDadosUnidade(valorInicial, label);
-                selectDisplay.textContent = label;
-                selectDisplay.dataset.value = valorInicial;
-            }
-        }
+        document.getElementById('btnAdicionar').addEventListener('click', adicionarLinha);
+        document.getElementById('btnEnviar').addEventListener('click', enviarDados);
     };
 
-    // Expor funções globalmente
-    window.preencherDadosUnidade = preencherDadosUnidade;
     window.adicionarLinha = adicionarLinha;
-    window.removerLinha = removerLinha;
     window.enviarDados = enviarDados;
     window.aplicarMascaraCPF = aplicarMascaraCPF;
 </script>
