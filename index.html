@@ -141,33 +141,17 @@
         .custom-select .dropdown .option:hover { background:#dbe5f1; }
         .custom-select .dropdown .option.disabled { background:#f0f0f0; color:#999; cursor:default; }
 
-        /* ===== CAMPO CARGA HORÁRIA ===== */
+        /* ===== CAMPO CARGA HORÁRIA - AGORA SEM DATALIST ===== */
         .prof-carga {
             background:white !important;
             border:1px solid #ccc !important;
             border-radius:2px !important;
             height:28px !important;
-            padding:2px 26px 2px 6px !important;
+            padding:2px 6px !important;
             font-size:clamp(11px,1.5vw,13px) !important;
             width:100% !important;
             box-sizing:border-box !important;
             outline:none !important;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
-            background-repeat:no-repeat !important;
-            background-position: right 6px center !important;
-            background-size:12px 12px !important;
-            appearance:none !important;
-            -webkit-appearance:none !important;
-            -moz-appearance:none !important;
-            color-scheme: light !important;
-        }
-        .prof-carga::-webkit-calendar-picker-indicator {
-            opacity:0 !important;
-            position:absolute !important;
-            right:0 !important;
-            width:100% !important;
-            height:100% !important;
-            cursor:pointer !important;
         }
         .prof-carga:focus { background-color:#fff8d8 !important; }
         .prof-carga::placeholder { color:#aaa; font-size:clamp(11px,1.5vw,13px); }
@@ -208,14 +192,13 @@
             .profissionais th:nth-child(3) { width:14%; }
             .profissionais th:nth-child(4) { width:9%; }
             .profissionais th:nth-child(5) { width:7%; }
-            .profissionais th:nth-child(6) { width:8%; }
-            .profissionais th:nth-child(7) { width:6%; }
-            .profissionais th:nth-child(8) { width:7%; }
-            .profissionais th:nth-child(9) { width:4%; }
-            .profissionais th:nth-child(10) { width:10%; }
-            .profissionais th:nth-child(11) { width:8%; }
-            .profissionais th:nth-child(12) { width:5%; }
-            .profissionais th:nth-child(13) { width:9%; }
+            .profissionais th:nth-child(6) { width:6%; }
+            .profissionais th:nth-child(7) { width:7%; }
+            .profissionais th:nth-child(8) { width:4%; }
+            .profissionais th:nth-child(9) { width:10%; }
+            .profissionais th:nth-child(10) { width:8%; }
+            .profissionais th:nth-child(11) { width:5%; }
+            .profissionais th:nth-child(12) { width:9%; }
             .profissionais input, .profissionais select { border:none !important; background:transparent !important; padding:0 !important; min-height:auto !important; height:auto !important; font-size:inherit !important; color:#000 !important; -webkit-appearance:none !important; appearance:none !important; background-image:none !important; box-shadow:none !important; outline:none !important; width:100% !important; text-align:left !important; font-weight:normal !important; line-height:1.3 !important; }
             .profissionais select { background:transparent !important; border:none !important; padding-right:0 !important; }
             .profissionais select option { display:none !important; }
@@ -291,7 +274,6 @@
                     <th style="min-width:180px;">Nome Completo</th>
                     <th style="min-width:140px;">CPF</th>
                     <th>CBO</th>
-                    <th>Formação</th>
                     <th>Conselho</th>
                     <th>Nº Registro</th>
                     <th>UF</th>
@@ -512,49 +494,422 @@
             <td><input type="text" class="prof-cpf" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(this)" style="min-width:130px;" /></td>
             <td>
                 <select class="prof-cbo">
-                    <option value="">Selecione</option>
+                    <option value="">Selecione o CBO</option>
+                    <!-- Médicos -->
                     <optgroup label="Médicos">
-                        <option value="2251-10">2251-10 - Médico Alergista</option>
-                        <option value="2251-20">2251-20 - Médico Cardiologista</option>
-                        <option value="2251-25">2251-25 - Médico Clínico Geral</option>
-                        <option value="2251-30">2251-30 - Médico de Família</option>
-                        <option value="2251-33">2251-33 - Médico Psiquiatra</option>
-                        <option value="2251-40">2251-40 - Médico do Trabalho</option>
-                        <option value="2251-42">2251-42 - Médico ESF</option>
-                        <option value="2252-25">2252-25 - Cirurgião Geral</option>
-                        <option value="2252-50">2252-50 - Ginecologista</option>
-                        <option value="2252-60">2252-60 - Neurocirurgião</option>
-                        <option value="2252-65">2252-65 - Oftalmologista</option>
-                        <option value="2252-70">2252-70 - Ortopedista</option>
-                        <option value="2252-85">2252-85 - Urologista</option>
+                        <option value="2231-01">2231-01 - Médico acupunturista</option>
+                        <option value="2231-02">2231-02 - Médico alergista e imunologista</option>
+                        <option value="2231-03">2231-03 - Médico anatomopatologista</option>
+                        <option value="2231-04">2231-04 - Médico anestesiologista</option>
+                        <option value="2231-05">2231-05 - Médico angiologista</option>
+                        <option value="2231-06">2231-06 - Médico cardiologista</option>
+                        <option value="2231-07">2231-07 - Médico cirurgião cardiovascular</option>
+                        <option value="2231-08">2231-08 - Médico cirurgião de cabeça e pescoço</option>
+                        <option value="2231-09">2231-09 - Médico cirurgião do aparelho digestivo</option>
+                        <option value="2231-10">2231-10 - Médico cirurgião geral</option>
+                        <option value="2231-11">2231-11 - Médico cirurgião pediátrico</option>
+                        <option value="2231-12">2231-12 - Médico cirurgião plástico</option>
+                        <option value="2231-13">2231-13 - Médico cirurgião torácico</option>
+                        <option value="2231-14">2231-14 - Médico citopatologista</option>
+                        <option value="2231-15">2231-15 - Médico clínico</option>
+                        <option value="2231-16">2231-16 - Médico de família e comunidade</option>
+                        <option value="2231-17">2231-17 - Médico dermatologista</option>
+                        <option value="2231-18">2231-18 - Médico do trabalho</option>
+                        <option value="2231-19">2231-19 - Médico em eletroencefalografia</option>
+                        <option value="2231-20">2231-20 - Médico em endoscopia</option>
+                        <option value="2231-21">2231-21 - Médico em medicina de tráfego</option>
+                        <option value="2231-22">2231-22 - Médico em medicina intensiva</option>
+                        <option value="2231-23">2231-23 - Médico em medicina nuclear</option>
+                        <option value="2231-24">2231-24 - Médico em radiologia e diagnóstico por imagem</option>
+                        <option value="2231-25">2231-25 - Médico endocrinologista e metabologista</option>
+                        <option value="2231-26">2231-26 - Médico fisiatra</option>
+                        <option value="2231-27">2231-27 - Médico foniatra</option>
+                        <option value="2231-28">2231-28 - Médico gastroenterologista</option>
+                        <option value="2231-29">2231-29 - Médico generalista</option>
+                        <option value="2231-30">2231-30 - Médico geneticista</option>
+                        <option value="2231-31">2231-31 - Médico geriatra</option>
+                        <option value="2231-32">2231-32 - Médico ginecologista e obstetra</option>
+                        <option value="2231-33">2231-33 - Médico hematologista</option>
+                        <option value="2231-34">2231-34 - Médico hemoterapeuta</option>
+                        <option value="2231-35">2231-35 - Médico homeopata</option>
+                        <option value="2231-36">2231-36 - Médico infectologista</option>
+                        <option value="2231-37">2231-37 - Médico legista</option>
+                        <option value="2231-38">2231-38 - Médico mastologista</option>
+                        <option value="2231-39">2231-39 - Médico nefrologista</option>
+                        <option value="2231-40">2231-40 - Médico neurocirurgião</option>
+                        <option value="2231-41">2231-41 - Médico neurofisiologista</option>
+                        <option value="2231-42">2231-42 - Médico neurologista</option>
+                        <option value="2231-43">2231-43 - Médico nutrologista</option>
+                        <option value="2231-44">2231-44 - Médico oftalmologista</option>
+                        <option value="2231-45">2231-45 - Médico oncologista</option>
+                        <option value="2231-46">2231-46 - Médico ortopedista e traumatologista</option>
+                        <option value="2231-47">2231-47 - Médico otorrinolaringologista</option>
+                        <option value="2231-48">2231-48 - Médico patologista clínico</option>
+                        <option value="2231-49">2231-49 - Médico pediatra</option>
+                        <option value="2231-50">2231-50 - Médico perito</option>
+                        <option value="2231-51">2231-51 - Médico pneumologista</option>
+                        <option value="2231-52">2231-52 - Médico proctologista</option>
+                        <option value="2231-53">2231-53 - Médico psiquiatra</option>
+                        <option value="2231-54">2231-54 - Médico radioterapeuta</option>
+                        <option value="2231-55">2231-55 - Médico reumatologista</option>
+                        <option value="2231-56">2231-56 - Médico sanitarista</option>
+                        <option value="2231-57">2231-57 - Médico urologista</option>
+                        <option value="2231-62">2231-62 - Médico da estratégia de saúde da família</option>
                     </optgroup>
-                    <optgroup label="Enfermagem">
+                    <!-- Dentistas -->
+                    <optgroup label="Cirurgiões-dentistas">
+                        <option value="2232-04">2232-04 - Cirurgião dentista - auditor</option>
+                        <option value="2232-08">2232-08 - Cirurgião dentista - clínico geral</option>
+                        <option value="2232-12">2232-12 - Cirurgião dentista - endodontista</option>
+                        <option value="2232-16">2232-16 - Cirurgião dentista - epidemiologista</option>
+                        <option value="2232-20">2232-20 - Cirurgião dentista - estomatologista</option>
+                        <option value="2232-24">2232-24 - Cirurgião dentista - implantodontista</option>
+                        <option value="2232-28">2232-28 - Cirurgião dentista - odontogeriatra</option>
+                        <option value="2232-32">2232-32 - Cirurgião dentista - odontologista legal</option>
+                        <option value="2232-36">2232-36 - Cirurgião dentista - odontopediatra</option>
+                        <option value="2232-40">2232-40 - Cirurgião dentista - ortopedista e ortodontista</option>
+                        <option value="2232-44">2232-44 - Cirurgião dentista - patologista bucal</option>
+                        <option value="2232-48">2232-48 - Cirurgião dentista - periodontista</option>
+                        <option value="2232-52">2232-52 - Cirurgião dentista - protesiólogo bucomaxilofacial</option>
+                        <option value="2232-56">2232-56 - Cirurgião dentista - protesista</option>
+                        <option value="2232-60">2232-60 - Cirurgião dentista - radiologista</option>
+                        <option value="2232-64">2232-64 - Cirurgião dentista - reabilitador oral</option>
+                        <option value="2232-68">2232-68 - Cirurgião dentista - traumatologista bucomaxilofacial</option>
+                        <option value="2232-72">2232-72 - Cirurgião dentista de saúde coletiva</option>
+                        <option value="2232-76">2232-76 - Cirurgião dentista - odontologia do trabalho</option>
+                        <option value="2232-80">2232-80 - Cirurgião dentista - dentística</option>
+                        <option value="2232-84">2232-84 - Cirurgião dentista - disfunção temporomandibular e dor orofacial</option>
+                        <option value="2232-88">2232-88 - Cirurgião dentista - odontologia para pacientes com necessidades especiais</option>
+                        <option value="2232-93">2232-93 - Cirurgião-dentista da estratégia de saúde da família</option>
+                    </optgroup>
+                    <!-- Enfermeiros -->
+                    <optgroup label="Enfermeiros">
                         <option value="2235-05">2235-05 - Enfermeiro</option>
-                        <option value="2235-65">2235-65 - Enfermeiro ESF</option>
-                        <option value="3222-05">3222-05 - Téc. Enfermagem</option>
-                        <option value="3222-30">3222-30 - Aux. Enfermagem</option>
-                        <option value="3222-45">3222-45 - Téc. Enf. ESF</option>
+                        <option value="2235-10">2235-10 - Enfermeiro auditor</option>
+                        <option value="2235-15">2235-15 - Enfermeiro de bordo</option>
+                        <option value="2235-20">2235-20 - Enfermeiro de centro cirúrgico</option>
+                        <option value="2235-25">2235-25 - Enfermeiro de terapia intensiva</option>
+                        <option value="2235-30">2235-30 - Enfermeiro do trabalho</option>
+                        <option value="2235-35">2235-35 - Enfermeiro nefrologista</option>
+                        <option value="2235-40">2235-40 - Enfermeiro neonatologista</option>
+                        <option value="2235-45">2235-45 - Enfermeiro obstétrico</option>
+                        <option value="2235-50">2235-50 - Enfermeiro psiquiátrico</option>
+                        <option value="2235-55">2235-55 - Enfermeiro puericultor e pediátrico</option>
+                        <option value="2235-60">2235-60 - Enfermeiro sanitarista</option>
+                        <option value="2235-65">2235-65 - Enfermeiro da estratégia de saúde da família</option>
                     </optgroup>
-                    <optgroup label="Odontologia">
-                        <option value="2232-08">2232-08 - Cirurgião-Dentista</option>
-                        <option value="2232-93">2232-93 - CD ESF</option>
-                        <option value="3224-05">3224-05 - Téc. Saúde Bucal</option>
-                        <option value="3224-15">3224-15 - Aux. Saúde Bucal</option>
-                    </optgroup>
-                    <optgroup label="Outros">
-                        <option value="2236-05">2236-05 - Fisioterapeuta</option>
-                        <option value="2237-10">2237-10 - Nutricionista</option>
-                        <option value="2238-10">2238-10 - Fonoaudiólogo</option>
-                        <option value="2239-05">2239-05 - Terapeuta Ocupacional</option>
+                    <!-- Farmacêuticos -->
+                    <optgroup label="Farmacêuticos">
                         <option value="2234-05">2234-05 - Farmacêutico</option>
-                        <option value="2515-10">2515-10 - Psicólogo</option>
-                        <option value="2516-05">2516-05 - Assistente Social</option>
-                        <option value="5151-05">5151-05 - Agente Comunitário</option>
-                        <option value="4110-05">4110-05 - Aux. Administrativo</option>
+                        <option value="2234-10">2234-10 - Farmacêutico bioquímico</option>
+                    </optgroup>
+                    <!-- Fisioterapeutas -->
+                    <optgroup label="Fisioterapeutas">
+                        <option value="2236-05">2236-05 - Fisioterapeuta geral</option>
+                        <option value="2236-25">2236-25 - Fisioterapeuta respiratória</option>
+                        <option value="2236-30">2236-30 - Fisioterapeuta neurofuncional</option>
+                        <option value="2236-35">2236-35 - Fisioterapeuta traumato-ortopédica funcional</option>
+                        <option value="2236-40">2236-40 - Fisioterapeuta osteopata</option>
+                        <option value="2236-45">2236-45 - Fisioterapeuta quiropraxista</option>
+                        <option value="2236-50">2236-50 - Fisioterapeuta acupunturista</option>
+                        <option value="2236-55">2236-55 - Fisioterapeuta esportivo</option>
+                        <option value="2236-60">2236-60 - Fisioterapeuta do trabalho</option>
+                    </optgroup>
+                    <!-- Nutricionistas -->
+                    <optgroup label="Nutricionistas">
+                        <option value="2237-05">2237-05 - Dietista</option>
+                        <option value="2237-10">2237-10 - Nutricionista</option>
+                    </optgroup>
+                    <!-- Fonoaudiólogos -->
+                    <optgroup label="Fonoaudiólogos">
+                        <option value="2238-10">2238-10 - Fonoaudiólogo</option>
+                    </optgroup>
+                    <!-- Terapeutas Ocupacionais -->
+                    <optgroup label="Terapeutas Ocupacionais">
+                        <option value="2239-05">2239-05 - Terapeuta ocupacional</option>
+                        <option value="2239-10">2239-10 - Ortoptista</option>
+                        <option value="2239-15">2239-15 - Musicoterapeuta</option>
+                    </optgroup>
+                    <!-- Veterinários e Zootecnistas -->
+                    <optgroup label="Veterinários / Zootecnistas">
+                        <option value="2233-05">2233-05 - Médico veterinário</option>
+                        <option value="2233-10">2233-10 - Zootecnista</option>
+                    </optgroup>
+                    <!-- Psicólogos -->
+                    <optgroup label="Psicólogos">
+                        <option value="2515-05">2515-05 - Psicólogo educacional</option>
+                        <option value="2515-10">2515-10 - Psicólogo clínico</option>
+                        <option value="2515-15">2515-15 - Psicólogo do esporte</option>
+                        <option value="2515-20">2515-20 - Psicólogo hospitalar</option>
+                        <option value="2515-25">2515-25 - Psicólogo jurídico</option>
+                        <option value="2515-30">2515-30 - Psicólogo social</option>
+                        <option value="2515-35">2515-35 - Psicólogo do trânsito</option>
+                        <option value="2515-40">2515-40 - Psicólogo do trabalho</option>
+                        <option value="2515-45">2515-45 - Neuropsicólogo</option>
+                        <option value="2515-50">2515-50 - Psicanalista</option>
+                        <option value="2515-55">2515-55 - Psicólogo acupunturista</option>
+                    </optgroup>
+                    <!-- Assistentes Sociais -->
+                    <optgroup label="Assistentes Sociais">
+                        <option value="2516-05">2516-05 - Assistente social</option>
+                        <option value="2516-10">2516-10 - Economista doméstico</option>
+                    </optgroup>
+                    <!-- Profissionais de Nível Superior - Outros -->
+                    <optgroup label="Profissionais de Nível Superior (outros)">
+                        <option value="2011-05">2011-05 - Bioengenheiro</option>
+                        <option value="2011-10">2011-10 - Biotecnologista</option>
+                        <option value="2011-15">2011-15 - Geneticista</option>
+                        <option value="2030-05">2030-05 - Pesquisador em biologia ambiental</option>
+                        <option value="2030-10">2030-10 - Pesquisador em biologia animal</option>
+                        <option value="2030-15">2030-15 - Pesquisador em biologia de microorganismos e parasitas</option>
+                        <option value="2030-20">2030-20 - Pesquisador em biologia humana</option>
+                        <option value="2030-25">2030-25 - Pesquisador em biologia vegetal</option>
+                        <option value="2033-05">2033-05 - Pesquisador de clínica médica</option>
+                        <option value="2033-10">2033-10 - Pesquisador de medicina básica</option>
+                        <option value="2033-15">2033-15 - Pesquisador em medicina veterinária</option>
+                        <option value="2033-20">2033-20 - Pesquisador em saúde coletiva</option>
+                        <option value="2211-05">2211-05 - Biólogo</option>
+                        <option value="2212-05">2212-05 - Biomédico</option>
+                        <option value="2221-05">2221-05 - Engenheiro agrícola</option>
+                        <option value="2221-10">2221-10 - Engenheiro agrônomo</option>
+                        <option value="2221-15">2221-15 - Engenheiro de pesca</option>
+                        <option value="2221-20">2221-20 - Engenheiro florestal</option>
+                        <option value="2222-05">2222-05 - Engenheiro de alimentos</option>
+                        <option value="2222-15">2222-15 - Tecnólogo em alimentos</option>
+                        <option value="2241-05">2241-05 - Avaliador físico</option>
+                        <option value="2241-10">2241-10 - Ludomotricista</option>
+                        <option value="2241-15">2241-15 - Preparador de atleta</option>
+                        <option value="2241-20">2241-20 - Preparador físico</option>
+                        <option value="2241-25">2241-25 - Técnico de desporto individual e coletivo (exceto futebol)</option>
+                        <option value="2241-30">2241-30 - Técnico de laboratório e fiscalização desportiva</option>
+                        <option value="2241-35">2241-35 - Treinador profissional de futebol</option>
+                        <option value="2511-05">2511-05 - Antropólogo</option>
+                        <option value="2511-10">2511-10 - Arqueólogo</option>
+                        <option value="2511-15">2511-15 - Cientista político</option>
+                        <option value="2511-20">2511-20 - Sociólogo</option>
+                        <option value="2512-05">2512-05 - Economista</option>
+                        <option value="2512-10">2512-10 - Economista agroindustrial</option>
+                        <option value="2512-15">2512-15 - Economista financeiro</option>
+                        <option value="2512-20">2512-20 - Economista industrial</option>
+                        <option value="2512-25">2512-25 - Economista do setor público</option>
+                        <option value="2512-30">2512-30 - Economista ambiental</option>
+                        <option value="2512-35">2512-35 - Economista regional e urbano</option>
+                        <option value="2513-05">2513-05 - Geógrafo</option>
+                        <option value="2514-05">2514-05 - Filósofo</option>
+                        <option value="2521-05">2521-05 - Administrador</option>
+                        <option value="2522-05">2522-05 - Auditor (contadores e afins)</option>
+                        <option value="2522-10">2522-10 - Contador</option>
+                        <option value="2522-15">2522-15 - Perito contábil</option>
+                        <option value="2523-05">2523-05 - Secretária executiva</option>
+                        <option value="2523-10">2523-10 - Secretário bilíngue</option>
+                        <option value="2523-15">2523-15 - Secretária trilíngue</option>
+                        <option value="2524-05">2524-05 - Analista de recursos humanos</option>
+                        <option value="2525-05">2525-05 - Administrador de fundos e carteiras de investimento</option>
+                        <option value="2525-10">2525-10 - Analista de câmbio</option>
+                        <option value="2525-15">2525-15 - Analista de cobrança (instituições financeiras)</option>
+                        <option value="2525-25">2525-25 - Analista de crédito (instituições financeiras)</option>
+                        <option value="2525-30">2525-30 - Analista de crédito rural</option>
+                        <option value="2525-35">2525-35 - Analista de leasing</option>
+                        <option value="2525-40">2525-40 - Analista de produtos bancários</option>
+                        <option value="2525-45">2525-45 - Analista financeiro (instituições financeiras)</option>
+                        <option value="2526-05">2526-05 - Gestor em segurança</option>
+                    </optgroup>
+                    <!-- Técnicos de Nível Médio - Enfermagem -->
+                    <optgroup label="Técnicos de Enfermagem">
+                        <option value="3222-05">3222-05 - Técnico de enfermagem</option>
+                        <option value="3222-10">3222-10 - Técnico de enfermagem de terapia intensiva</option>
+                        <option value="3222-15">3222-15 - Técnico de enfermagem do trabalho</option>
+                        <option value="3222-20">3222-20 - Técnico de enfermagem psiquiátrica</option>
+                        <option value="3222-25">3222-25 - Instrumentador cirúrgico</option>
+                        <option value="3222-30">3222-30 - Auxiliar de enfermagem</option>
+                        <option value="3222-35">3222-35 - Auxiliar de enfermagem do trabalho</option>
+                        <option value="3222-40">3222-40 - Auxiliar de saúde (navegação marítima)</option>
+                        <option value="3222-45">3222-45 - Técnico de enfermagem da estratégia de saúde da família</option>
+                        <option value="3222-50">3222-50 - Auxiliar de enfermagem da estratégia de saúde da família</option>
+                    </optgroup>
+                    <!-- Técnicos de Saúde Bucal -->
+                    <optgroup label="Técnicos de Saúde Bucal">
+                        <option value="3224-05">3224-05 - Técnico em saúde bucal</option>
+                        <option value="3224-10">3224-10 - Protético dentário</option>
+                        <option value="3224-15">3224-15 - Auxiliar em saúde bucal</option>
+                        <option value="3224-20">3224-20 - Auxiliar de prótese dentária</option>
+                        <option value="3224-25">3224-25 - Técnico em saúde bucal da estratégia de saúde da família</option>
+                        <option value="3224-30">3224-30 - Auxiliar em saúde bucal da estratégia de saúde da família</option>
+                    </optgroup>
+                    <!-- Técnicos em Radiologia, Patologia, etc -->
+                    <optgroup label="Técnicos em Radiologia e Patologia">
+                        <option value="3241-05">3241-05 - Técnico em métodos eletrográficos em encefalografia</option>
+                        <option value="3241-10">3241-10 - Técnico em métodos gráficos em cardiologia</option>
+                        <option value="3241-15">3241-15 - Técnico em radiologia e imagenologia</option>
+                        <option value="3242-05">3242-05 - Técnico em patologia clínica</option>
+                        <option value="3242-10">3242-10 - Auxiliar técnico em patologia clínica</option>
+                    </optgroup>
+                    <!-- Técnicos em Farmácia, Alimentos, etc -->
+                    <optgroup label="Técnicos em Farmácia e Alimentos">
+                        <option value="3251-05">3251-05 - Auxiliar técnico em laboratório de farmácia</option>
+                        <option value="3251-10">3251-10 - Técnico em laboratório de farmácia</option>
+                        <option value="3251-15">3251-15 - Técnico em farmácia</option>
+                        <option value="3252-05">3252-05 - Técnico de alimentos</option>
+                        <option value="3252-10">3252-10 - Técnico em nutrição e dietética</option>
+                        <option value="3253-05">3253-05 - Técnico em biotecnologia</option>
+                        <option value="3253-10">3253-10 - Técnico em imunobiológicos</option>
+                    </optgroup>
+                    <!-- Outros Técnicos -->
+                    <optgroup label="Outros Técnicos de Nível Médio">
+                        <option value="3221-05">3221-05 - Técnico em acupuntura</option>
+                        <option value="3221-10">3221-10 - Podólogo</option>
+                        <option value="3221-15">3221-15 - Técnico em quiropraxia</option>
+                        <option value="3221-20">3221-20 - Massoterapeuta</option>
+                        <option value="3221-25">3221-25 - Terapeuta holístico</option>
+                        <option value="3223-05">3223-05 - Técnico em óptica e optometria</option>
+                        <option value="3225-05">3225-05 - Técnico de ortopedia</option>
+                        <option value="3226-05">3226-05 - Técnico de imobilização ortopédica</option>
+                        <option value="3281-05">3281-05 - Embalsamador</option>
+                        <option value="3281-10">3281-10 - Taxidermista</option>
+                        <option value="3250-05">3250-05 - Enólogo</option>
+                        <option value="3250-10">3250-10 - Aromista</option>
+                        <option value="3250-15">3250-15 - Perfumista</option>
+                        <option value="3201-05">3201-05 - Técnico em bioterismo</option>
+                        <option value="3201-10">3201-10 - Técnico em histologia</option>
+                        <option value="3211-05">3211-05 - Técnico agrícola</option>
+                        <option value="3211-10">3211-10 - Técnico agropecuário</option>
+                        <option value="3212-05">3212-05 - Técnico em madeira</option>
+                        <option value="3212-10">3212-10 - Técnico florestal</option>
+                        <option value="3213-05">3213-05 - Técnico em piscicultura</option>
+                        <option value="3213-10">3213-10 - Técnico em carcinicultura</option>
+                        <option value="3213-15">3213-15 - Técnico em mitilicultura</option>
+                        <option value="3213-20">3213-20 - Técnico em ranicultura</option>
+                        <option value="3231-05">3231-05 - Técnico em pecuária</option>
+                    </optgroup>
+                    <!-- Agentes Comunitários -->
+                    <optgroup label="Agentes Comunitários e Apoio">
+                        <option value="5151-05">5151-05 - Agente comunitário de saúde</option>
+                        <option value="5151-10">5151-10 - Atendente de enfermagem</option>
+                        <option value="5151-15">5151-15 - Parteira leiga</option>
+                        <option value="5151-20">5151-20 - Visitador sanitário</option>
+                        <option value="5151-25">5151-25 - Agente indígena de saúde</option>
+                        <option value="5151-30">5151-30 - Agente indígena de saneamento</option>
+                        <option value="5152-05">5152-05 - Auxiliar de banco de sangue</option>
+                        <option value="5152-10">5152-10 - Auxiliar de farmácia de manipulação</option>
+                        <option value="5152-15">5152-15 - Auxiliar de laboratório de análises clínicas</option>
+                        <option value="5152-20">5152-20 - Auxiliar de laboratório de imunobiológicos</option>
+                        <option value="5152-25">5152-25 - Auxiliar de produção farmacêutica</option>
+                        <option value="5153-05">5153-05 - Educador social</option>
+                        <option value="5153-10">5153-10 - Agente de ação social</option>
+                        <option value="5153-15">5153-15 - Monitor de dependente químico</option>
+                        <option value="5153-20">5153-20 - Conselheiro tutelar</option>
+                    </optgroup>
+                    <!-- Profissionais de Serviços (apoio) -->
+                    <optgroup label="Profissionais de Serviços (apoio)">
+                        <option value="4110-05">4110-05 - Auxiliar de escritório em geral</option>
+                        <option value="4110-10">4110-10 - Assistente administrativo</option>
+                        <option value="4110-30">4110-30 - Auxiliar de pessoal</option>
+                        <option value="4110-35">4110-35 - Auxiliar de estatística</option>
+                        <option value="4121-10">4121-10 - Digitador</option>
+                        <option value="4122-05">4122-05 - Contínuo</option>
+                        <option value="4131-10">4131-10 - Auxiliar de contabilidade</option>
+                        <option value="4131-15">4131-15 - Auxiliar de faturamento</option>
+                        <option value="4141-05">4141-05 - Almoxarife</option>
+                        <option value="4141-10">4141-10 - Armazenista</option>
+                        <option value="4142-05">4142-05 - Apontador de mão-de-obra</option>
+                        <option value="4142-10">4142-10 - Apontador de produção</option>
+                        <option value="4151-05">4151-05 - Arquivista de documentos</option>
+                        <option value="4151-30">4151-30 - Operador de máquina copiadora</option>
+                        <option value="4152-05">4152-05 - Carteiro</option>
+                        <option value="4211-25">4211-25 - Operador de caixa</option>
+                        <option value="4221-05">4221-05 - Recepcionista em geral</option>
+                        <option value="4221-10">4221-10 - Recepcionista de consultório médico ou dentário</option>
+                        <option value="4221-15">4221-15 - Recepcionista de seguro saúde</option>
+                        <option value="4222-05">4222-05 - Telefonista</option>
+                        <option value="4223-05">4223-05 - Operador de telemarketing ativo</option>
+                        <option value="4223-15">4223-15 - Operador de telemarketing receptivo</option>
+                        <option value="4241-05">4241-05 - Entrevistador censitário e de pesquisas amostrais</option>
+                        <option value="5111-05">5111-05 - Comissário de voo</option>
+                        <option value="5111-10">5111-10 - Comissário de trem</option>
+                        <option value="5112-05">5112-05 - Fiscal de transportes coletivos</option>
+                        <option value="5112-15">5112-15 - Cobrador de transportes coletivos</option>
+                        <option value="5114-05">5114-05 - Guia de turismo</option>
+                        <option value="5121-05">5121-05 - Empregado doméstico nos serviços gerais</option>
+                        <option value="5121-10">5121-10 - Empregado doméstico arrumador</option>
+                        <option value="5121-15">5121-15 - Empregado doméstico faxineiro</option>
+                        <option value="5121-20">5121-20 - Empregado doméstico diarista</option>
+                        <option value="5131-05">5131-05 - Mordomo de residência</option>
+                        <option value="5131-10">5131-10 - Mordomo de hotelaria</option>
+                        <option value="5131-15">5131-15 - Governanta de hotelaria</option>
+                        <option value="5132-05">5132-05 - Cozinheiro geral</option>
+                        <option value="5132-10">5132-10 - Cozinheiro do serviço doméstico</option>
+                        <option value="5132-15">5132-15 - Cozinheiro industrial</option>
+                        <option value="5132-20">5132-20 - Cozinheiro de hospital</option>
+                        <option value="5132-25">5132-25 - Cozinheiro de embarcações</option>
+                        <option value="5133-15">5133-15 - Camareiro de hotel</option>
+                        <option value="5134-05">5134-05 - Garçom</option>
+                        <option value="5134-20">5134-20 - Barman</option>
+                        <option value="5134-25">5134-25 - Copeiro</option>
+                        <option value="5134-30">5134-30 - Copeiro de hospital</option>
+                        <option value="5135-05">5135-05 - Auxiliar nos serviços de alimentação</option>
+                        <option value="5136-05">5136-05 - Churrasqueiro</option>
+                        <option value="5136-10">5136-10 - Pizzaiolo</option>
+                        <option value="5136-15">5136-15 - Sushiman</option>
+                        <option value="5141-20">5141-20 - Zelador de edifício</option>
+                        <option value="5142-05">5142-05 - Coletor de lixo domiciliar</option>
+                        <option value="5142-15">5142-15 - Varredor de rua</option>
+                        <option value="5142-30">5142-30 - Coletor de resíduos sólidos de serviços de saúde</option>
+                        <option value="5143-20">5143-20 - Faxineiro</option>
+                        <option value="5161-05">5161-05 - Barbeiro</option>
+                        <option value="5161-10">5161-10 - Cabeleireiro</option>
+                        <option value="5161-15">5161-15 - Esteticista</option>
+                        <option value="5161-20">5161-20 - Manicure</option>
+                        <option value="5161-25">5161-25 - Maquiador</option>
+                        <option value="5161-40">5161-40 - Pedicure</option>
+                        <option value="5162-05">5162-05 - Babá</option>
+                        <option value="5162-10">5162-10 - Cuidador de idosos</option>
+                        <option value="5162-15">5162-15 - Mãe social</option>
+                        <option value="5163-05">5163-05 - Lavadeiro em geral</option>
+                        <option value="5163-10">5163-10 - Lavador de roupas à máquina</option>
+                        <option value="5164-05">5164-05 - Lavador de roupas</option>
+                        <option value="5164-15">5164-15 - Passador de roupas, à mão</option>
+                        <option value="5165-05">5165-05 - Agente funerário</option>
+                        <option value="5166-05">5166-05 - Operador de forno (serviços funerários)</option>
+                        <option value="5166-10">5166-10 - Sepultador</option>
+                        <option value="5171-05">5171-05 - Bombeiro de aeródromo</option>
+                        <option value="5171-10">5171-10 - Bombeiro de segurança do trabalho</option>
+                        <option value="5171-15">5171-15 - Salva-vidas</option>
+                        <option value="5172-15">5172-15 - Guarda-civil municipal</option>
+                        <option value="5172-20">5172-20 - Agente de trânsito</option>
+                        <option value="5173-30">5173-30 - Vigilante</option>
+                        <option value="5174-05">5174-05 - Porteiro (hotel)</option>
+                        <option value="5174-10">5174-10 - Porteiro de edifícios</option>
+                        <option value="5174-20">5174-20 - Vigia</option>
+                        <option value="5191-05">5191-05 - Ciclista mensageiro</option>
+                        <option value="5191-10">5191-10 - Motociclista no transporte de documentos e pequenos volumes</option>
+                        <option value="5192-05">5192-05 - Catador de material reciclável</option>
+                        <option value="5193-05">5193-05 - Auxiliar de veterinário</option>
+                        <option value="5193-10">5193-10 - Esteticista de animais domésticos</option>
+                        <option value="5193-15">5193-15 - Banhista de animais domésticos</option>
+                        <option value="5193-20">5193-20 - Tosador de animais domésticos</option>
+                        <option value="5199-05">5199-05 - Cartazeiro</option>
+                        <option value="5199-10">5199-10 - Controlador de Pragas</option>
+                        <option value="5199-15">5199-15 - Engraxate</option>
+                        <option value="5199-25">5199-25 - Guardador de veículos</option>
+                        <option value="5199-35">5199-35 - Lavador de veículos</option>
+                        <option value="5199-40">5199-40 - Leiturista</option>
+                        <option value="5211-05">5211-05 - Vendedor em comércio atacadista</option>
+                        <option value="5211-10">5211-10 - Vendedor de comércio varejista</option>
+                        <option value="5211-25">5211-25 - Repositor de mercadorias</option>
+                        <option value="5211-30">5211-30 - Atendente de farmácia - balconista</option>
+                        <option value="5211-35">5211-35 - Frentista</option>
+                        <option value="5231-05">5231-05 - Instalador de cortinas e persianas, portas sanfonadas e boxes</option>
+                        <option value="5231-10">5231-10 - Instalador de som e acessórios de veículos</option>
+                        <option value="5231-15">5231-15 - Chaveiro</option>
+                        <option value="5241-05">5241-05 - Vendedor em domicílio</option>
+                        <option value="5242-05">5242-05 - Feirante</option>
+                        <option value="5242-10">5242-10 - Jornaleiro (em banca de jornal)</option>
+                        <option value="5242-15">5242-15 - Vendedor permissionário</option>
+                        <option value="5243-05">5243-05 - Vendedor ambulante</option>
+                        <option value="5243-10">5243-10 - Pipoqueiro ambulante</option>
                     </optgroup>
                 </select>
             </td>
-            <td><input type="text" class="prof-formacao" placeholder="Formação" /></td>
             <td><input type="text" class="prof-conselho" placeholder="Conselho" /></td>
             <td><input type="text" class="prof-registro" placeholder="Nº Registro" /></td>
             <td><input type="text" class="prof-ufconselho" placeholder="UF" /></td>
@@ -572,15 +927,7 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="prof-carga" list="cargaOptions" placeholder="Ex: 40h" />
-                <datalist id="cargaOptions">
-                    <option value="44">44h</option>
-                    <option value="40">40h</option>
-                    <option value="30">30h</option>
-                    <option value="20">20h</option>
-                    <option value="10">10h</option>
-                    <option value="5">5h</option>
-                </datalist>
+                <input type="text" class="prof-carga" placeholder="Ex: 40h" />
             </td>
             <td><input type="text" class="prof-setor" placeholder="Setor/Equipe" /></td>
         `;
@@ -627,7 +974,6 @@
                 nome_profissional: nome,
                 cpf: cpf,
                 cbo: getValue('.prof-cbo'),
-                formacao: getValue('.prof-formacao'),
                 conselho: getValue('.prof-conselho'),
                 registro: getValue('.prof-registro'),
                 uf_conselho: getValue('.prof-ufconselho'),
