@@ -163,7 +163,7 @@
             .unidade-selector, .regras-container, .acoes, .rodape, .info-versao,
             #customSelectContainer, .seletor-unidade, .busca-container,
             .diagnostico, .status-conexao, #btnAdicionar, #btnEnviar,
-            .btn-excluir-linha, .btn-icon, button:not(#btnImprimir) { display:none !important; }
+            .btn-excluir-linha, .btn-icon { display:none !important; }
             #tipoUnidade { display:none !important; }
             @page { size:landscape; margin:0.8cm; }
             body { background:white !important; padding:0 !important; margin:0 !important; }
@@ -289,7 +289,6 @@
 
     <div class="acoes">
         <button id="btnAdicionar"><i class="fas fa-user-plus"></i> Adicionar Profissional</button>
-        <button id="btnImprimir" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
         <button class="btn-enviar" id="btnEnviar"><i class="fas fa-paper-plane"></i> Enviar</button>
     </div>
 
@@ -1113,7 +1112,7 @@
             }
         }
 
-        // --- 3. Mensagem final ---
+        // --- 3. Mensagem final e impressão condicional ---
         let msg = `✅ ${sucessos} operação(ões) concluída(s) com sucesso.`;
         if (inclusoes.length > 0) {
             msg += `\n${inclusoes.length} inclusão(ões) realizada(s) diretamente.`;
@@ -1126,6 +1125,8 @@
             alert(msg);
         } else {
             alert(msg);
+            // Somente imprime se não houve erros
+            window.print();
         }
     }
 
