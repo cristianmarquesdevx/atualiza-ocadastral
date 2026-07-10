@@ -961,60 +961,56 @@
         const solicitacoes = [];
         let temNome = false;
         let erro = false;
+        let linhaErro = 0;
 
         for (const tr of linhas) {
+            linhaErro++;
             const acao = tr.querySelector('.prof-acao')?.value || 'Inclusão';
             const nome = tr.querySelector('.prof-nome')?.value?.trim() || '';
             if (nome === '') continue;
             temNome = true;
 
-            const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
+            const cpfRaw = tr.querySelector('.prof-cpf')?.value?.trim() || '';
+            const cbo = tr.querySelector('.prof-cbo')?.value || '';
+            const vinculo = tr.querySelector('.prof-vinculo')?.value || '';
             const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
-            const cpf = tr.querySelector('.prof-cpf')?.value?.trim() || '';
 
-            // Para exclusão e alteração, CPF é obrigatório
-            if ((acao === 'Exclusão' || acao === 'Alteração') && !cpf) {
-                alert(`Para a ação "${acao}", o CPF é obrigatório.`);
+            // ---- VALIDAÇÕES OBRIGATÓRIAS ----
+            // 1. CPF: preenchido e com 11 dígitos
+            const cpfLimpo = cpfRaw.replace(/\D/g, '');
+            if (!cpfRaw || cpfLimpo.length !== 11) {
+                alert(`Linha ${linhaErro}: CPF "${cpfRaw}" é obrigatório e deve ter 11 dígitos.`);
                 erro = true;
                 break;
             }
 
-            // Monta objeto com dados, preenchendo campos obrigatórios com "N/I"
-            let dados = {
-                cnes: cnes,
-                nome_profissional: nome,
-                cpf: cpf,
-                cbo: getValue('.prof-cbo'),
-                conselho: getValue('.prof-conselho'),
-                registro: getValue('.prof-registro'),
-                uf_conselho: getValue('.prof-ufconselho'),
-                cargo_funcao: getValue('.prof-cargo'),
-                tipo_vinculo: getValue('.prof-vinculo'),
-                carga_horaria: carga || null,
-                setor_equipe: getValue('.prof-setor'),
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            };
+            // 2. CBO: selecionado (não vazio)
+            if (!cbo) {
+                alert(`Linha ${linhaErro}: CBO é obrigatório. Selecione um valor.`);
+                erro = true;
+                break;
+            }
 
-            // Preencher campos obrigatórios com "N/I" se vazios
-            dados = preencherCamposObrigatorios(dados);
+            // 3. Tipo de Vínculo: selecionado (não vazio)
+            if (!vinculo) {
+                alert(`Linha ${linhaErro}: Tipo de Vínculo é obrigatório. Selecione um valor.`);
+                erro = true;
+                break;
+            }
 
-            if (acao === 'Inclusão') {
-                // INCLUSÃO: vai direto para a tabela profissionais
-                inclusoes.push(dados);
-            } else {
-                // EXCLUSÃO ou ALTERAÇÃO: precisa buscar o profissional existente
-                const cpfLimpo = cpf.replace(/\D/g, '');
-                if (cpfLimpo.length !== 11) {
-                    alert(`CPF "${cpf}" inválido. Deve ter 11 dígitos.`);
-                    erro = true;
-                    break;
-                }
+            // 4. Carga Horária: preenchida (não vazia)
+            if (!carga) {
+                alert(`Linha ${linhaErro}: Carga Horária é obrigatória. Preencha o campo.`);
+                erro = true;
+                break;
+            }
 
+            // Se ação for Exclusão ou Alteração, buscar profissional existente
+            if (acao === 'Exclusão' || acao === 'Alteração') {
                 try {
                     // Buscar profissional pelo CPF (com ou sem máscara)
                     let profissionalExistente = null;
-                    const cpfBusca = encodeURIComponent(cpf);
+                    const cpfBusca = encodeURIComponent(cpfRaw);
                     const response = await fetch(
                         `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${cpfBusca}&select=*`,
                         { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
@@ -1030,7 +1026,7 @@
                         if (!response2.ok) throw new Error('Erro ao buscar profissional (sem máscara).');
                         const data2 = await response2.json();
                         if (!data2 || data2.length === 0) {
-                            alert(`Profissional com CPF "${cpf}" não encontrado.`);
+                            alert(`Linha ${linhaErro}: Profissional com CPF "${cpfRaw}" não encontrado.`);
                             erro = true;
                             break;
                         }
@@ -1040,6 +1036,24 @@
                     }
 
                     // Montar solicitação
+                    const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
+                    let dados = {
+                        cnes: cnes,
+                        nome_profissional: nome,
+                        cpf: cpfRaw,
+                        cbo: cbo,
+                        conselho: getValue('.prof-conselho'),
+                        registro: getValue('.prof-registro'),
+                        uf_conselho: getValue('.prof-ufconselho'),
+                        cargo_funcao: getValue('.prof-cargo'),
+                        tipo_vinculo: vinculo,
+                        carga_horaria: carga,
+                        setor_equipe: getValue('.prof-setor'),
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                    dados = preencherCamposObrigatorios(dados);
+
                     solicitacoes.push({
                         profissional_id: profissionalExistente.id,
                         tipo: acao === 'Exclusão' ? 'delete' : 'update',
@@ -1048,10 +1062,30 @@
                         status: 'pendente'
                     });
                 } catch (error) {
-                    alert(`Erro ao buscar profissional: ${error.message}`);
+                    alert(`Linha ${linhaErro}: ${error.message}`);
                     erro = true;
                     break;
                 }
+            } else {
+                // INCLUSÃO: monta dados e envia diretamente
+                const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
+                let dados = {
+                    cnes: cnes,
+                    nome_profissional: nome,
+                    cpf: cpfRaw,
+                    cbo: cbo,
+                    conselho: getValue('.prof-conselho'),
+                    registro: getValue('.prof-registro'),
+                    uf_conselho: getValue('.prof-ufconselho'),
+                    cargo_funcao: getValue('.prof-cargo'),
+                    tipo_vinculo: vinculo,
+                    carga_horaria: carga,
+                    setor_equipe: getValue('.prof-setor'),
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                dados = preencherCamposObrigatorios(dados);
+                inclusoes.push(dados);
             }
         }
 
