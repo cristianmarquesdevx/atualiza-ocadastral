@@ -72,6 +72,7 @@
         button:hover { opacity:0.9; }
         .btn-enviar { background:#28a745; }
         .btn-enviar:hover { background:#218838; }
+        .btn-enviar:disabled { background:#6c757d; cursor:not-allowed; opacity:0.7; }
 
         /* ===== RODAPÉ ===== */
         .rodape { border-top:2px solid #003c7d; padding:15px 20px; text-align:center; font-size:clamp(11px,1.4vw,13px); color:#444; background:#f9fafc; line-height:1.6; }
@@ -956,6 +957,11 @@
             return;
         }
 
+        const btn = document.getElementById('btnEnviar');
+        if (btn.disabled) return; // já enviado ou enviando
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
         const linhas = document.querySelectorAll('#tbodyProfissionais tr');
         const inclusoes = [];
         const solicitacoes = [];
@@ -963,6 +969,7 @@
         let erro = false;
         let linhaErro = 0;
 
+        // --- Coleta e validação dos dados ---
         for (const tr of linhas) {
             linhaErro++;
             const acao = tr.querySelector('.prof-acao')?.value || 'Inclusão';
@@ -975,50 +982,38 @@
             const vinculo = tr.querySelector('.prof-vinculo')?.value || '';
             const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
 
-            // ---- VALIDAÇÕES OBRIGATÓRIAS ----
-            // 1. CPF: preenchido e com 11 dígitos
             const cpfLimpo = cpfRaw.replace(/\D/g, '');
             if (!cpfRaw || cpfLimpo.length !== 11) {
                 alert(`Linha ${linhaErro}: CPF "${cpfRaw}" é obrigatório e deve ter 11 dígitos.`);
                 erro = true;
                 break;
             }
-
-            // 2. CBO: selecionado (não vazio)
             if (!cbo) {
                 alert(`Linha ${linhaErro}: CBO é obrigatório. Selecione um valor.`);
                 erro = true;
                 break;
             }
-
-            // 3. Tipo de Vínculo: selecionado (não vazio)
             if (!vinculo) {
                 alert(`Linha ${linhaErro}: Tipo de Vínculo é obrigatório. Selecione um valor.`);
                 erro = true;
                 break;
             }
-
-            // 4. Carga Horária: preenchida (não vazia)
             if (!carga) {
                 alert(`Linha ${linhaErro}: Carga Horária é obrigatória. Preencha o campo.`);
                 erro = true;
                 break;
             }
 
-            // Se ação for Exclusão ou Alteração, buscar profissional existente
             if (acao === 'Exclusão' || acao === 'Alteração') {
                 try {
-                    // Buscar profissional pelo CPF (com ou sem máscara)
                     let profissionalExistente = null;
-                    const cpfBusca = encodeURIComponent(cpfRaw);
                     const response = await fetch(
-                        `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${cpfBusca}&select=*`,
+                        `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${encodeURIComponent(cpfRaw)}&select=*`,
                         { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
                     );
                     if (!response.ok) throw new Error('Erro ao buscar profissional.');
                     const data = await response.json();
                     if (!data || data.length === 0) {
-                        // Tenta sem máscara
                         const response2 = await fetch(
                             `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${cpfLimpo}&select=*`,
                             { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
@@ -1035,7 +1030,6 @@
                         profissionalExistente = data[0];
                     }
 
-                    // Montar solicitação
                     const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
                     let dados = {
                         cnes: cnes,
@@ -1053,7 +1047,6 @@
                         updated_at: new Date().toISOString()
                     };
                     dados = preencherCamposObrigatorios(dados);
-
                     solicitacoes.push({
                         profissional_id: profissionalExistente.id,
                         tipo: acao === 'Exclusão' ? 'delete' : 'update',
@@ -1067,7 +1060,6 @@
                     break;
                 }
             } else {
-                // INCLUSÃO: monta dados e envia diretamente
                 const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
                 let dados = {
                     cnes: cnes,
@@ -1089,12 +1081,48 @@
             }
         }
 
-        if (erro) return;
+        if (erro) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar';
+            return;
+        }
         if (!temNome || (inclusoes.length === 0 && solicitacoes.length === 0)) {
             alert('Adicione pelo menos um profissional com nome preenchido.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar';
             return;
         }
 
+        // --- Verificação de duplicidade para inclusões ---
+        if (inclusoes.length > 0) {
+            for (const inc of inclusoes) {
+                const cpfLimpo = inc.cpf.replace(/\D/g, '');
+                try {
+                    const response = await fetch(
+                        `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cnes=eq.${cnes}&cpf=eq.${cpfLimpo}&select=id`,
+                        { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+                    );
+                    if (!response.ok) throw new Error('Erro ao verificar duplicidade.');
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        alert(`O CPF "${inc.cpf}" já está cadastrado para esta unidade. Inclusão não permitida.`);
+                        erro = true;
+                        break;
+                    }
+                } catch (error) {
+                    alert(`Erro ao verificar duplicidade: ${error.message}`);
+                    erro = true;
+                    break;
+                }
+            }
+            if (erro) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar';
+                return;
+            }
+        }
+
+        // --- Envio ---
         const headers = {
             'Content-Type': 'application/json',
             'apikey': SUPABASE_ANON_KEY,
@@ -1104,7 +1132,6 @@
         let sucessos = 0,
             erros = [];
 
-        // --- 1. Enviar inclusões diretamente ---
         if (inclusoes.length > 0) {
             const urlInsert = `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}`;
             for (const registro of inclusoes) {
@@ -1125,7 +1152,6 @@
             }
         }
 
-        // --- 2. Enviar solicitações (exclusão/altteração) ---
         if (solicitacoes.length > 0) {
             const urlSolic = `${SUPABASE_URL}/rest/v1/${TABLE_SOLICITACOES}`;
             for (const sol of solicitacoes) {
@@ -1146,20 +1172,23 @@
             }
         }
 
-        // --- 3. Mensagem final e impressão condicional ---
-        let msg = `✅ ${sucessos} operação(ões) concluída(s) com sucesso.`;
-        if (inclusoes.length > 0) {
-            msg += `\n${inclusoes.length} inclusão(ões) realizada(s) diretamente.`;
-        }
-        if (solicitacoes.length > 0) {
-            msg += `\n${solicitacoes.length} solicitação(ões) de exclusão/alteração enviada(s) para aprovação do administrador.`;
-        }
+        // Restaurar botão apenas se houve erro, senão deixar como "Enviado"
         if (erros.length > 0) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar';
+            let msg = `✅ ${sucessos} operação(ões) concluída(s) com sucesso.`;
+            if (inclusoes.length > 0) msg += `\n${inclusoes.length} inclusão(ões) realizada(s) diretamente.`;
+            if (solicitacoes.length > 0) msg += `\n${solicitacoes.length} solicitação(ões) de exclusão/alteração enviada(s) para aprovação do administrador.`;
             msg += `\n\n⚠️ ${erros.length} erro(s):\n${erros.join('\n')}`;
             alert(msg);
         } else {
+            // Sucesso total: botão fica "Enviado" e desabilitado
+            btn.innerHTML = '✅ Enviado';
+            btn.disabled = true;
+            let msg = `✅ ${sucessos} operação(ões) concluída(s) com sucesso.`;
+            if (inclusoes.length > 0) msg += `\n${inclusoes.length} inclusão(ões) realizada(s) diretamente.`;
+            if (solicitacoes.length > 0) msg += `\n${solicitacoes.length} solicitação(ões) de exclusão/alteração enviada(s) para aprovação do administrador.`;
             alert(msg);
-            // Somente imprime se não houve erros
             window.print();
         }
     }
