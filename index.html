@@ -437,7 +437,7 @@
     ];
 
     // ================================================================
-    // HTML DAS OPÇÕES DE CBO (extraído do código original)
+    // HTML DAS OPÇÕES DE CBO
     // ================================================================
     const CBO_OPTIONS_HTML = `
         <option value="">Selecione o CBO</option>
@@ -888,7 +888,6 @@
         } else {
             input.value = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
         }
-        // Após qualquer alteração, salvar cache
         salvarCache();
     }
 
@@ -938,8 +937,12 @@
             const cache = { cnes, cnesLabel, dataEmissao, profissionais };
             localStorage.setItem('ficha_cnes_cache', JSON.stringify(cache));
         } catch (e) {
-            // Ignora erros de cache (ex: localStorage cheio)
+            // Ignora erros de cache
         }
+    }
+
+    function limparCache() {
+        localStorage.removeItem('ficha_cnes_cache');
     }
 
     function restaurarCache() {
@@ -947,11 +950,9 @@
         if (!cacheStr) return false;
         try {
             const cache = JSON.parse(cacheStr);
-            // Restaurar data de emissão
             if (cache.dataEmissao) {
                 document.getElementById('dataEmissao').value = cache.dataEmissao;
             }
-            // Restaurar unidade
             if (cache.cnes) {
                 document.getElementById('cnes').value = cache.cnes;
                 document.getElementById('cnes').classList.add('unidade-selecionada');
@@ -961,7 +962,6 @@
                     document.getElementById('tipoUnidade').value = cache.cnes;
                 }
             }
-            // Restaurar profissionais
             const tbody = document.getElementById('tbodyProfissionais');
             tbody.innerHTML = '';
             if (cache.profissionais && cache.profissionais.length > 0) {
@@ -971,7 +971,6 @@
                 });
                 contadorLinhas = cache.profissionais.length + 1;
             } else {
-                // Se não houver profissionais, adicionar uma linha vazia
                 adicionarLinha();
             }
             return true;
@@ -979,6 +978,35 @@
             console.error('Erro ao restaurar cache', e);
             return false;
         }
+    }
+
+    // ================================================================
+    // LIMPEZA COMPLETA DO FORMULÁRIO
+    // ================================================================
+    function limparFormulario() {
+        // Limpa unidade
+        document.getElementById('cnes').value = '';
+        document.getElementById('cnes').classList.remove('unidade-selecionada');
+        document.getElementById('selectDisplay').textContent = 'Selecione a Unidade';
+        document.getElementById('selectDisplay').dataset.value = '';
+        document.getElementById('tipoUnidade').value = '';
+
+        // Reseta data para hoje
+        document.getElementById('dataEmissao').value = new Date().toISOString().split('T')[0];
+
+        // Remove todas as linhas e adiciona uma nova vazia
+        const tbody = document.getElementById('tbodyProfissionais');
+        tbody.innerHTML = '';
+        contadorLinhas = 1;
+        adicionarLinha();
+
+        // Limpa cache
+        limparCache();
+
+        // Habilita botão enviar (caso estivesse desabilitado)
+        const btn = document.getElementById('btnEnviar');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar';
     }
 
     // ================================================================
@@ -1041,7 +1069,6 @@
             <td><input type="text" class="prof-setor" placeholder="Setor/Equipe" value="${setor}" /></td>
         `;
 
-        // Selecionar o CBO
         const cboSelect = tr.querySelector('.prof-cbo');
         if (cbo) {
             cboSelect.value = cbo;
@@ -1308,6 +1335,9 @@
             if (solicitacoes.length > 0) msg += `\n${solicitacoes.length} solicitação(ões) de exclusão/alteração enviada(s) para aprovação do administrador.`;
             alert(msg);
             window.print();
+
+            // === LIMPEZA APÓS ENVIO BEM-SUCEDIDO ===
+            limparFormulario();
         }
     }
 
@@ -1394,28 +1424,24 @@
         document.getElementById('dataEmissao').value = new Date().toISOString().split('T')[0];
         initCombobox();
 
-        // Tentar restaurar cache
         const cacheRestaurado = restaurarCache();
         if (!cacheRestaurado) {
-            // Se não houver cache, adicionar uma linha padrão
             adicionarLinha();
         }
 
-        // Listener para salvar cache em qualquer mudança no tbody (delegação)
         document.getElementById('tbodyProfissionais').addEventListener('input', salvarCache);
         document.getElementById('tbodyProfissionais').addEventListener('change', salvarCache);
-        // Também salvar quando a data de emissão mudar
         document.getElementById('dataEmissao').addEventListener('change', salvarCache);
 
         document.getElementById('btnAdicionar').addEventListener('click', adicionarLinha);
         document.getElementById('btnEnviar').addEventListener('click', enviarDados);
     };
 
-    // Exportar funções globais (para uso nos atributos onclick/oninput)
     window.adicionarLinha = adicionarLinha;
     window.enviarDados = enviarDados;
     window.aplicarMascaraCPF = aplicarMascaraCPF;
     window.salvarCache = salvarCache;
+    window.limparFormulario = limparFormulario;
 </script>
 </body>
 </html>
