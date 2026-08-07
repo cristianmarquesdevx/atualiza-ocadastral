@@ -273,7 +273,12 @@
                     <th style="width:40px;">Nº</th>
                     <th style="min-width:100px;">Ação</th>
                     <th style="min-width:180px;">Nome Completo</th>
-                    <th style="min-width:140px;">CPF</th>
+                    <th style="min-width:140px;">
+                        <select id="headerIdTipo" style="width:100%; border:1px solid #ccc; border-radius:2px; background:white; height:28px; font-size:clamp(10px,1.2vw,12px); padding:0 2px;">
+                            <option value="CPF">CPF</option>
+                            <option value="CNS">CNS</option>
+                        </select>
+                    </th>
                     <th>CBO</th>
                     <th>Conselho</th>
                     <th>Nº Registro</th>
@@ -711,19 +716,8 @@
     // ================================================================
     // FUNÇÕES AUXILIARES
     // ================================================================
-    function aplicarMascaraCPF(input) {
-        let valor = input.value.replace(/\D/g, '');
-        if (valor.length > 11) valor = valor.slice(0, 11);
-        if (valor.length <= 3) {
-            input.value = valor;
-        } else if (valor.length <= 6) {
-            input.value = valor.replace(/(\d{3})(\d{1,3})/, '$1.$2');
-        } else if (valor.length <= 9) {
-            input.value = valor.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
-        } else {
-            input.value = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
-        }
-        salvarCache();
+    function apenasNumeros(str) {
+        return str.replace(/\D/g, '');
     }
 
     function preencherDadosUnidade(cnes, label) {
@@ -743,6 +737,15 @@
         return dados;
     }
 
+    // Atualiza o placeholder do campo conforme tipo selecionado
+    function atualizarPlaceholder(campo, tipo) {
+        if (tipo === 'CPF') {
+            campo.placeholder = '11 dígitos';
+        } else {
+            campo.placeholder = '15 dígitos';
+        }
+    }
+
     // ================================================================
     // CACHE (localStorage)
     // ================================================================
@@ -752,6 +755,7 @@
             const selectDisplay = document.getElementById('selectDisplay');
             const cnesLabel = selectDisplay.textContent !== 'Selecione a Unidade' ? selectDisplay.textContent : '';
             const dataEmissao = document.getElementById('dataEmissao').value;
+            const idTipo = document.getElementById('headerIdTipo').value;
             const linhas = document.querySelectorAll('#tbodyProfissionais tr');
             const profissionais = [];
             linhas.forEach(tr => {
@@ -768,7 +772,7 @@
                 const setor = tr.querySelector('.prof-setor')?.value || '';
                 profissionais.push({ acao, nome, cpf, cbo, conselho, registro, uf, cargo, vinculo, carga, setor });
             });
-            const cache = { cnes, cnesLabel, dataEmissao, profissionais };
+            const cache = { cnes, cnesLabel, dataEmissao, idTipo, profissionais };
             localStorage.setItem('ficha_cnes_cache', JSON.stringify(cache));
         } catch (e) {
             // Ignora erros de cache
@@ -795,6 +799,9 @@
                     document.getElementById('selectDisplay').dataset.value = cache.cnes;
                     document.getElementById('tipoUnidade').value = cache.cnes;
                 }
+            }
+            if (cache.idTipo) {
+                document.getElementById('headerIdTipo').value = cache.idTipo;
             }
             const tbody = document.getElementById('tbodyProfissionais');
             tbody.innerHTML = '';
@@ -862,7 +869,7 @@
                 </select>
             </td>
             <td><input type="text" class="prof-nome" placeholder="Nome completo" style="min-width:170px;" value="${nome}" /></td>
-            <td><input type="text" class="prof-cpf" placeholder="000.000.000-00" maxlength="14" style="min-width:130px;" value="${cpf}" /></td>
+            <td><input type="text" class="prof-cpf" placeholder="11 dígitos" style="min-width:130px;" value="${cpf}" /></td>
             <td>
                 <select class="prof-cbo">
                     ${CBO_OPTIONS_HTML}
@@ -899,6 +906,17 @@
             cboSelect.value = cbo;
         }
 
+        // Apenas números no campo CPF/CNS
+        const cpfInput = tr.querySelector('.prof-cpf');
+        cpfInput.addEventListener('input', function() {
+            this.value = apenasNumeros(this.value);
+            salvarCache();
+        });
+
+        // Atualizar placeholder conforme tipo selecionado no cabeçalho
+        const tipoAtual = document.getElementById('headerIdTipo').value;
+        atualizarPlaceholder(cpfInput, tipoAtual);
+
         const inputs = tr.querySelectorAll('input, select');
         inputs.forEach(el => {
             el.addEventListener('input', salvarCache);
@@ -934,6 +952,7 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
+        const idTipo = document.getElementById('headerIdTipo').value;
         const linhas = document.querySelectorAll('#tbodyProfissionais tr');
         const inclusoes = [];
         const solicitacoes = [];
@@ -953,12 +972,24 @@
             const vinculo = tr.querySelector('.prof-vinculo')?.value || '';
             const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
 
-            const cpfLimpo = cpfRaw.replace(/\D/g, '');
-            if (!cpfRaw || cpfLimpo.length !== 11) {
-                alert(`Linha ${linhaErro}: CPF "${cpfRaw}" é obrigatório e deve ter 11 dígitos.`);
+            // Validação do campo CPF/CNS conforme tipo selecionado
+            const digitos = apenasNumeros(cpfRaw);
+            if (!cpfRaw || digitos.length === 0) {
+                alert(`Linha ${linhaErro}: O campo de identificação é obrigatório.`);
                 erro = true;
                 break;
             }
+            if (idTipo === 'CPF' && digitos.length !== 11) {
+                alert(`Linha ${linhaErro}: CPF deve ter 11 dígitos. (${digitos.length} dígitos inseridos)`);
+                erro = true;
+                break;
+            }
+            if (idTipo === 'CNS' && digitos.length !== 15) {
+                alert(`Linha ${linhaErro}: CNS deve ter 15 dígitos. (${digitos.length} dígitos inseridos)`);
+                erro = true;
+                break;
+            }
+
             if (!cbo) {
                 alert(`Linha ${linhaErro}: CBO é obrigatório. Selecione um valor.`);
                 erro = true;
@@ -979,33 +1010,23 @@
                 try {
                     let profissionalExistente = null;
                     const response = await fetch(
-                        `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${encodeURIComponent(cpfRaw)}&select=*`,
+                        `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${encodeURIComponent(digitos)}&select=*`,
                         { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
                     );
                     if (!response.ok) throw new Error('Erro ao buscar profissional.');
                     const data = await response.json();
                     if (!data || data.length === 0) {
-                        const response2 = await fetch(
-                            `${SUPABASE_URL}/rest/v1/${TABLE_PROFISSIONAIS}?cpf=eq.${cpfLimpo}&select=*`,
-                            { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
-                        );
-                        if (!response2.ok) throw new Error('Erro ao buscar profissional (sem máscara).');
-                        const data2 = await response2.json();
-                        if (!data2 || data2.length === 0) {
-                            alert(`Linha ${linhaErro}: Profissional com CPF "${cpfRaw}" não encontrado.`);
-                            erro = true;
-                            break;
-                        }
-                        profissionalExistente = data2[0];
-                    } else {
-                        profissionalExistente = data[0];
+                        alert(`Linha ${linhaErro}: Profissional com identificador "${digitos}" não encontrado.`);
+                        erro = true;
+                        break;
                     }
+                    profissionalExistente = data[0];
 
                     const getValue = (sel) => { const el = tr.querySelector(sel); return el ? el.value : ''; };
                     let dados = {
                         cnes: cnes,
                         nome_profissional: nome,
-                        cpf: cpfRaw,
+                        cpf: digitos,
                         cbo: cbo,
                         conselho: getValue('.prof-conselho'),
                         registro: getValue('.prof-registro'),
@@ -1035,7 +1056,7 @@
                 let dados = {
                     cnes: cnes,
                     nome_profissional: nome,
-                    cpf: cpfRaw,
+                    cpf: digitos,
                     cbo: cbo,
                     conselho: getValue('.prof-conselho'),
                     registro: getValue('.prof-registro'),
@@ -1075,7 +1096,7 @@
                     if (!response.ok) throw new Error('Erro ao verificar duplicidade.');
                     const data = await response.json();
                     if (data && data.length > 0) {
-                        alert(`O CPF "${inc.cpf}" já está cadastrado para esta unidade. Inclusão não permitida.`);
+                        alert(`O identificador "${inc.cpf}" já está cadastrado para esta unidade. Inclusão não permitida.`);
                         erro = true;
                         break;
                     }
@@ -1249,6 +1270,16 @@
             adicionarLinha();
         }
 
+        // Atualizar placeholder de todos os campos ao mudar o tipo no cabeçalho
+        document.getElementById('headerIdTipo').addEventListener('change', function() {
+            const tipo = this.value;
+            const inputs = document.querySelectorAll('.prof-cpf');
+            inputs.forEach(input => {
+                atualizarPlaceholder(input, tipo);
+            });
+            salvarCache();
+        });
+
         document.getElementById('tbodyProfissionais').addEventListener('input', salvarCache);
         document.getElementById('tbodyProfissionais').addEventListener('change', salvarCache);
         document.getElementById('dataEmissao').addEventListener('change', salvarCache);
@@ -1259,7 +1290,6 @@
 
     window.adicionarLinha = adicionarLinha;
     window.enviarDados = enviarDados;
-    window.aplicarMascaraCPF = aplicarMascaraCPF;
     window.salvarCache = salvarCache;
     window.limparFormulario = limparFormulario;
 </script>
