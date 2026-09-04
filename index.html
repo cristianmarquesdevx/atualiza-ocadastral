@@ -320,6 +320,64 @@
     const TABLE_SOLICITACOES = 'solicitacoes';
 
     // ================================================================
+    // VALIDAÇÃO DE NOME – VERSÃO MAIS SEGURA
+    // ================================================================
+    function isNomeSuspeito(nome) {
+        if (!nome || typeof nome !== 'string') return true;
+        const str = nome.trim();
+        if (str.length < 5) return true; // mínimo 5 caracteres
+
+        // Lista negra de nomes comuns falsos
+        const blacklist = [
+            'teste', 'test', 'nulo', 'null', 'vazio', 'fake', 'falso',
+            'fulano', 'ciclano', 'beltrano', 'admin', 'administrador',
+            'anonimo', 'anônimo', 'usuario', 'usuário', 'sem nome',
+            'nome', 'indefinido', 'desconhecido', 'naoinformado'
+        ];
+        const lower = str.toLowerCase();
+        if (blacklist.includes(lower)) return true;
+
+        // Verifica caracteres permitidos: letras, espaços, hífen, apóstrofo e acentos (já mantidos)
+        // Mas permite apenas letras, espaços, hífen, apóstrofo (números e especiais são rejeitados)
+        if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ'\- ]+$/.test(str)) return true;
+
+        // Divide em palavras (separadas por espaço)
+        const palavras = str.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < 2) return true; // precisa de pelo menos 2 partes
+        if (palavras.some(p => p.length < 2)) return true; // cada parte com pelo menos 2 letras
+
+        // Normaliza sem acentos e sem espaços para análise de padrões
+        const semAcentos = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase();
+        if (semAcentos.length < 3) return true;
+
+        // 1. Verifica se todos os caracteres são iguais (ex: aaaa, bbbb)
+        if (/^(.)\1+$/.test(semAcentos)) return true;
+
+        // 2. Verifica se é uma sequência alfabética crescente ou decrescente (ex: abcdef, zyxwvu)
+        let crescente = true, decrescente = true;
+        for (let i = 1; i < semAcentos.length; i++) {
+            const diff = semAcentos.charCodeAt(i) - semAcentos.charCodeAt(i-1);
+            if (diff !== 1) crescente = false;
+            if (diff !== -1) decrescente = false;
+        }
+        if (crescente || decrescente) return true;
+
+        // 3. Verifica padrão intercalado repetido (ex: ababab, 121212)
+        if (/^(.+?)\1+$/.test(semAcentos)) return true;
+
+        // 4. Verifica variedade de caracteres: pelo menos 3 letras diferentes
+        const chars = new Set(semAcentos);
+        if (chars.size < 3) return true;
+
+        // 5. Verifica se tem pelo menos uma vogal e uma consoante (evita "aeiou" ou "bcdfg")
+        const vogais = /[aeiou]/i;
+        const consoantes = /[bcdfghjklmnpqrstvwxyz]/i;
+        if (!vogais.test(semAcentos) || !consoantes.test(semAcentos)) return true;
+
+        return false;
+    }
+
+    // ================================================================
     // VALIDAÇÃO DE CPF E CNS
     // ================================================================
 
@@ -1020,15 +1078,28 @@
             cboSelect.value = cbo;
         }
 
-        // Apenas números no campo CPF/CNS
+        // --- VALIDAÇÃO DO CAMPO NOME (tempo real) ---
+        const nomeInput = tr.querySelector('.prof-nome');
+        nomeInput.addEventListener('input', function() {
+            const val = this.value;
+            if (val.length > 0 && isNomeSuspeito(val)) {
+                this.style.border = '2px solid #ff4d4d';
+                this.style.backgroundColor = '#fff0f0';
+            } else {
+                this.style.border = '';
+                this.style.backgroundColor = '';
+            }
+            salvarCache();
+        });
+
+        // --- VALIDAÇÃO DO CAMPO CPF/CNS (tempo real) ---
         const cpfInput = tr.querySelector('.prof-cpf');
         cpfInput.addEventListener('input', function() {
-            const valor = apenasNumeros(this.value);
-            this.value = valor;
-            // Validação em tempo real
+            this.value = apenasNumeros(this.value);
+            const valor = this.value;
             const tipo = document.getElementById('headerIdTipo').value;
             let valido = false;
-            if (valor.length > 0) {
+            if (valor.length >= 3) {
                 if (tipo === 'CPF') {
                     valido = (valor.length === 11 && validarCPF(valor));
                 } else {
@@ -1049,6 +1120,7 @@
         const tipoAtual = document.getElementById('headerIdTipo').value;
         atualizarPlaceholder(cpfInput, tipoAtual);
 
+        // Salvar cache em qualquer alteração
         const inputs = tr.querySelectorAll('input, select');
         inputs.forEach(el => {
             el.addEventListener('input', salvarCache);
@@ -1099,20 +1171,35 @@
             if (nome === '') continue;
             temNome = true;
 
+            // --- VALIDAÇÃO DO NOME (mais segura) ---
+            if (isNomeSuspeito(nome)) {
+                alert(`Linha ${linhaErro}: Nome inválido. 
+                Motivos possíveis:
+                - Menos de 5 caracteres
+                - Apenas uma palavra
+                - Palavras muito curtas
+                - Sequências repetidas (aaaa, abab)
+                - Sequências alfabéticas (abc, zyx)
+                - Sem vogal ou sem consoante
+                - Contém números ou caracteres especiais
+                - Nome na lista negra (teste, fulano, etc.)
+                Por favor, informe um nome completo e real.`);
+                erro = true;
+                break;
+            }
+
             const cpfRaw = tr.querySelector('.prof-cpf')?.value?.trim() || '';
-            const digitos = apenasNumeros(cpfRaw);
             const cbo = tr.querySelector('.prof-cbo')?.value || '';
             const vinculo = tr.querySelector('.prof-vinculo')?.value || '';
             const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
 
-            // Validação do identificador (CPF ou CNS)
+            // --- VALIDAÇÃO DO IDENTIFICADOR (CPF ou CNS) ---
+            const digitos = apenasNumeros(cpfRaw);
             if (!cpfRaw || digitos.length === 0) {
                 alert(`Linha ${linhaErro}: O campo de identificação é obrigatório.`);
                 erro = true;
                 break;
             }
-
-            // Validação de acordo com o tipo selecionado
             if (idTipo === 'CPF') {
                 if (digitos.length !== 11) {
                     alert(`Linha ${linhaErro}: CPF deve ter 11 dígitos. (${digitos.length} dígitos inseridos)`);
@@ -1423,8 +1510,6 @@
             const inputs = document.querySelectorAll('.prof-cpf');
             inputs.forEach(input => {
                 atualizarPlaceholder(input, tipo);
-                // Força revalidação visual
-                input.dispatchEvent(new Event('input'));
             });
             salvarCache();
         });
