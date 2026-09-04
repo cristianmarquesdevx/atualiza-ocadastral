@@ -320,6 +320,118 @@
     const TABLE_SOLICITACOES = 'solicitacoes';
 
     // ================================================================
+    // VALIDAÇÃO DE CPF E CNS
+    // ================================================================
+
+    /**
+     * Verifica se todos os dígitos são iguais
+     */
+    function isTodosIguais(numero) {
+        return /^(\d)\1+$/.test(numero);
+    }
+
+    /**
+     * Verifica se o número é uma sequência crescente ou decrescente simples
+     * Ex: 123456789, 987654321, 0123456789
+     */
+    function isSequenciaLinear(numero) {
+        const str = String(numero);
+        if (str.length < 3) return false;
+        // crescente
+        let crescente = true;
+        for (let i = 1; i < str.length; i++) {
+            if (parseInt(str[i]) !== (parseInt(str[i-1]) + 1) % 10) {
+                crescente = false;
+                break;
+            }
+        }
+        if (crescente) return true;
+        // decrescente
+        let decrescente = true;
+        for (let i = 1; i < str.length; i++) {
+            if (parseInt(str[i]) !== (parseInt(str[i-1]) - 1 + 10) % 10) {
+                decrescente = false;
+                break;
+            }
+        }
+        return decrescente;
+    }
+
+    /**
+     * Verifica se o número é suspeito (todos iguais ou sequência linear)
+     */
+    function isSequenciaSuspeita(numero) {
+        const str = String(numero);
+        if (str.length < 3) return false;
+        return isTodosIguais(str) || isSequenciaLinear(str);
+    }
+
+    /**
+     * Valida CPF (algoritmo + rejeita padrões suspeitos)
+     */
+    function validarCPF(cpf) {
+        cpf = String(cpf).replace(/\D/g, '');
+        if (cpf.length !== 11) return false;
+
+        // Rejeita CPFs com todos os dígitos iguais
+        if (isTodosIguais(cpf)) return false;
+
+        // Rejeita CPFs que são sequências lineares (ex: 12345678909)
+        if (isSequenciaSuspeita(cpf)) return false;
+
+        // Algoritmo oficial
+        let soma = 0;
+        let resto;
+        for (let i = 1; i <= 9; i++) {
+            soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
+        }
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) resto = 0;
+        if (resto !== parseInt(cpf.substring(9, 10))) return false;
+
+        soma = 0;
+        for (let i = 1; i <= 10; i++) {
+            soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
+        }
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) resto = 0;
+        if (resto !== parseInt(cpf.substring(10, 11))) return false;
+
+        // Lista de CPFs conhecidos inválidos (usados em testes)
+        const invalidos = [
+            '01234567890', '12345678909', '00000000000', '11111111111',
+            '22222222222', '33333333333', '44444444444', '55555555555',
+            '66666666666', '77777777777', '88888888888', '99999999999'
+        ];
+        if (invalidos.includes(cpf)) return false;
+
+        return true;
+    }
+
+    /**
+     * Valida CNS (15 dígitos e rejeita padrões suspeitos)
+     * Não há algoritmo oficial, mas podemos checar consistência básica.
+     */
+    function validarCNS(cns) {
+        cns = String(cns).replace(/\D/g, '');
+        if (cns.length !== 15) return false;
+
+        // Rejeita todos iguais ou sequências lineares
+        if (isSequenciaSuspeita(cns)) return false;
+
+        // Rejeita alguns padrões comuns de CNS inválido
+        const invalidos = [
+            '000000000000000', '111111111111111', '222222222222222',
+            '333333333333333', '444444444444444', '555555555555555',
+            '666666666666666', '777777777777777', '888888888888888',
+            '999999999999999', '123456789012345', '987654321098765'
+        ];
+        if (invalidos.includes(cns)) return false;
+
+        return true;
+    }
+
+    // ================================================================
     // DADOS DAS UNIDADES
     // ================================================================
     const unidades = [
@@ -911,7 +1023,25 @@
         // Apenas números no campo CPF/CNS
         const cpfInput = tr.querySelector('.prof-cpf');
         cpfInput.addEventListener('input', function() {
-            this.value = apenasNumeros(this.value);
+            const valor = apenasNumeros(this.value);
+            this.value = valor;
+            // Validação em tempo real
+            const tipo = document.getElementById('headerIdTipo').value;
+            let valido = false;
+            if (valor.length > 0) {
+                if (tipo === 'CPF') {
+                    valido = (valor.length === 11 && validarCPF(valor));
+                } else {
+                    valido = (valor.length === 15 && validarCNS(valor));
+                }
+            }
+            if (valor.length >= 3 && !valido) {
+                this.style.border = '2px solid #ff4d4d';
+                this.style.backgroundColor = '#fff0f0';
+            } else {
+                this.style.border = '';
+                this.style.backgroundColor = '';
+            }
             salvarCache();
         });
 
@@ -970,26 +1100,41 @@
             temNome = true;
 
             const cpfRaw = tr.querySelector('.prof-cpf')?.value?.trim() || '';
+            const digitos = apenasNumeros(cpfRaw);
             const cbo = tr.querySelector('.prof-cbo')?.value || '';
             const vinculo = tr.querySelector('.prof-vinculo')?.value || '';
             const carga = tr.querySelector('.prof-carga')?.value?.trim() || '';
 
-            // Validação do campo CPF/CNS conforme tipo selecionado
-            const digitos = apenasNumeros(cpfRaw);
+            // Validação do identificador (CPF ou CNS)
             if (!cpfRaw || digitos.length === 0) {
                 alert(`Linha ${linhaErro}: O campo de identificação é obrigatório.`);
                 erro = true;
                 break;
             }
-            if (idTipo === 'CPF' && digitos.length !== 11) {
-                alert(`Linha ${linhaErro}: CPF deve ter 11 dígitos. (${digitos.length} dígitos inseridos)`);
-                erro = true;
-                break;
-            }
-            if (idTipo === 'CNS' && digitos.length !== 15) {
-                alert(`Linha ${linhaErro}: CNS deve ter 15 dígitos. (${digitos.length} dígitos inseridos)`);
-                erro = true;
-                break;
+
+            // Validação de acordo com o tipo selecionado
+            if (idTipo === 'CPF') {
+                if (digitos.length !== 11) {
+                    alert(`Linha ${linhaErro}: CPF deve ter 11 dígitos. (${digitos.length} dígitos inseridos)`);
+                    erro = true;
+                    break;
+                }
+                if (!validarCPF(digitos)) {
+                    alert(`Linha ${linhaErro}: CPF inválido. Verifique se não é uma sequência repetida ou falsa.`);
+                    erro = true;
+                    break;
+                }
+            } else { // CNS
+                if (digitos.length !== 15) {
+                    alert(`Linha ${linhaErro}: CNS deve ter 15 dígitos. (${digitos.length} dígitos inseridos)`);
+                    erro = true;
+                    break;
+                }
+                if (!validarCNS(digitos)) {
+                    alert(`Linha ${linhaErro}: CNS inválido. Verifique se não é uma sequência repetida ou falsa.`);
+                    erro = true;
+                    break;
+                }
             }
 
             if (!cbo) {
@@ -1278,6 +1423,8 @@
             const inputs = document.querySelectorAll('.prof-cpf');
             inputs.forEach(input => {
                 atualizarPlaceholder(input, tipo);
+                // Força revalidação visual
+                input.dispatchEvent(new Event('input'));
             });
             salvarCache();
         });
